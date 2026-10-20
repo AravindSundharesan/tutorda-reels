@@ -1,0 +1,27 @@
+[
+[
+"A",
+"ELEVENLABS",
+"What's the biggest rectangle | that fits in a circle?"
+],
+[
+"B",
+"ELEVENLABS",
+"Put one corner on the circle, | at angle θ."
+],
+[
+"B",
+"ELEVENLABS",
+"Width, 2r cos θ. | Height, 2r sin θ."
+],
+[
+"C",
+"ELEVENLABS",
+"So the area is 2r² sin 2θ. | That peaks at 45°."
+],
+[
+"D",
+"ELEVENLABS",
+"A square, with area 2r². | Follow for #9."
+]
+]

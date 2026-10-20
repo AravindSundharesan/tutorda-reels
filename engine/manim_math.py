@@ -767,3 +767,120 @@ class Area(ShortReel):
         fw = self.comment_chip("Follow for #7"); fw[0].set_fill(OR)
         self.until(C[4] + 1.1); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(it, a_, ax, sq, g, area, gl, tl, fw, lb)
+
+
+def die(n, s=150, color=None):
+    sq = RoundedRectangle(width=px(s), height=px(s), corner_radius=px(s) * 0.0028 * 18, fill_color=WHITE_, fill_opacity=1, stroke_color=INK, stroke_width=4)
+    P = {1: [(0, 0)], 2: [(-1, 1), (1, -1)], 3: [(-1, 1), (0, 0), (1, -1)], 4: [(-1, 1), (1, 1), (-1, -1), (1, -1)],
+         5: [(-1, 1), (1, 1), (0, 0), (-1, -1), (1, -1)], 6: [(-1, 1), (1, 1), (-1, 0), (1, 0), (-1, -1), (1, -1)]}
+    d = px(s) * 0.27
+    pips = VGroup(*[Dot([x * d, y * d, 0], radius=px(s) * 0.085, color=color or INK) for x, y in P[n]])
+    return VGroup(sq, pips)
+
+
+class Dice(ShortReel):
+    EVENTS = "dice"; SERIES = "JEE in 20s · #7"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = VGroup(H("Two dice. Which total", 76, INK), H("comes up most?", 76, INK)).arrange(DOWN, buff=0.15); fitw(q, 880); cx(q, 300)
+        d1 = die(3).move_to([X(430), Y(560), 0]); d2 = die(5).move_to([X(650), Y(560), 0])
+        opts = self.options_row(["6", "7", "8", "12"], 760)
+        self.add(q, opts)
+        # ===== 0. dice tumble in on frame 0 =====
+        cc = self.comment_chip()
+        self.play(FadeIn(d1, shift=DOWN * 0.6), FadeIn(d2, shift=DOWN * 0.6), Rotate(d1, PI / 2), Rotate(d2, -PI / 2), run_time=0.8, rate_func=EXPO)
+        self.play(Transform(d1, die(6).move_to(d1)), Transform(d2, die(1).move_to(d2)), run_time=0.35)
+        self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        # ===== 1. 36 equally likely pairs: the grid =====
+        self.until(S[1])
+        N = 6; cs = px(100); x0, y0 = X(540) - 3 * cs + cs / 2, Y(1010) + 3 * cs - cs / 2
+        cells, nums = VGroup(), VGroup()
+        for i in range(N):
+            for j in range(N):
+                c_ = Square(side_length=cs, stroke_color=RULE, stroke_width=2, fill_color=WHITE_, fill_opacity=1).move_to([x0 + j * cs, y0 - i * cs, 0])
+                cells.add(c_); nums.add(B(str(i + j + 2), 34, INK, SEMIBOLD).move_to(c_))
+        hdr_r = VGroup(*[die(j + 1, 64).move_to([x0 + j * cs, y0 + cs * 0.95, 0]) for j in range(N)])
+        hdr_c = VGroup(*[die(i + 1, 64).move_to([x0 - cs * 0.95, y0 - i * cs, 0]) for i in range(N)])
+        self.ev("tick"); self.play(FadeOut(VGroup(q, opts, d1, d2), shift=UP * 0.2), FadeIn(hdr_r), FadeIn(hdr_c), LaggedStart(*[FadeIn(c) for c in cells], lag_ratio=0.01), run_time=0.6)
+        n36 = VGroup(H("36", 120, OR), B("equally likely pairs", 40, INK, SEMIBOLD)).arrange(RIGHT, buff=0.3, aligned_edge=DOWN); cx(n36, 420)
+        self.until(wt(1, 2, 0.1)); self.ev("tick"); self.play(FadeIn(n36, shift=UP * 0.2), FadeIn(nums), run_time=0.4)
+        # ===== 2. colour by total; the sevens are the whole diagonal =====
+        self.until(S[2])
+        shade = [interpolate_color(ManimColor(WHITE_), ManimColor(OR), 0.12 + 0.13 * (6 - abs(i + j + 2 - 7))) for i in range(N) for j in range(N)]
+        self.play(*[c.animate.set_fill(sh) for c, sh in zip(cells, shade)], run_time=0.5)
+        diag = [i * N + (5 - i) for i in range(N)]
+        self.until(wt(2, 7, 0.1)); self.ev("tick")
+        self.play(*[cells[k].animate.set_fill(OR, 1) for k in diag], *[nums[k].animate.set_color(WHITE_) for k in diag], run_time=0.4)
+        # ===== 3. six ways to make 7; only five for 6 or 8 (bar chart replaces the 36 line) =====
+        self.until(S[3])
+        cnt = [6 - abs(s - 7) for s in range(2, 13)]; bw = px(64)
+        bars = VGroup(*[Rectangle(width=bw * 0.82, height=px(30) * c, stroke_width=0, fill_color=(OR if s == 7 else GREY_P), fill_opacity=(1 if s == 7 else 0.45)) for s, c in zip(range(2, 13), cnt)])
+        for k, b in enumerate(bars): b.move_to([X(540) + (k - 5) * bw, Y(560) - b.height / 2 * 0 + 0, 0]).align_to([0, Y(560), 0], DOWN)
+        bl = VGroup(*[B(str(s), 26, GREY_P).next_to(b, DOWN, buff=0.08) for s, b in zip(range(2, 13), bars)])
+        six = B("6 ways", 34, OR, SEMIBOLD).next_to(bars[5], UP, buff=0.1)
+        self.ev("tick"); self.play(FadeOut(n36, shift=UP * 0.2), LaggedStart(*[GrowFromEdge(b, DOWN) for b in bars], lag_ratio=0.04), FadeIn(bl), FadeIn(six), run_time=0.6)
+        five = VGroup(B("5", 30, INK, SEMIBOLD).next_to(bars[4], UP, buff=0.08), B("5", 30, INK, SEMIBOLD).next_to(bars[6], UP, buff=0.08))
+        self.until(wt(3, 6, 0.1)); self.play(FadeIn(five), bars[4].animate.set_fill(opacity=0.8), bars[6].animate.set_fill(opacity=0.8), run_time=0.3)
+        # ===== 4. 7, with a 1 in 6 chance. Follow for #8 =====
+        self.until(S[4])
+        ans = VGroup(H("7", 150, OR), M(r"P=\tfrac{6}{36}=\tfrac16", 64)).arrange(RIGHT, buff=0.45)
+        ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 470)
+        self.ev("stamp"); self.play(FadeOut(VGroup(bars, bl, six, five)), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for #8"); fw[0].set_fill(OR)
+        self.until(C[4] + 1.1); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(a_, cells, nums, hdr_r, hdr_c, fw, lb)
+
+
+class RectCircle(ShortReel):
+    EVENTS = "rect"; SERIES = "JEE in 20s · #8"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = VGroup(H("Biggest rectangle", 80, INK), H("inside a circle?", 80, INK)).arrange(DOWN, buff=0.15); fitw(q, 880); cx(q, 300)
+        opts = self.options_row(["r^2", "2r^2", "3r^2", r"\pi r^2"], 480)
+        R = px(330); ctr = np.array([X(540), Y(1000), 0])
+        circ = Circle(radius=R, color=INK, stroke_width=5).move_to(ctr)
+        th = ValueTracker(20 * DEGREES)
+        def corner(): return ctr + R * np.array([np.cos(th.get_value()), np.sin(th.get_value()), 0])
+        rect = always_redraw(lambda: Rectangle(width=2 * R * np.cos(th.get_value()), height=2 * R * np.sin(th.get_value()), stroke_color=OR, stroke_width=7, fill_color=OR, fill_opacity=0.15).move_to(ctr))
+        self.add(q, opts, circ, rect)
+        # ===== 0. rectangle already reshaping on frame 0 =====
+        cc = self.comment_chip("Comment A, B, C or D")
+        self.play(th.animate.set_value(68 * DEGREES), run_time=1.3, rate_func=rate_functions.ease_in_out_sine)
+        self.ev("tick"); self.play(th.animate.set_value(30 * DEGREES), FadeIn(cc, shift=UP * 0.15), run_time=0.6)
+        # ===== 1. one corner on the circle at angle theta =====
+        self.until(S[1])
+        dot = always_redraw(lambda: Dot(corner(), radius=px(14), color=INK).set_z_index(5))
+        rad = always_redraw(lambda: Line(ctr, corner(), color=INK, stroke_width=4))
+        arc = always_redraw(lambda: Arc(radius=px(70), start_angle=0, angle=th.get_value(), arc_center=ctr, color=INK, stroke_width=4))
+        thl = always_redraw(lambda: M(r"\theta", 46).move_to(ctr + px(110) * np.array([np.cos(th.get_value() / 2), np.sin(th.get_value() / 2), 0])))
+        rl = M(r"r", 46).move_to(ctr + R * 0.55 * np.array([np.cos(30 * DEGREES), np.sin(30 * DEGREES), 0]) + UP * 0.35)
+        self.ev("tick"); self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), FadeIn(dot), Create(rad), FadeIn(rl), run_time=0.4)
+        self.until(wt(1, 6, 0.1)); self.play(Create(arc), FadeIn(thl), run_time=0.35)
+        # ===== 2. width 2r cos theta, height 2r sin theta =====
+        self.until(S[2])
+        wl = always_redraw(lambda: M(r"2r\cos\theta", 50, OR).next_to(ctr + DOWN * R * np.sin(th.get_value()), DOWN, buff=0.15))
+        hl = always_redraw(lambda: M(r"2r\sin\theta", 50, OR).rotate(PI / 2).next_to(ctr + LEFT * R * np.cos(th.get_value()), RIGHT, buff=0.15))
+        self.ev("tick"); self.play(FadeIn(wl), run_time=0.3)
+        self.until(wt(2, 4, 0.1)); self.ev("tick"); self.play(FadeIn(hl), FadeOut(rl), run_time=0.3)
+        # ===== 3. area = 2r^2 sin 2theta, peaks at 45 degrees =====
+        self.until(S[3])
+        af = M(r"A=2r^2\sin2\theta", 84); cx(af, 400)
+        rd = always_redraw(lambda: VGroup(M(r"\sin2\theta=", 56, GREY_P), DecimalNumber(np.sin(2 * th.get_value()), num_decimal_places=2, font_size=64, color=OR)).arrange(RIGHT, buff=0.2).move_to([X(540), Y(530), 0]))
+        self.ev("tick"); self.play(FadeIn(af, shift=UP * 0.2), FadeIn(rd), run_time=0.35)
+        self.play(th.animate.set_value(66 * DEGREES), run_time=0.9, rate_func=rate_functions.ease_in_out_sine)
+        self.until(wt(3, 8, 0.15)); self.play(th.animate.set_value(45 * DEGREES), run_time=0.6, rate_func=EXPO)
+        thl.clear_updaters(); d45 = B("45°", 40, OR, SEMIBOLD).move_to(thl).shift(RIGHT * 0.15)
+        self.ev("tick"); self.play(ReplacementTransform(thl, d45), run_time=0.3)
+        # ===== 4. A square, area 2r^2. Follow for #9 =====
+        self.until(S[4])
+        ans = VGroup(B("Square", 56, INK, SEMIBOLD), M(r"A=2r^2", 96, OR)).arrange(RIGHT, buff=0.45)
+        ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 470)
+        self.ev("stamp"); self.play(FadeOut(VGroup(af, rd)), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for #9"); fw[0].set_fill(OR)
+        self.until(C[4] + 1.2); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        for m in (rect, dot, rad, arc, wl, hl): m.clear_updaters()
+        self.brand_flash(a_, circ, rect, dot, rad, arc, wl, hl, d45, fw, lb)
