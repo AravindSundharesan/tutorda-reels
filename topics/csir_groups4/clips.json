@@ -1,0 +1,27 @@
+[
+[
+"A",
+"ELEVENLABS",
+"How many groups of order 4 | are there?"
+],
+[
+"B",
+"ELEVENLABS",
+"Either some element has order 4. | Then it's cyclic: Z4."
+],
+[
+"B",
+"ELEVENLABS",
+"Or every element squares to the identity. | That's the Klein four-group."
+],
+[
+"C",
+"ELEVENLABS",
+"Check both tables. | Each one is symmetric across the diagonal."
+],
+[
+"D",
+"ELEVENLABS",
+"2 groups, and both are abelian. | Follow for more."
+]
+]

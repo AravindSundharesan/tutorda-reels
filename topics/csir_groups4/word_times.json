@@ -1,0 +1,112 @@
+[
+ {
+  "words": [
+   "How",
+   "many",
+   "groups",
+   "of",
+   "order",
+   "4",
+   "are",
+   "there?"
+  ],
+  "starts": [
+   0.05,
+   0.13,
+   0.37,
+   0.65,
+   0.77,
+   1.09,
+   1.33,
+   1.53
+  ],
+  "match": 1.0,
+  "clip_start": 0.05
+ },
+ {
+  "words": [
+   "Either",
+   "some",
+   "element",
+   "has",
+   "order",
+   "4.",
+   "Then",
+   "it's",
+   "cyclic:",
+   "Z4."
+  ],
+  "starts": [
+   1.963,
+   2.243,
+   2.483,
+   2.883,
+   3.083,
+   3.483,
+   3.683,
+   3.923,
+   4.215,
+   4.683
+  ],
+  "match": 0.8,
+  "clip_start": 1.963
+ },
+ {
+  "words": [
+   "Or",
+   "every",
+   "element",
+   "squares",
+   "to",
+   "the",
+   "identity.",
+   "That's",
+   "the",
+   "Klein",
+   "four-group."
+  ],
+  "starts": [
+   5.538,
+   5.588,
+   6.018,
+   6.418,
+   6.778,
+   6.898,
+   7.018,
+   7.538,
+   7.858,
+   8.055,
+   8.35
+  ],
+  "match": 0.73,
+  "clip_start": 5.538
+ },
+ {
+  "words": [
+   "Check",
+   "both",
+   "tables.",
+   "Each",
+   "one",
+   "is",
+   "symmetric",
+   "across",
+   "the",
+   "diagonal."
+  ],
+  "starts": [
+   9.12,
+   9.4,
+   9.68,
+   10.2,
+   10.44,
+   10.64,
+   10.8,
+   11.32,
+   11.68,
+   11.8
+  ],
+  "match": 1.0,
+  "clip_start": 9.12
+ }
+]

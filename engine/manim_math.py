@@ -636,7 +636,7 @@ class Motiv(MathReel):
 # ---------------- Short format (from the sin x insights, 20 Oct): moving hook on frame 0, on-screen comment prompt,
 # series tag, answer near the end, 1 s brand flash instead of an end card. ----------------
 class ShortReel(MathReel):
-    SERIES = "JEE in 20s · #5"
+    SERIES = "JEE in 20s"
     def options_row(self, vals, y, tex=True):
         row = VGroup()
         for L, v in zip("ABCD", vals):
@@ -657,7 +657,7 @@ class ShortReel(MathReel):
 
 
 class Cubic(ShortReel):
-    EVENTS = "cubic"; SERIES = "JEE in 20s · #5"
+    EVENTS = "cubic"; SERIES = "JEE in 20s"
     def construct(self):
         self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
         RD = "#E5484D"; f = lambda x: x ** 3 - 3 * x + 1
@@ -710,13 +710,13 @@ class Cubic(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 430)
         self.ev("stamp"); self.play(FadeOut(VGroup(d1, d1b)), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for #6"); fw[0].set_fill(OR)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
         self.until(wt(5, 3, 0.1) if len(K.WT) > 5 else C[5] + 1.0); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(eq, a_, ax, g, v1, v2, xl, p1, l1, a1, p2, l2, a2, *rd, fw, lb)
 
 
 class Area(ShortReel):
-    EVENTS = "area"; SERIES = "JEE in 20s · #6"
+    EVENTS = "area"; SERIES = "JEE in 20s"
     def construct(self):
         self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
         self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
@@ -764,7 +764,7 @@ class Area(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)).move_to(ax.c2p(0.32, 0.72))
         self.ev("stamp"); self.play(FadeOut(cc), FadeOut(gl), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for #7"); fw[0].set_fill(OR)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
         self.until(C[4] + 1.1); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(it, a_, ax, sq, g, area, gl, tl, fw, lb)
 
@@ -779,7 +779,7 @@ def die(n, s=150, color=None):
 
 
 class Dice(ShortReel):
-    EVENTS = "dice"; SERIES = "JEE in 20s · #7"
+    EVENTS = "dice"; SERIES = "JEE in 20s"
     def construct(self):
         self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
         self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
@@ -828,13 +828,13 @@ class Dice(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 470)
         self.ev("stamp"); self.play(FadeOut(VGroup(bars, bl, six, five)), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for #8"); fw[0].set_fill(OR)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
         self.until(C[4] + 1.1); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(a_, cells, nums, hdr_r, hdr_c, fw, lb)
 
 
 class RectCircle(ShortReel):
-    EVENTS = "rect"; SERIES = "JEE in 20s · #8"
+    EVENTS = "rect"; SERIES = "JEE in 20s"
     def construct(self):
         self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
         self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
@@ -880,7 +880,137 @@ class RectCircle(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 470)
         self.ev("stamp"); self.play(FadeOut(VGroup(af, rd)), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for #9"); fw[0].set_fill(OR)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
         self.until(C[4] + 1.2); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         for m in (rect, dot, rad, arc, wl, hl): m.clear_updaters()
         self.brand_flash(a_, circ, rect, dot, rad, arc, wl, hl, d45, fw, lb)
+
+
+class SinLim(ShortReel):
+    EVENTS = "sinlim"; SERIES = "JEE in 20s"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = M(r"\lim_{x\to0}\frac{\sin x}{x}=\,?", 120); cx(q, 330)
+        opts = self.options_row(["0", "1", r"\infty", r"\text{none}"], 540)
+        R = px(380); O = np.array([X(380), Y(1180), 0])
+        xv = ValueTracker(0.95)
+        def P(): return O + R * np.array([np.cos(xv.get_value()), np.sin(xv.get_value()), 0])
+        def Tp(): return O + R * np.array([1, np.tan(xv.get_value()), 0])
+        A = O + R * RIGHT
+        arc = Arc(radius=R, start_angle=-0.1, angle=PI / 2 + 0.1, arc_center=O, color=INK, stroke_width=4)
+        axl = VGroup(Line(O + LEFT * px(40), O + RIGHT * (R + px(60)), color=INK, stroke_width=3), Line(O + DOWN * px(40), O + UP * (R + px(60)), color=INK, stroke_width=3))
+        rad = always_redraw(lambda: Line(O, Tp(), color=INK, stroke_width=4))
+        self.add(q, opts, axl, arc, rad)
+        cc = self.comment_chip()
+        # ===== 0. the angle is already moving on frame 0 =====
+        self.play(xv.animate.set_value(0.7), run_time=1.3, rate_func=rate_functions.ease_in_out_sine)
+        self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        # ===== 1. three areas, one inside the next =====
+        self.until(S[1])
+        t1 = always_redraw(lambda: Polygon(O, A, P(), stroke_color="#14B8A6", stroke_width=4, fill_color="#14B8A6", fill_opacity=0.45))
+        sec = always_redraw(lambda: Sector(radius=R, angle=xv.get_value(), arc_center=O, stroke_color=OR, stroke_width=4, fill_color=OR, fill_opacity=0.25))
+        t2 = always_redraw(lambda: Polygon(O, A, Tp(), stroke_color=GREY_P, stroke_width=3, fill_color=GREY_P, fill_opacity=0.12))
+        tline = always_redraw(lambda: Line(A, Tp(), color=GREY_P, stroke_width=4))
+        self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), run_time=0.3)
+        self.until(wt(1, 4, 0.1)); self.ev("tick"); self.play(LaggedStart(FadeIn(t2), FadeIn(sec), FadeIn(t1), lag_ratio=0.35), Create(tline), run_time=0.7)
+        # ===== 2. sin x, then x, then tan x =====
+        self.until(S[2])
+        iq = [M(r"\sin x", 96, "#14B8A6"), M(r"<", 96, GREY_P), M(r"x", 96, OR), M(r"<", 96, GREY_P), M(r"\tan x", 96, GREY_P)]
+        row = VGroup(*iq).arrange(RIGHT, buff=0.3); cx(row, 420)
+        for k, (w_, items) in enumerate(((0, [0]), (3, [1, 2]), (5, [3, 4]))):
+            self.until(wt(2, w_, 0.08)); self.ev("tick")
+            self.play(*[FadeIn(iq[i], shift=UP * 0.15) for i in items], Indicate([t1, sec, t2][k], color=None, scale_factor=1.03), run_time=0.3)
+        # ===== 3. cos x < sin x / x < 1 =====
+        self.until(S[3])
+        sq = M(r"\cos x<\frac{\sin x}{x}<1", 100); cx(sq, 420)
+        self.ev("tick"); self.play(ReplacementTransform(row, sq), run_time=0.5, rate_func=EXPO)
+        # ===== 4. as x shrinks, cos x climbs to 1 (live values) =====
+        self.until(S[4])
+        live = always_redraw(lambda: VGroup(
+            VGroup(M(r"\cos x", 44, GREY_P), DecimalNumber(np.cos(xv.get_value()), num_decimal_places=3, font_size=60, color=INK)).arrange(DOWN, buff=0.12),
+            VGroup(M(r"\tfrac{\sin x}{x}", 44, GREY_P), DecimalNumber(np.sin(xv.get_value()) / xv.get_value(), num_decimal_places=3, font_size=60, color=OR)).arrange(DOWN, buff=0.12),
+            VGroup(M(r"1", 44, GREY_P), DecimalNumber(1.0, num_decimal_places=3, font_size=60, color=INK)).arrange(DOWN, buff=0.12)).arrange(RIGHT, buff=0.9).move_to([X(540), Y(680), 0]))
+        self.add(live); self.ev("tick")
+        self.play(xv.animate.set_value(0.05), run_time=max(0.8, C[5] - self.Tm() - 0.15), rate_func=rate_functions.ease_in_out_sine)
+        # ===== 5. squeezed to 1. Follow for #10 =====
+        self.until(S[5])
+        ans = M(r"\lim_{x\to0}\frac{\sin x}{x}=1", 96)
+        ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 420)
+        self.ev("stamp"); self.play(FadeOut(sq), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        self.until(C[5] + 0.9); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        for m in (rad, t1, sec, t2, tline, live): m.clear_updaters()
+        self.brand_flash(a_, axl, arc, rad, t1, sec, t2, tline, live, fw, lb)
+
+
+class Groups4(ShortReel):
+    EVENTS = "groups"; SERIES = "CSIR-NET in 20s"
+    def table(self, labels, prod, title, cs=px(84)):
+        col = {"e": WHITE_, "a": "#FFC83D", "b": "#2DD4BF", "c": "#E5484D", "0": WHITE_, "1": "#FFC83D", "2": "#2DD4BF", "3": "#E5484D"}
+        g = VGroup(); cells = {}
+        for i in range(5):
+            for j in range(5):
+                if i == 0 and j == 0: t = M(r"\ast", 40, GREY_P); c_ = Square(side_length=cs, stroke_width=0)
+                elif i == 0 or j == 0:
+                    s = labels[(j if i == 0 else i) - 1]; t = M(s, 44, INK); c_ = Square(side_length=cs, stroke_width=0)
+                else:
+                    s = prod(labels[i - 1], labels[j - 1]); t = M(s, 44, INK)
+                    c_ = Square(side_length=cs, stroke_color=RULE, stroke_width=2, fill_color=col[s], fill_opacity=0.6 if s not in ("e", "0") else 1)
+                    cells[(i, j)] = c_
+                c_.move_to([j * cs, -i * cs, 0]); t.move_to(c_); g.add(VGroup(c_, t))
+        tt = M(title, 64, INK).next_to(g, UP, buff=0.3)
+        return VGroup(tt, g), cells
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = VGroup(H("How many groups", 84, INK), H("of order 4?", 84, INK)).arrange(DOWN, buff=0.15); fitw(q, 880); cx(q, 320)
+        opts = self.options_row(["1", "2", "3", "4"], 560)
+        toks = VGroup(*[VGroup(Circle(radius=px(56), stroke_width=0, fill_color=c, fill_opacity=0.8 if c != WHITE_ else 1).set_stroke(RULE, 3), M(s, 60, INK))
+                        for s, c in (("e", WHITE_), ("a", "#FFC83D"), ("b", "#2DD4BF"), ("c", "#E5484D"))]).arrange(RIGHT, buff=px(60)); cx(toks, 950)
+        self.add(q, opts)
+        cc = self.comment_chip()
+        # ===== 0. four elements drop in on frame 0 =====
+        self.play(LaggedStart(*[FadeIn(t, shift=DOWN * 0.8) for t in toks], lag_ratio=0.2), run_time=0.9, rate_func=EXPO)
+        self.play(Rotate(toks, PI / 8, about_point=toks.get_center()), run_time=0.3); self.play(Rotate(toks, -PI / 8, about_point=toks.get_center()), run_time=0.25)
+        self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        # ===== 1. an element of order 4 -> cyclic Z4 =====
+        self.until(S[1])
+        Z, zc = self.table(["0", "1", "2", "3"], lambda a, b: str((int(a) + int(b)) % 4), r"\mathbb{Z}_4")
+        Z.scale_to_fit_width(px(430)).move_to([X(310), Y(930), 0])
+        self.ev("tick"); self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), FadeOut(toks), run_time=0.3)
+        self.until(wt(1, 8, 0.1)); self.ev("tick"); self.play(FadeIn(Z, shift=UP * 0.2), run_time=0.45, rate_func=EXPO)
+        # ===== 2. every element squares to e -> Klein V4 =====
+        self.until(S[2])
+        def kp(a, b):
+            if a == "e": return b
+            if b == "e": return a
+            if a == b: return "e"
+            return ({"a", "b", "c"} - {a, b}).pop()
+        V, vc = self.table(["e", "a", "b", "c"], kp, r"V_4")
+        V.scale_to_fit_width(px(430)).move_to([X(770), Y(930), 0])
+        self.ev("tick"); self.play(FadeIn(V, shift=UP * 0.2), run_time=0.45, rate_func=EXPO)
+        dg = VGroup(*[SurroundingRectangle(vc[(k, k)], color=INK, buff=0, stroke_width=6) for k in range(1, 5)])
+        self.until(wt(2, 3, 0.1)); self.play(Create(dg), run_time=0.35)
+        kl = B("a² = b² = c² = e", 36, INK, SEMIBOLD).next_to(V, DOWN, buff=0.3)
+        self.play(FadeIn(kl), run_time=0.25)
+        # ===== 3. both tables symmetric across the diagonal =====
+        self.until(S[3])
+        self.play(FadeOut(dg), run_time=0.2)
+        ds = VGroup(*[DashedLine(t[(1, 1)].get_corner(UL), t[(4, 4)].get_corner(DR), color=INK, stroke_width=5) for t in (zc, vc)])
+        self.until(wt(3, 6, 0.15)); self.ev("tick"); self.play(Create(ds), run_time=0.4)
+        pairs = [(1, 2), (1, 3), (2, 4)]
+        self.play(*[Indicate(t[(i, j)], color=OR, scale_factor=1.12) for t in (zc, vc) for i, j in pairs],
+                  *[Indicate(t[(j, i)], color=OR, scale_factor=1.12) for t in (zc, vc) for i, j in pairs], run_time=0.6)
+        sym = B("ab = ba everywhere", 38, OR, SEMIBOLD); cx(sym, 1290)
+        self.play(FadeIn(sym), run_time=0.25)
+        # ===== 4. two groups, both abelian. Follow for #2 =====
+        self.until(S[4])
+        ans = VGroup(H("2", 140, OR), B("groups · both abelian", 48, INK, SEMIBOLD)).arrange(RIGHT, buff=0.35, aligned_edge=DOWN)
+        ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 440)
+        self.ev("stamp"); self.play(FadeOut(cc), FadeOut(sym), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        self.until(C[4] + 1.2); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(a_, Z, V, kl, ds, fw, lb)
