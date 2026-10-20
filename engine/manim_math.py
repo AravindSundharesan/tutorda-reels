@@ -641,7 +641,9 @@ class ShortReel(MathReel):
         row = VGroup()
         for L, v in zip("ABCD", vals):
             c_ = RoundedRectangle(width=px(200), height=px(104), corner_radius=0.14, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
-            t_ = VGroup(B(L, 34, OR, SEMIBOLD), (M(v, 52) if tex else H(v, 48, INK))).arrange(RIGHT, buff=0.25).move_to(c_)
+            t_ = VGroup(B(L, 34, OR, SEMIBOLD), (M(v, 52) if tex else H(v, 40, INK))).arrange(RIGHT, buff=0.22)
+            if t_.width > px(184): t_.scale_to_fit_width(px(184))
+            t_.move_to(c_)
             row.add(VGroup(c_, t_))
         row.arrange(RIGHT, buff=px(22)); cx(row, y); return row
     def comment_chip(self, s="Comment A, B, C or D"):
@@ -1014,3 +1016,192 @@ class Groups4(ShortReel):
         fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
         self.until(C[4] + 1.2); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(a_, Z, V, kl, ds, fw, lb)
+
+
+class OddSq(ShortReel):
+    EVENTS = "oddsq"; SERIES = "JEE in 20s"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = M(r"1+3+5+\cdots+(2n-1)=\,?", 92); fitw(q, 900); cx(q, 330)
+        opts = self.options_row(["n", "2n", "n^2", "n(n+1)"], 520)
+        self.add(q, opts)
+        cols = [OR, "#14B8A6", "#FFC83D", "#E5484D"]
+        toks = VGroup(*[M(s, 120, c) for s, c in zip(["1", "3", "5", "7"], cols)]).arrange(RIGHT, buff=0.9); cx(toks, 900)
+        cc = self.comment_chip()
+        # ===== 0. 1, 3, 5, 7 pop in on the words =====
+        for k in range(4):
+            self.until(wt(0, 4 + k, 0.05) if k else 0.0); self.play(FadeIn(toks[k], scale=0.6), run_time=0.22)
+        self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        # ===== 1-2. L shapes build squares =====
+        cs = px(96); g0 = np.array([X(100), Y(1240), 0])
+        def cell(i, j, c):
+            sq_ = Square(side_length=cs * 0.9, stroke_width=0, fill_color=c, fill_opacity=0.9).move_to(g0 + np.array([(j + 0.5) * cs, (i + 0.5) * cs, 0]))
+            return sq_
+        Ls = [VGroup(*[cell(i, j, cols[k]) for i in range(k + 1) for j in range(k + 1) if max(i, j) == k]) for k in range(4)]
+        side = lambda k: B(f"{k + 1}×{k + 1}", 44, INK, SEMIBOLD).move_to(g0 + np.array([(k + 1) * cs / 2, (k + 1) * cs + px(55), 0]))
+        sums = [M(s, 60) for s in (r"1=1^2", r"1+3=2^2", r"1+3+5=3^2", r"1+3+5+7=4^2")]
+        for k, sm in enumerate(sums): sm.scale(0.84).move_to([0, Y(820 + k * 120), 0]).align_to([X(510), 0, 0], LEFT)
+        self.until(S[1]); self.ev("tick")
+        self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), toks.animate.scale(0.5).move_to([X(540), Y(380), 0]), run_time=0.3)
+        lab = side(0)
+        self.until(wt(1, 0, 0.05)); self.play(GrowFromCenter(Ls[0]), FadeIn(sums[0]), run_time=0.3)
+        self.until(wt(1, 2, 0.05)); self.ev("tick"); self.play(LaggedStart(*[GrowFromCenter(c) for c in Ls[1]], lag_ratio=0.15), run_time=0.4)
+        lab2 = side(1)
+        self.until(wt(1, 8, 0.1)); self.play(FadeIn(lab2), FadeIn(sums[1]), run_time=0.3); cur = lab2
+        for k, w_ in ((2, 0), (3, 5)):
+            self.until(wt(2, w_, 0.05)); self.ev("tick")
+            nl = side(k)
+            self.play(LaggedStart(*[GrowFromCenter(c) for c in Ls[k]], lag_ratio=0.08), ReplacementTransform(cur, nl), FadeIn(sums[k]), run_time=0.5); cur = nl
+        # ===== 3. each odd number wraps one more L =====
+        self.until(S[3])
+        outl = VGroup(*[SurroundingRectangle(L, color=INK, buff=0.02, stroke_width=0) for L in Ls])
+        self.until(wt(3, 3, 0.1)); self.ev("tick")
+        self.play(*[Indicate(L, color=None, scale_factor=1.06) for L in Ls], run_time=0.7, lag_ratio=0.2)
+        # ===== 4. the first n odd numbers make n^2 =====
+        self.until(S[4])
+        ans = M(r"1+3+\cdots+(2n-1)=n^2", 84)
+        ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)); fitw(a_, 940); cx(a_, 470)
+        self.ev("stamp"); self.play(FadeOut(toks), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        self.until(C[4] + 1.6); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(a_, *Ls, cur, *sums, fw, lb)
+
+
+class Eigen(ShortReel):
+    EVENTS = "eigen"; SERIES = "CSIR-NET in 20s"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = VGroup(H("Which real vector stays on", 64, INK), H("its own line after a 90° turn?", 64, INK)).arrange(DOWN, buff=0.15); fitw(q, 900); cx(q, 300)
+        opts = self.options_row(["x-axis", "y = x", "every", "none"], 480, tex=False)
+        O = np.array([X(540), Y(1010), 0]); L = px(330)
+        axes = VGroup(Line(O + LEFT * px(400), O + RIGHT * px(400), color=RULE, stroke_width=3), Line(O + DOWN * px(400), O + UP * px(400), color=RULE, stroke_width=3))
+        ang = ValueTracker(20 * DEGREES)
+        def vec(a, c, w=8): return Arrow(O, O + L * np.array([np.cos(a), np.sin(a), 0]), buff=0, color=c, stroke_width=w, max_tip_length_to_length_ratio=0.12)
+        v = always_redraw(lambda: vec(ang.get_value(), INK))
+        rv = always_redraw(lambda: vec(ang.get_value() + PI / 2, OR))
+        line = always_redraw(lambda: DashedLine(O - px(420) * np.array([np.cos(ang.get_value()), np.sin(ang.get_value()), 0]), O + px(420) * np.array([np.cos(ang.get_value()), np.sin(ang.get_value()), 0]), color=GREY_P, stroke_width=3))
+        self.add(q, opts, axes, line, v, rv)
+        cc = self.comment_chip()
+        # ===== 0. the vector and its 90 degree turn already moving =====
+        self.play(ang.animate.set_value(70 * DEGREES), run_time=1.4, rate_func=rate_functions.ease_in_out_sine)
+        self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        # ===== 1. any arrow turns off its own line =====
+        self.until(S[1])
+        lg = VGroup(VGroup(Line(ORIGIN, RIGHT * 0.6, color=INK, stroke_width=9), B("v", 42, INK, SEMIBOLD)).arrange(RIGHT, buff=0.18),
+                    VGroup(Line(ORIGIN, RIGHT * 0.6, color=OR, stroke_width=9), B("Av (turned 90°)", 42, OR, SEMIBOLD)).arrange(RIGHT, buff=0.18)).arrange(RIGHT, buff=0.7); cx(lg, 440)
+        self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), FadeIn(lg), run_time=0.3)
+        self.until(wt(1, 5, 0.05)); self.ev("tick")
+        self.play(ang.animate.set_value(200 * DEGREES), run_time=max(0.8, C[2] - self.Tm() - 0.2), rate_func=rate_functions.ease_in_out_sine)
+        # ===== 2. no real eigenvector =====
+        self.until(S[2])
+        nr = self.chip("no real eigenvector", size=44); cx(nr, 580)
+        self.until(wt(2, 3, 0.1)); self.ev("tick"); self.play(GrowFromCenter(nr), run_time=0.3)
+        # ===== 3. characteristic equation =====
+        self.until(S[3])
+        mat = M(r"A=\begin{pmatrix}0&-1\\1&0\end{pmatrix}", 72); cx(mat, 560)
+        ce = M(r"\det(A-\lambda I)=\lambda^2+1=0", 72); fitw(ce, 880); cx(ce, 740)
+        for m in (v, rv, line): m.clear_updaters()
+        self.play(FadeOut(VGroup(axes, line, v, rv, lg), shift=DOWN * 0.2), nr.animate.move_to([0, Y(1180), 0]), FadeIn(mat, shift=UP * 0.2), run_time=0.4, rate_func=EXPO)
+        self.until(wt(3, 4, 0.1)); self.ev("tick"); self.play(FadeIn(ce, shift=UP * 0.2), run_time=0.35)
+        # ===== 4. eigenvalues +-i =====
+        self.until(S[4])
+        ans = M(r"\lambda=\pm i", 130)
+        ap = RoundedRectangle(width=ans.width + px(100), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 940)
+        self.ev("stamp"); self.play(FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        self.until(C[4] + 1.0); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(a_, mat, ce, nr, fw, lb)
+
+
+class KingInt(ShortReel):
+    EVENTS = "kint"; SERIES = "JEE in 20s"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        I0 = M(r"\int_0^1 x(1-x)^{99}\,dx=\,?", 100); fitw(I0, 900); cx(I0, 340)
+        opts = self.options_row([r"\frac{1}{100}", r"\frac{1}{101}", r"\frac{1}{10100}", r"\frac{1}{9900}"], 560)
+        nl = NumberLine(x_range=[0, 1, 0.5], length=px(800), color=INK, stroke_width=4, include_tip=False); cx(nl, 980)
+        nlab = VGroup(M("0", 44).next_to(nl.n2p(0), DOWN, buff=0.2), M("1", 44).next_to(nl.n2p(1), DOWN, buff=0.2))
+        xv = ValueTracker(0.15)
+        d1 = always_redraw(lambda: Dot(nl.n2p(xv.get_value()), radius=px(16), color=INK))
+        d2 = always_redraw(lambda: Dot(nl.n2p(1 - xv.get_value()), radius=px(16), color=OR))
+        l1 = always_redraw(lambda: M("x", 48).next_to(nl.n2p(xv.get_value()), UP, buff=0.25))
+        l2 = always_redraw(lambda: M("1-x", 48, OR).next_to(nl.n2p(1 - xv.get_value()), UP, buff=0.25))
+        self.add(I0, opts, nl, nlab, d1, d2, l1, l2)
+        cc = self.comment_chip()
+        # ===== 0. x and 1-x already mirroring on frame 0 =====
+        self.play(xv.animate.set_value(0.38), run_time=1.2, rate_func=rate_functions.ease_in_out_sine)
+        self.ev("tick"); self.play(xv.animate.set_value(0.2), FadeIn(cc, shift=UP * 0.15), run_time=0.6)
+        # ===== 1. swap x for 1-x: same value =====
+        self.until(S[1])
+        pr = M(r"\int_0^1 f(x)\,dx=\int_0^1 f(1-x)\,dx", 70); fitw(pr, 880); cx(pr, 700)
+        self.play(FadeOut(opts, shift=UP * 0.2), I0.animate.scale(0.7).move_to([0, Y(320), 0]), run_time=0.3)
+        self.until(wt(1, 0, 0.05)); self.ev("tick"); self.play(xv.animate.set_value(0.8), FadeIn(pr, shift=UP * 0.2), run_time=0.6)
+        # ===== 2-4. the three lines =====
+        for m in (d1, d2, l1, l2): m.clear_updaters()
+        steps = [M(r"=\int_0^1 (1-x)\,x^{99}\,dx", 84), M(r"=\int_0^1 \left(x^{99}-x^{100}\right)dx", 84), M(r"=\tfrac{1}{100}-\tfrac{1}{101}", 96)]
+        for k, st in enumerate(steps): st.scale(0.78); fitw(st, 880); cx(st, 520 + k * 225)
+        self.until(S[2]); self.ev("tick")
+        self.play(FadeOut(VGroup(nl, nlab, d1, d2, l1, l2, pr), shift=DOWN * 0.2), FadeIn(steps[0], shift=UP * 0.2), run_time=0.4, rate_func=EXPO)
+        self.until(S[3]); self.ev("tick"); self.play(FadeIn(steps[1], shift=UP * 0.2), run_time=0.35, rate_func=EXPO)
+        self.until(S[4]); self.ev("tick"); self.play(FadeIn(steps[2], shift=UP * 0.2), run_time=0.35, rate_func=EXPO)
+        # ===== 5. 1/10100 =====
+        self.until(S[5])
+        ans = M(r"=\frac{1}{10100}", 130)
+        ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)).scale(0.66); cx(a_, 1190)
+        self.ev("stamp"); self.play(FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        self.until(C[5] + 0.9); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(a_, I0, *steps, fw, lb)
+
+
+class Monty(ShortReel):
+    EVENTS = "monty"; SERIES = "JEE in 20s"
+    def door(self, n):
+        r = RoundedRectangle(width=px(230), height=px(340), corner_radius=0.12, fill_color=WHITE_, fill_opacity=1, stroke_color=INK, stroke_width=5)
+        knob = Dot(r.get_right() + LEFT * px(36), radius=px(9), color=INK)
+        return VGroup(r, knob, H(str(n), 90, INK).move_to(r))
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = VGroup(H("3 doors, 1 car.", 84, INK), H("Should you switch?", 84, INK)).arrange(DOWN, buff=0.15); fitw(q, 880); cx(q, 300)
+        opts = self.options_row(["Stay", "Switch", "50-50", "Depends"], 500, tex=False)
+        doors = VGroup(*[self.door(n) for n in (1, 2, 3)]).arrange(RIGHT, buff=px(60)); cx(doors, 860)
+        self.add(q, opts)
+        cc = self.comment_chip()
+        # ===== 0. doors drop in, you pick door 1 =====
+        self.play(LaggedStart(*[FadeIn(d, shift=DOWN * 0.6) for d in doors], lag_ratio=0.2), run_time=0.8, rate_func=EXPO)
+        yp = B("your pick", 34, OR, SEMIBOLD).next_to(doors[0], UP, buff=0.2)
+        self.play(doors[0][0].animate.set_stroke(OR, width=8), FadeIn(yp), run_time=0.3)
+        self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        # ===== 1. first pick right 1 time in 3 =====
+        self.until(S[1])
+        self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), run_time=0.3)
+        p1 = M(r"\tfrac13", 110, OR).next_to(doors[0], DOWN, buff=0.35)
+        self.until(wt(1, 5, 0.1)); self.ev("tick"); self.play(FadeIn(p1, shift=UP * 0.15), run_time=0.3)
+        # ===== 2. 2 times in 3 behind the other two =====
+        self.until(S[2])
+        br = Brace(VGroup(doors[1], doors[2]), DOWN, color=INK)
+        p2 = M(r"\tfrac23", 110, INK).next_to(br, DOWN, buff=0.15)
+        self.until(wt(2, 1, 0.1)); self.ev("tick"); self.play(GrowFromCenter(br), FadeIn(p2), run_time=0.35)
+        # ===== 3. host opens a goat door; the 2/3 moves to the last door =====
+        self.until(S[3])
+        op = RoundedRectangle(width=px(230), height=px(340), corner_radius=0.12, fill_color=GREY_P, fill_opacity=0.25, stroke_color=GREY_P, stroke_width=4).move_to(doors[2])
+        goat = B("goat", 44, GREY_P, SEMIBOLD).move_to(doors[2])
+        self.until(wt(3, 2, 0.1)); self.ev("tick"); self.play(ReplacementTransform(doors[2], VGroup(op, goat)), run_time=0.35)
+        p2b = M(r"\tfrac23", 110, OR).next_to(doors[1], DOWN, buff=0.35)
+        self.until(wt(3, 10, 0.1)); self.ev("tick"); self.play(FadeOut(br), ReplacementTransform(p2, p2b), doors[1][0].animate.set_stroke(OR, width=8), run_time=0.5, rate_func=EXPO)
+        # ===== 4. switch: win 2/3 =====
+        self.until(S[4])
+        ans = VGroup(B("Switch", 64, INK, SEMIBOLD), M(r"\Rightarrow\ \text{win }\tfrac23", 84, OR)).arrange(RIGHT, buff=0.4)
+        ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 470)
+        self.ev("stamp"); self.play(FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        self.until(C[4] + 1.6); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(a_, doors[0], doors[1], op, goat, yp, p1, p2b, fw, lb)

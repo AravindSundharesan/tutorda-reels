@@ -117,7 +117,13 @@
   "aud": "JEE Main",
   "reel": "1 + 3 + 5 + … + (2n − 1)",
   "hook": "Odd numbers build squares",
-  "answer": "n²"
+  "answer": "n²",
+  "scene": "OddSq",
+  "topic": "math_oddsq",
+  "file": "TutorDA_JEE_odd_numbers_squares.mp4",
+  "first_comment": "Which letter did you pick? 👇",
+  "caption": "JEE Main sequences: what is 1 + 3 + 5 + … + (2n − 1)? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe picture proof:\n1️⃣ Start with 1 dot\n2️⃣ Add 3 → a 2×2 square. Add 5 → 3×3. Add 7 → 4×4\n3️⃣ Each odd number wraps one more L around the square\n\n✅ Answer: n²\n\nSum of the first n odd numbers = n². No formula needed, just the picture.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #Sequences #APSeries #MathsTricks #Class11Maths #MathReels #TutorDA",
+  "status": "rendered"
  },
  {
   "date": "2026-10-25",
@@ -125,7 +131,13 @@
   "aud": "CSIR-NET",
   "reel": "Eigenvalues of a 90° rotation matrix",
   "hook": "A matrix with no real eigenvector",
-  "answer": "±i"
+  "answer": "±i",
+  "scene": "Eigen",
+  "topic": "csir_eigen",
+  "file": "TutorDA_CSIR_rotation_eigenvalues.mp4",
+  "first_comment": "Did you pick \"none\" straight away? 👇",
+  "caption": "CSIR-NET Mathematics: which real vector stays on its own line after a 90° rotation? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe 20-second argument:\n1️⃣ A 90° rotation turns every nonzero vector off its own line\n2️⃣ So there is no real eigenvector\n3️⃣ A = [[0, −1], [1, 0]]: det(A − λI) = λ² + 1 = 0\n\n✅ Answer: none. The eigenvalues are ±i\n\nGeometry first, then the characteristic polynomial confirms it.\n\n📌 Save this for revision · Share it with your CSIR-NET study group\n👉 Follow @tutorda_ for more CSIR-NET maths\n🎯 Practise CSIR-NET Maths with TutorDA: tutorda.org\n\n#CSIRNET #CSIRNETMaths #NETJRF #LinearAlgebra #Eigenvalues #MScMaths #GATEMaths #IITJAM #MathReels #TutorDA",
+  "status": "rendered"
  },
  {
   "date": "2026-10-26",
@@ -133,7 +145,13 @@
   "aud": "JEE Main",
   "reel": "∫₀¹ x(1 − x)⁹⁹ dx",
   "hook": "Looks brutal, takes 3 lines",
-  "answer": "1/10100 (use a+b−x: ∫ (1−x)x⁹⁹ = 1/100 − 1/101)"
+  "answer": "1/10100 (use a+b−x: ∫ (1−x)x⁹⁹ = 1/100 − 1/101)",
+  "scene": "KingInt",
+  "topic": "math_kint",
+  "file": "TutorDA_JEE_integral_x_1minusx_99.mp4",
+  "first_comment": "Did you try expanding (1 − x)⁹⁹ first? 😅 👇",
+  "caption": "JEE Main definite integrals: ∫₀¹ x(1 − x)⁹⁹ dx = ? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe 3-line method:\n1️⃣ Swap x for 1 − x: the value doesn't change\n2️⃣ It becomes ∫₀¹ (1 − x) x⁹⁹ dx = ∫₀¹ (x⁹⁹ − x¹⁰⁰) dx\n3️⃣ = 1/100 − 1/101\n\n✅ Answer: 1/10100\n\nWhen a power looks brutal, move it onto x with the a + b − x property.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #DefiniteIntegrals #Integration #MathsTricks #Class12Maths #MathReels #TutorDA",
+  "status": "rendered"
  },
  {
   "date": "2026-10-26",
@@ -141,7 +159,13 @@
   "aud": "JEE Main",
   "reel": "Monty Hall problem",
   "hook": "Stay or switch?",
-  "answer": "Switching wins 2/3 of the time"
+  "answer": "Switching wins 2/3 of the time",
+  "scene": "Monty",
+  "topic": "math_monty",
+  "file": "TutorDA_JEE_monty_hall.mp4",
+  "first_comment": "Team stay or team switch? 👇",
+  "caption": "Probability puzzle: 3 doors, 1 car. You pick a door, the host opens a goat door. Should you switch? 🚪\nComment A, B, C or D before the reveal 👇\n\nThe 20-second reason:\n1️⃣ Your first pick is right 1 time in 3\n2️⃣ So 2 times in 3 the car is behind one of the other two doors\n3️⃣ The host opens a goat door, and that whole 2/3 moves to the last door\n\n✅ Answer: switch. You win 2/3 of the time\n\nThe Monty Hall problem: the best test of conditional probability intuition.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #Probability #MontyHall #ConditionalProbability #JEEPreparation #JEEAspirants #Class12Maths #MathsPuzzle #MathReels #TutorDA",
+  "status": "rendered"
  },
  {
   "date": "2026-10-27",

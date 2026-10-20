@@ -1,0 +1,32 @@
+[
+[
+"A",
+"ELEVENLABS",
+"Integral from 0 to 1 of x (1 − x)^99. | Looks brutal?"
+],
+[
+"B",
+"ELEVENLABS",
+"Swap x for 1 − x. | The value doesn't change."
+],
+[
+"B",
+"ELEVENLABS",
+"Now it's (1 − x) times x^99."
+],
+[
+"B",
+"ELEVENLABS",
+"That's x^99 minus x^100."
+],
+[
+"C",
+"ELEVENLABS",
+"1/100 minus 1/101."
+],
+[
+"D",
+"ELEVENLABS",
+"1/10100. | Follow for more."
+]
+]
