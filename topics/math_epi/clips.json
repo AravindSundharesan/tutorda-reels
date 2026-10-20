@@ -12,17 +12,17 @@
 [
 "B",
 "ELEVENLABS",
-"Take logs. Now compare π times log e | with e times log π."
+"Take ln. Now compare π times ln e | with e times ln π."
 ],
 [
 "B",
 "ELEVENLABS",
-"Divide both by π times e. | It becomes log x over x, at e and at π."
+"Divide both by π times e. | It becomes ln x over x, at e and at π."
 ],
 [
 "C",
 "ELEVENLABS",
-"Draw y = log x over x. | It peaks exactly at x = e."
+"Draw y = ln x over x. | It peaks exactly at x = e."
 ],
 [
 "C",

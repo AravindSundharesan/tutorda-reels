@@ -9,6 +9,7 @@ Metricool for 10:00 and 18:00 IST. Aro reviews the night before and can delete a
 - Diagram-led format (see `engine/manim_math.py`: SinX, EPi, ModCos, Pow): hook visible on frame 0, "comment before the
   reveal" bubble, 3-step method with graphs, ONE spring moment on the answer, end card. 26–30 s. Captions in the footer band.
 - Instagram via Metricool brand 7477800 (tutorda_), type REEL, showReelOnFeed true, isAiGenerated true, autoPublish true.
+- Spoken words and captions must match the on-screen notation exactly (screen shows ln → say "L N", caption "ln"; never "log").
 - Never post a reel that failed QA; leave the slot empty and say so in the run summary.
 
 ## Steps
