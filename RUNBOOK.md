@@ -10,8 +10,11 @@ Metricool for 10:00 and 18:00 IST. Aro reviews the night before and can delete a
   to Niki with word stress: mark 2–3 key words per line with *asterisks*, then
   `F0=196 RANGE=1.25 FLAT=0.6 EMPH_ST=2.5 EMPH_DB=3 python3 tools/kokoro_niki2.py af_sarah topics/<t>/vo_full.wav "line 1" …`
   (then convert to mp3 and continue with cuts/split/align as usual). Say in the run summary that the Sarah voice was used.
-- Diagram-led format (see `engine/manim_math.py`: SinX, EPi, ModCos, Pow): hook visible on frame 0, "comment before the
-  reveal" bubble, 3-step method with graphs, ONE spring moment on the answer, end card. 26–30 s. Captions in the footer band.
+- Short format (from the sin x insights, 20 Oct; use `ShortReel` in engine/manim_math.py, see Cubic and Area): 17–22 s.
+  Frame 0 already moving (graph drawing) with the question + A–D options on screen; spoken hook ≤ 2 s; options are NOT read.
+  No spoken "comment" line: an on-screen "Comment A, B, C or D" chip appears at ~1.5 s. Series tag "JEE in 20s · #N" in the header.
+  Answer lands in the last line, then "Follow for #N+1", then a ~1 s brand flash (`brand_flash`), no long end card.
+  Timing env: START=0.05 IN_GAP=0.12 BEAT_GAP=0.18 END_HOLD=0.9; split tempo 1.08, cap 0.16.
 - Instagram via Metricool brand 7477800 (tutorda_), type REEL, showReelOnFeed true, isAiGenerated true, autoPublish true.
 - Spoken words and captions must match the on-screen notation exactly (screen shows ln → say "L N", caption "ln"; never "log").
 - Never post a reel that failed QA; leave the slot empty and say so in the run summary.

@@ -9,7 +9,7 @@
   "scene": "ModCos",
   "topic": "math_modcos",
   "file": "TutorDA_JEE_modx_equals_cosx.mp4",
-  "status": "rendered",
+  "status": "scheduled",
   "caption": "JEE Main graph trick: how many solutions does |x| = cos x have? 🤔\nComment your answer BEFORE the reveal 👇\n\ncos x keeps waving forever, so it looks like a lot. The 20-second method:\n1️⃣ cos x is never above 1, so |x| = cos x needs −1 ≤ x ≤ 1\n2️⃣ on the right, y = x climbs from 0 while cos x falls from 1: one crossing\n3️⃣ both graphs are symmetric, so the left side gives one more\n\n✅ Answer: 2 real solutions (x ≈ ±0.739)\n\nBound it first, then count. It cracks most \"number of solutions\" questions in JEE Main.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for one JEE maths trick at a time\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #Trigonometry #GraphTricks #MathsTricks #Class11Maths #MathReels #TutorDA",
   "first_comment": "Did you say ∞ at first? Drop your first guess below 👇"
  },
@@ -23,7 +23,7 @@
   "scene": "Pow",
   "topic": "math_pow",
   "file": "TutorDA_JEE_2pow100_vs_3pow63.mp4",
-  "status": "rendered",
+  "status": "scheduled",
   "caption": "JEE Main challenge: which is bigger, 2¹⁰⁰ or 3⁶³? No calculator 🧠\nComment your pick before you scroll 👇\n\nThe 2-line method:\n1️⃣ Take log base 10: compare 100·log 2 with 63·log 3\n2️⃣ 100 × 0.3010 = 30.10 and 63 × 0.4771 = 30.06\n\n✅ Answer: 2¹⁰⁰ > 3⁶³\nBoth have 31 digits, which is why it feels so close.\n\nCompare the logs, not the numbers. It works for any \"which power is bigger\" question.\n\n📌 Save this for revision · Share it with a friend who loves maths\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #Logarithms #Exponents #MathsTricks #JEEPreparation #JEEAspirants #Class11Maths #MathReels #TutorDA",
   "first_comment": "Team 2¹⁰⁰ or team 3⁶³? 👇"
  },
@@ -33,7 +33,14 @@
   "aud": "JEE Main",
   "reel": "Real roots of x³ − 3x + 1 = 0",
   "hook": "Every cubic has one real root. How many here?",
-  "answer": "3 real roots (≈ −1.879, 0.347, 1.532)"
+  "answer": "3 real roots (≈ −1.879, 0.347, 1.532)",
+  "scene": "Cubic",
+  "topic": "math_cubic",
+  "file": "TutorDA_JEE_cubic_real_roots.mp4",
+  "status": "rendered",
+  "series": "#5",
+  "caption": "JEE Main: how many real roots does x³ − 3x + 1 = 0 have? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe 20-second method:\n1️⃣ Turning points: f′(x) = 3x² − 3 = 0 → x = ±1\n2️⃣ f(−1) = 3 (above the axis) and f(1) = −1 (below the axis)\n3️⃣ Up, down, up → the curve must cross the x-axis 3 times\n\n✅ Answer: 3 real roots (≈ −1.88, 0.35, 1.53)\n\nA maximum above the axis and a minimum below it always means three real roots.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for JEE in 20s · #6 tonight\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #Calculus #Polynomials #MathsTricks #Class12Maths #MathReels #TutorDA",
+  "first_comment": "Which letter did you pick? 👇"
  },
  {
   "date": "2026-10-22",
@@ -41,7 +48,14 @@
   "aud": "JEE Main",
   "reel": "Area under y = x² from 0 to 1",
   "hook": "Rectangles that turn into a fraction",
-  "answer": "1/3"
+  "answer": "1/3",
+  "scene": "Area",
+  "topic": "math_area",
+  "file": "TutorDA_JEE_area_under_x2.mp4",
+  "status": "rendered",
+  "series": "#6",
+  "caption": "JEE Main: what fraction of the square is under y = x²? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe rectangle method:\n1️⃣ 4 rectangles → 0.22\n2️⃣ 10 rectangles → 0.285, 100 rectangles → 0.328\n3️⃣ They close in on ∫₀¹ x² dx = 1/3\n\n✅ Answer: 1/3, not 1/2\n\nThat's what a definite integral really is: the limit of rectangle sums.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for JEE in 20s · #7 tomorrow\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #Integration #DefiniteIntegrals #Calculus #Class12Maths #MathReels #TutorDA",
+  "first_comment": "Half or a third? What was your first guess? 👇"
  },
  {
   "date": "2026-10-23",

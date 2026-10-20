@@ -631,3 +631,139 @@ class Motiv(MathReel):
         self.until(S[6])
         self.to(INK, ax2, t2, ln2, d2, ring, rl, tr, trl, lb); self.remove(self.hdr_d)
         self.end_card(6, "Keep showing up.")
+
+
+# ---------------- Short format (from the sin x insights, 20 Oct): moving hook on frame 0, on-screen comment prompt,
+# series tag, answer near the end, 1 s brand flash instead of an end card. ----------------
+class ShortReel(MathReel):
+    SERIES = "JEE in 20s · #5"
+    def options_row(self, vals, y, tex=True):
+        row = VGroup()
+        for L, v in zip("ABCD", vals):
+            c_ = RoundedRectangle(width=px(200), height=px(104), corner_radius=0.14, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+            t_ = VGroup(B(L, 34, OR, SEMIBOLD), (M(v, 52) if tex else H(v, 48, INK))).arrange(RIGHT, buff=0.25).move_to(c_)
+            row.add(VGroup(c_, t_))
+        row.arrange(RIGHT, buff=px(22)); cx(row, y); return row
+    def comment_chip(self, s="Comment A, B, C or D"):
+        g = VGroup(RoundedRectangle(width=px(560), height=px(76), corner_radius=0.18, fill_color=INK, fill_opacity=1, stroke_width=0))
+        g.add(B(s, 32, WHITE_, SEMIBOLD).move_to(g[0])); cx(g, 1410); return g
+    def brand_flash(self, *gone):
+        C = K.C
+        self.until(K.DUR - 0.95); self.to(INK, *gone); self.remove(self.hdr_d)
+        wm = wordmark(px(640), dark=True).move_to([0, Y(820), 0]); url = H("tutorda.org", 84, OR).move_to([0, Y(1000), 0])
+        self.ev("wordmark"); self.play(FadeIn(wm, shift=UP * 0.2), FadeIn(url, shift=UP * 0.2), run_time=0.2, rate_func=EXPO)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class Cubic(ShortReel):
+    EVENTS = "cubic"; SERIES = "JEE in 20s · #5"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        RD = "#E5484D"; f = lambda x: x ** 3 - 3 * x + 1
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = at(H("How many real roots?", 88, INK), 290); fitw(q, 900)
+        eq = M(r"x^3-3x+1=0", 120); cx(eq, 430)
+        opts = self.options_row(["1", "2", "3", "0"], 575)
+        ax = Axes(x_range=[-2.5, 2.5, 1], y_range=[-4, 5, 1], x_length=px(880), y_length=px(640), tips=False, axis_config={"color": INK, "stroke_width": 3})
+        ax.move_to([X(540), Y(1010), 0])
+        g = ax.plot(f, x_range=[-2.2, 2.05], color=OR, stroke_width=8)
+        self.add(q, eq, opts, ax)
+        # ===== 0. curve is already drawing on frame 0 =====
+        cc = self.comment_chip()
+        self.play(Create(g), run_time=1.6, rate_func=rate_functions.ease_in_out_sine)
+        self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        # ===== 1. turning points: f'(x) = 3x^2 - 3 = 0 at x = +-1 =====
+        self.until(S[1])
+        d1 = M(r"f'(x)=3x^2-3=0", 84); cx(d1, 430)
+        self.ev("tick"); self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), eq.animate.scale(0.6).move_to([0, Y(300), 0]), run_time=0.35, rate_func=EXPO)
+        self.until(wt(1, 4, 0.1)); self.play(FadeIn(d1, shift=UP * 0.2), run_time=0.3, rate_func=EXPO)
+        v1 = DashedLine(ax.c2p(-1, -4), ax.c2p(-1, 5), color=GREY_P, stroke_width=3); v2 = DashedLine(ax.c2p(1, -4), ax.c2p(1, 5), color=GREY_P, stroke_width=3)
+        xl = VGroup()
+        d1b = M(r"x=\pm1", 84, OR); cx(d1b, 545)
+        self.until(wt(1, 10, 0.1)); self.ev("tick"); self.play(Create(v1), Create(v2), FadeIn(d1b, shift=UP * 0.15), run_time=0.4)
+        # ===== 2. f(-1) = 3: above the axis =====
+        self.until(S[2])
+        p1 = Dot(ax.c2p(-1, 3), radius=px(16), color=INK).set_z_index(5)
+        l1 = M(r"f(-1)=3", 52).next_to(p1, UP, buff=0.2)
+        self.until(wt(2, 4, 0.1)); self.ev("tick"); self.play(GrowFromCenter(p1), FadeIn(l1, shift=DOWN * 0.1), run_time=0.3)
+        a1 = B("above", 34, INK, SEMIBOLD).next_to(p1, LEFT, buff=0.3)
+        self.until(wt(2, 5, 0.1)); self.play(FadeIn(a1), run_time=0.25)
+        # ===== 3. f(1) = -1: below the axis =====
+        self.until(S[3])
+        p2 = Dot(ax.c2p(1, -1), radius=px(16), color=RD).set_z_index(5)
+        l2 = M(r"f(1)=-1", 48, RD).move_to(ax.c2p(1.7, -2.6))
+        self.until(wt(3, 4, 0.1)); self.ev("tick"); self.play(GrowFromCenter(p2), FadeIn(l2, shift=UP * 0.1), run_time=0.3)
+        a2 = B("below", 34, RD, SEMIBOLD).next_to(l2, DOWN, buff=0.15)
+        self.until(wt(3, 5, 0.1)); self.play(FadeIn(a2), run_time=0.25)
+        # ===== 4. up, down, up: three crossings =====
+        self.until(S[4])
+        segs = [ax.plot(f, x_range=r, color=INK, stroke_width=12) for r in ((-2.2, -1), (-1, 1), (1, 2.05))]
+        for k in range(3):
+            self.until(wt(4, k, 0.05)); self.play(ShowPassingFlash(segs[k].copy().set_color(INK), time_width=0.6), run_time=0.35)
+        roots = [-1.8793852415718, 0.3472963553338, 1.5320888862380]
+        rd = [Dot(ax.c2p(r, 0), radius=px(14), color=OR).set_z_index(6) for r in roots]
+        self.until(wt(4, 6, 0.1)); self.ev("tick"); self.play(FadeOut(cc), LaggedStart(*[GrowFromCenter(d) for d in rd], lag_ratio=0.3), run_time=0.6)
+        # ===== 5. Three real roots. Follow for #6 =====
+        self.until(S[5])
+        ans = VGroup(H("3", 150, OR), B("real roots", 48, INK, SEMIBOLD)).arrange(RIGHT, buff=0.3, aligned_edge=DOWN)
+        ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 430)
+        self.ev("stamp"); self.play(FadeOut(VGroup(d1, d1b)), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for #6"); fw[0].set_fill(OR)
+        self.until(wt(5, 3, 0.1) if len(K.WT) > 5 else C[5] + 1.0); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(eq, a_, ax, g, v1, v2, xl, p1, l1, a1, p2, l2, a2, *rd, fw, lb)
+
+
+class Area(ShortReel):
+    EVENTS = "area"; SERIES = "JEE in 20s · #6"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = VGroup(H("What fraction of the square", 64, INK), H("is under the curve?", 64, INK)).arrange(DOWN, buff=0.18); fitw(q, 880); cx(q, 300)
+        opts = self.options_row([r"\frac12", r"\frac13", r"\frac14", r"\frac23"], 480)
+        ax = Axes(x_range=[0, 1, 0.25], y_range=[0, 1, 0.25], x_length=px(700), y_length=px(700), tips=False, axis_config={"color": INK, "stroke_width": 3})
+        ax.move_to([X(540), Y(990), 0])
+        sq = Rectangle(width=px(700), height=px(700), stroke_color=INK, stroke_width=3).move_to(ax.c2p(0.5, 0.5))
+        g = ax.plot(lambda x: x * x, x_range=[0, 1], color=OR, stroke_width=8)
+        area = ax.get_area(g, x_range=[0, 1], color=OR, opacity=0.28)
+        tl = VGroup(B("0", 30, GREY_P).next_to(ax.c2p(0, 0), DL, buff=0.1), B("1", 30, GREY_P).next_to(ax.c2p(1, 0), DOWN, buff=0.12), B("1", 30, GREY_P).next_to(ax.c2p(0, 1), LEFT, buff=0.12))
+        gl = M(r"y=x^2", 52, OR).move_to(ax.c2p(0.62, 0.72))
+        self.add(q, opts, ax, sq, tl)
+        # ===== 0. curve + shaded area appear on frame 0 =====
+        cc = self.comment_chip()
+        self.play(Create(g), FadeIn(gl), run_time=1.1, rate_func=rate_functions.ease_in_out_sine)
+        self.play(FadeIn(area), run_time=0.4); self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        rd = M(r"", 10)
+        def rects(n):
+            return VGroup(*[Rectangle(width=ax.c2p(1 / n, 0)[0] - ax.c2p(0, 0)[0], height=max(1e-4, ax.c2p(0, (k / n) ** 2)[1] - ax.c2p(0, 0)[1]),
+                    stroke_color=INK, stroke_width=(3 if n <= 10 else 0.6), fill_color=INK, fill_opacity=0.18).move_to(ax.c2p((k + 0.5) / n, (k / n) ** 2 / 2))
+                    for k in range(n)])
+        def readout(n, v):
+            return VGroup(M(r"n=" + str(n), 64), M(r"\Rightarrow", 64, GREY_P), M(v, 80, OR)).arrange(RIGHT, buff=0.35)
+        # ===== 1. Fill it with rectangles. 4 rectangles give 0.22. =====
+        self.until(S[1])
+        self.ev("tick"); self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), area.animate.set_opacity(0.08), run_time=0.3)
+        r4 = rects(4); o4 = readout(4, "0.22"); cx(o4, 400)
+        self.until(wt(1, 4, 0.1)); self.ev("tick"); self.play(LaggedStart(*[FadeIn(r, shift=UP * 0.1) for r in r4], lag_ratio=0.15), FadeIn(o4), run_time=0.5)
+        # ===== 2. 10 give 0.285. 100 give 0.328. =====
+        self.until(S[2])
+        r10 = rects(10); o10 = readout(10, "0.285"); cx(o10, 400)
+        self.ev("tick"); self.play(ReplacementTransform(r4, r10), ReplacementTransform(o4, o10), run_time=0.4)
+        r100 = rects(100); o100 = readout(100, "0.328"); cx(o100, 400)
+        self.until(wt(2, 3, 0.1)); self.ev("tick"); self.play(ReplacementTransform(r10, r100), ReplacementTransform(o10, o100), run_time=0.4)
+        # ===== 3. They close in on 1/3: the integral of x^2 from 0 to 1 =====
+        self.until(S[3])
+        o3 = M(r"\to\ \tfrac13", 96, OR).next_to(o100, DOWN, buff=0.25)
+        self.ev("tick"); self.play(FadeIn(o3, shift=LEFT * 0.2), run_time=0.3)
+        it = M(r"\int_0^1 x^2\,dx=\tfrac13", 92); cx(it, 400)
+        self.until(wt(3, 7, 0.1)); self.play(FadeOut(VGroup(o100, o3), shift=UP * 0.2), FadeOut(r100), area.animate.set_opacity(0.32), FadeIn(it, shift=UP * 0.2), run_time=0.45, rate_func=EXPO)
+        # ===== 4. 1/3, not a half. Follow for #7 =====
+        self.until(S[4])
+        ans = VGroup(M(r"\tfrac13", 150, OR), B("not ½", 48, GREY_P, SEMIBOLD)).arrange(RIGHT, buff=0.4)
+        ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)).move_to(ax.c2p(0.32, 0.72))
+        self.ev("stamp"); self.play(FadeOut(cc), FadeOut(gl), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for #7"); fw[0].set_fill(OR)
+        self.until(C[4] + 1.1); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(it, a_, ax, sq, g, area, gl, tl, fw, lb)
