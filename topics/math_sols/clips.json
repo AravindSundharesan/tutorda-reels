@@ -1,0 +1,42 @@
+[
+[
+"A",
+"ELEVENLABS",
+"How many real solutions does | x² = 2^x have?"
+],
+[
+"A",
+"ELEVENLABS",
+"Comment your answer. | Most people say two."
+],
+[
+"B",
+"ELEVENLABS",
+"Two works: 4 = 4. | Four works too: 16 = 16."
+],
+[
+"C",
+"ELEVENLABS",
+"But draw both graphs."
+],
+[
+"C",
+"ELEVENLABS",
+"For negative x, the parabola climbs | while 2^x drops towards zero. | So they must cross."
+],
+[
+"D",
+"ELEVENLABS",
+"Near −0.77, there's a third solution."
+],
+[
+"E",
+"ELEVENLABS",
+"The answer is three."
+],
+[
+"F",
+"ELEVENLABS",
+"In JEE, draw it before you trust it. Follow TutorDA for more."
+]
+]

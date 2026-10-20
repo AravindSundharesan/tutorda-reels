@@ -1,0 +1,37 @@
+[
+[
+"A",
+"ELEVENLABS",
+"How many solutions does | mod x = cos x have?"
+],
+[
+"A",
+"ELEVENLABS",
+"Comment your guess. | Cos waves forever, so it looks like a lot."
+],
+[
+"B",
+"ELEVENLABS",
+"But cos never goes above 1. | So the V only matters from −1 to 1."
+],
+[
+"C",
+"ELEVENLABS",
+"On the right, the line climbs from 0, | and cos falls from 1. They cross once."
+],
+[
+"C",
+"ELEVENLABS",
+"The left side is a mirror image. | One more."
+],
+[
+"D",
+"ELEVENLABS",
+"Two solutions, | near x = ±0.739."
+],
+[
+"E",
+"ELEVENLABS",
+"Bound it first, then count. Follow TutorDA for more."
+]
+]

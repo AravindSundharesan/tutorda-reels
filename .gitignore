@@ -1,0 +1,7 @@
+models/
+out/
+chk/
+__pycache__/
+engine/media/
+*.pyc
+topics/*/vo_full.*

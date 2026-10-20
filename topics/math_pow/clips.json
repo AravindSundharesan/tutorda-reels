@@ -1,0 +1,37 @@
+[
+[
+"A",
+"ELEVENLABS",
+"Which is bigger: | 2^100 or 3^63?"
+],
+[
+"A",
+"ELEVENLABS",
+"Comment your pick. | No calculator."
+],
+[
+"B",
+"ELEVENLABS",
+"Take log base 10. | log 2 = 0.3010, log 3 = 0.4771."
+],
+[
+"C",
+"ELEVENLABS",
+"So the logs are 30.10 | and 30.06."
+],
+[
+"D",
+"ELEVENLABS",
+"Bigger log, bigger number. | 2^100 wins."
+],
+[
+"D",
+"ELEVENLABS",
+"Both have 31 digits. | That's why it feels so close."
+],
+[
+"E",
+"ELEVENLABS",
+"Follow TutorDA for more JEE tricks."
+]
+]

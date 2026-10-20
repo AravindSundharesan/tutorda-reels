@@ -1,0 +1,42 @@
+[
+[
+"A",
+"ELEVENLABS",
+"Which is bigger: | e^π or π^e?"
+],
+[
+"A",
+"ELEVENLABS",
+"Comment before you scroll. | No calculator."
+],
+[
+"B",
+"ELEVENLABS",
+"Take logs. Now compare π times log e | with e times log π."
+],
+[
+"B",
+"ELEVENLABS",
+"Divide both by π times e. | It becomes log x over x, at e and at π."
+],
+[
+"C",
+"ELEVENLABS",
+"Draw y = log x over x. | It peaks exactly at x = e."
+],
+[
+"C",
+"ELEVENLABS",
+"π is past the peak, | so its value is lower."
+],
+[
+"D",
+"ELEVENLABS",
+"So e^π is bigger."
+],
+[
+"E",
+"ELEVENLABS",
+"Follow TutorDA for more JEE tricks."
+]
+]

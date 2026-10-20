@@ -1,0 +1,126 @@
+[
+ {
+  "date": "2026-10-21",
+  "time": "10:00",
+  "aud": "JEE Main",
+  "reel": "Solutions of |x| = cos x",
+  "hook": "How many times does a V meet a wave?",
+  "answer": "2 solutions, x ≈ ±0.739",
+  "scene": "ModCos",
+  "topic": "math_modcos",
+  "file": "TutorDA_JEE_modx_equals_cosx.mp4",
+  "status": "rendered",
+  "caption": "JEE Main graph trick: how many solutions does |x| = cos x have? 🤔\nComment your answer BEFORE the reveal 👇\n\ncos x keeps waving forever, so it looks like a lot. The 20-second method:\n1️⃣ cos x is never above 1, so |x| = cos x needs −1 ≤ x ≤ 1\n2️⃣ on the right, y = x climbs from 0 while cos x falls from 1: one crossing\n3️⃣ both graphs are symmetric, so the left side gives one more\n\n✅ Answer: 2 real solutions (x ≈ ±0.739)\n\nBound it first, then count. It cracks most \"number of solutions\" questions in JEE Main.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for one JEE maths trick at a time\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #Trigonometry #GraphTricks #MathsTricks #Class11Maths #MathReels #TutorDA",
+  "first_comment": "Did you say ∞ at first? Drop your first guess below 👇"
+ },
+ {
+  "date": "2026-10-21",
+  "time": "18:00",
+  "aud": "JEE Main",
+  "reel": "2^100 vs 3^63",
+  "hook": "Which is bigger? No calculator",
+  "answer": "2^100 (log10: 30.10 vs 30.06)",
+  "scene": "Pow",
+  "topic": "math_pow",
+  "file": "TutorDA_JEE_2pow100_vs_3pow63.mp4",
+  "status": "rendered",
+  "caption": "JEE Main challenge: which is bigger, 2¹⁰⁰ or 3⁶³? No calculator 🧠\nComment your pick before you scroll 👇\n\nThe 2-line method:\n1️⃣ Take log base 10: compare 100·log 2 with 63·log 3\n2️⃣ 100 × 0.3010 = 30.10 and 63 × 0.4771 = 30.06\n\n✅ Answer: 2¹⁰⁰ > 3⁶³\nBoth have 31 digits, which is why it feels so close.\n\nCompare the logs, not the numbers. It works for any \"which power is bigger\" question.\n\n📌 Save this for revision · Share it with a friend who loves maths\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #Logarithms #Exponents #MathsTricks #JEEPreparation #JEEAspirants #Class11Maths #MathReels #TutorDA",
+  "first_comment": "Team 2¹⁰⁰ or team 3⁶³? 👇"
+ },
+ {
+  "date": "2026-10-22",
+  "time": "10:00",
+  "aud": "JEE Main",
+  "reel": "Real roots of x³ − 3x + 1 = 0",
+  "hook": "Every cubic has one real root. How many here?",
+  "answer": "3 real roots (≈ −1.879, 0.347, 1.532)"
+ },
+ {
+  "date": "2026-10-22",
+  "time": "18:00",
+  "aud": "JEE Main",
+  "reel": "Area under y = x² from 0 to 1",
+  "hook": "Rectangles that turn into a fraction",
+  "answer": "1/3"
+ },
+ {
+  "date": "2026-10-23",
+  "time": "10:00",
+  "aud": "JEE Main",
+  "reel": "Two dice: the most likely sum",
+  "hook": "Which total shows up most?",
+  "answer": "7, probability 6/36 = 1/6"
+ },
+ {
+  "date": "2026-10-23",
+  "time": "18:00",
+  "aud": "JEE Main",
+  "reel": "Largest rectangle inside a circle of radius r",
+  "hook": "Which rectangle fits best?",
+  "answer": "A square, area 2r²"
+ },
+ {
+  "date": "2026-10-24",
+  "time": "10:00",
+  "aud": "JEE Main",
+  "reel": "lim (sin x)/x as x → 0",
+  "hook": "Why is it exactly 1?",
+  "answer": "1, by the unit-circle squeeze sin x < x < tan x"
+ },
+ {
+  "date": "2026-10-24",
+  "time": "18:00",
+  "aud": "CSIR-NET",
+  "reel": "Groups of order 4",
+  "hook": "Only two groups of order 4 exist",
+  "answer": "Both (Z4 and the Klein four-group) are abelian"
+ },
+ {
+  "date": "2026-10-25",
+  "time": "10:00",
+  "aud": "JEE Main",
+  "reel": "1 + 3 + 5 + … + (2n − 1)",
+  "hook": "Odd numbers build squares",
+  "answer": "n²"
+ },
+ {
+  "date": "2026-10-25",
+  "time": "18:00",
+  "aud": "CSIR-NET",
+  "reel": "Eigenvalues of a 90° rotation matrix",
+  "hook": "A matrix with no real eigenvector",
+  "answer": "±i"
+ },
+ {
+  "date": "2026-10-26",
+  "time": "10:00",
+  "aud": "JEE Main",
+  "reel": "∫₀¹ x(1 − x)⁹⁹ dx",
+  "hook": "Looks brutal, takes 3 lines",
+  "answer": "1/10100 (use a+b−x: ∫ (1−x)x⁹⁹ = 1/100 − 1/101)"
+ },
+ {
+  "date": "2026-10-26",
+  "time": "18:00",
+  "aud": "JEE Main",
+  "reel": "Monty Hall problem",
+  "hook": "Stay or switch?",
+  "answer": "Switching wins 2/3 of the time"
+ },
+ {
+  "date": "2026-10-27",
+  "time": "10:00",
+  "aud": "CSIR-NET",
+  "reel": "Does Σ 1/n converge?",
+  "hook": "The terms shrink to 0, the sum still explodes",
+  "answer": "Diverges (group terms: each block ≥ 1/2)"
+ },
+ {
+  "date": "2026-10-27",
+  "time": "18:00",
+  "aud": "All",
+  "reel": "Week recap quiz",
+  "hook": "3 questions, 30 seconds. Can you get 3/3?",
+  "answer": "Answers from this week's reels"
+ }
+]

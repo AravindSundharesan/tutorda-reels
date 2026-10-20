@@ -1,0 +1,8 @@
+Sound effects from kmilo93sd/agent-video-editor (library/LICENSES.md), all CC0 1.0, no attribution required.
+Kenney (kenney.nl): tap, pop-2, error-2 (interface-sounds); sweep-long (casino-audio); stinger-hit-short (music-jingles)
+OpenGameArt: success-bell ("Correct Bell", Fupi)
+Generated for that library: whoosh-short, success-chime, check-mark
+
+Images (assets/img):
+- pizza.png: generated 2026-10-17 with Qwen-Image (Qwen/Qwen-Image, Apache-2.0) via the Hugging Face Space mcp-tools/Qwen-Image-Fast,
+  prompt "top-down flat vector pepperoni pizza on white", seed 7; background removed locally. No third-party artwork.
