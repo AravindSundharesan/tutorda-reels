@@ -37,7 +37,7 @@
   "scene": "Cubic",
   "topic": "math_cubic",
   "file": "TutorDA_JEE_cubic_real_roots.mp4",
-  "status": "rendered",
+  "status": "scheduled",
   "caption": "JEE Main: how many real roots does x³ − 3x + 1 = 0 have? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe 20-second method:\n1️⃣ Turning points: f′(x) = 3x² − 3 = 0 → x = ±1\n2️⃣ f(−1) = 3 (above the axis) and f(1) = −1 (below the axis)\n3️⃣ Up, down, up → the curve must cross the x-axis 3 times\n\n✅ Answer: 3 real roots (≈ −1.88, 0.35, 1.53)\n\nA maximum above the axis and a minimum below it always means three real roots.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #Calculus #Polynomials #MathsTricks #Class12Maths #MathReels #TutorDA",
   "first_comment": "Which letter did you pick? 👇"
  },
@@ -51,7 +51,7 @@
   "scene": "Area",
   "topic": "math_area",
   "file": "TutorDA_JEE_area_under_x2.mp4",
-  "status": "rendered",
+  "status": "scheduled",
   "caption": "JEE Main: what fraction of the square is under y = x²? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe rectangle method:\n1️⃣ 4 rectangles → 0.22\n2️⃣ 10 rectangles → 0.285, 100 rectangles → 0.328\n3️⃣ They close in on ∫₀¹ x² dx = 1/3\n\n✅ Answer: 1/3, not 1/2\n\nThat's what a definite integral really is: the limit of rectangle sums.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #Integration #DefiniteIntegrals #Calculus #Class12Maths #MathReels #TutorDA",
   "first_comment": "Half or a third? What was your first guess? 👇"
  },
@@ -65,7 +65,7 @@
   "scene": "Dice",
   "topic": "math_dice",
   "file": "TutorDA_JEE_two_dice_sum.mp4",
-  "status": "rendered",
+  "status": "scheduled",
   "caption": "JEE Main probability: roll two dice. Which total comes up most? 🎲\nComment A, B, C or D before the reveal 👇\n\nThe 20-second method:\n1️⃣ Two dice make 36 equally likely pairs\n2️⃣ Colour each pair by its total: the 7s fill the whole diagonal\n3️⃣ 6 ways to make 7, only 5 for 6 or 8\n\n✅ Answer: 7, with probability 6/36 = 1/6\n\nDraw the 6×6 grid first and most two-dice questions solve themselves.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #Probability #MathsTricks #Class11Maths #Class12Maths #MathReels #TutorDA",
   "first_comment": "Did you guess 7 or 12? 👇"
  },
@@ -79,7 +79,7 @@
   "scene": "RectCircle",
   "topic": "math_rect",
   "file": "TutorDA_JEE_rectangle_in_circle.mp4",
-  "status": "rendered",
+  "status": "scheduled",
   "caption": "JEE Main maxima: what's the biggest rectangle that fits inside a circle of radius r? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe 20-second method:\n1️⃣ Put a corner on the circle at angle θ\n2️⃣ Width = 2r cos θ, height = 2r sin θ\n3️⃣ Area = 4r² sin θ cos θ = 2r² sin 2θ, which peaks at θ = 45°\n\n✅ Answer: a square, with area 2r²\n\nTurn the shape into one angle, then maximise one trig function.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #MaximaMinima #Trigonometry #Calculus #Class12Maths #MathReels #TutorDA",
   "first_comment": "Square or long rectangle? What did you guess? 👇"
  },
@@ -93,7 +93,7 @@
   "scene": "SinLim",
   "topic": "math_sinlim",
   "file": "TutorDA_JEE_limit_sinx_over_x.mp4",
-  "status": "rendered",
+  "status": "scheduled",
   "caption": "JEE Main limits: what does sin x / x approach as x → 0? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe 20-second proof:\n1️⃣ On the unit circle, three areas sit one inside the next: triangle, sector, triangle\n2️⃣ That gives sin x < x < tan x\n3️⃣ Divide by sin x: cos x < sin x / x < 1, and cos x → 1\n\n✅ Answer: 1 (squeezed between cos x and 1)\n\nThis is the limit every trig-limit question in JEE is built on.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #Limits #Calculus #Trigonometry #Class11Maths #MathReels #TutorDA",
   "first_comment": "Did you say 0 or 1 at first? 👇"
  },
@@ -107,7 +107,7 @@
   "scene": "Groups4",
   "topic": "csir_groups4",
   "file": "TutorDA_CSIR_groups_of_order_4.mp4",
-  "status": "rendered",
+  "status": "scheduled",
   "caption": "CSIR-NET Mathematics: how many groups of order 4 are there? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe 20-second argument:\n1️⃣ If some element has order 4, the group is cyclic: ℤ₄\n2️⃣ If not, every element squares to the identity: the Klein four-group V₄\n3️⃣ Both Cayley tables are symmetric across the diagonal, so ab = ba\n\n✅ Answer: 2 groups (up to isomorphism), and both are abelian\n\nA quick check worth knowing for Part B and C: every group of order p² is abelian.\n\n📌 Save this for revision · Share it with your CSIR-NET study group\n👉 Follow @tutorda_ for more CSIR-NET maths\n🎯 Practise CSIR-NET Maths with TutorDA: tutorda.org\n\n#CSIRNET #CSIRNETMaths #NETJRF #CSIRNETMathematicalSciences #GroupTheory #AbstractAlgebra #MScMaths #GATEMaths #MathReels #TutorDA",
   "first_comment": "Could you name both groups before the reveal? 👇"
  },
@@ -123,7 +123,7 @@
   "file": "TutorDA_JEE_odd_numbers_squares.mp4",
   "first_comment": "Which letter did you pick? 👇",
   "caption": "JEE Main sequences: what is 1 + 3 + 5 + … + (2n − 1)? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe picture proof:\n1️⃣ Start with 1 dot\n2️⃣ Add 3 → a 2×2 square. Add 5 → 3×3. Add 7 → 4×4\n3️⃣ Each odd number wraps one more L around the square\n\n✅ Answer: n²\n\nSum of the first n odd numbers = n². No formula needed, just the picture.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #Sequences #APSeries #MathsTricks #Class11Maths #MathReels #TutorDA",
-  "status": "rendered"
+  "status": "scheduled"
  },
  {
   "date": "2026-10-25",
@@ -137,7 +137,7 @@
   "file": "TutorDA_CSIR_rotation_eigenvalues.mp4",
   "first_comment": "Did you pick \"none\" straight away? 👇",
   "caption": "CSIR-NET Mathematics: which real vector stays on its own line after a 90° rotation? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe 20-second argument:\n1️⃣ A 90° rotation turns every nonzero vector off its own line\n2️⃣ So there is no real eigenvector\n3️⃣ A = [[0, −1], [1, 0]]: det(A − λI) = λ² + 1 = 0\n\n✅ Answer: none. The eigenvalues are ±i\n\nGeometry first, then the characteristic polynomial confirms it.\n\n📌 Save this for revision · Share it with your CSIR-NET study group\n👉 Follow @tutorda_ for more CSIR-NET maths\n🎯 Practise CSIR-NET Maths with TutorDA: tutorda.org\n\n#CSIRNET #CSIRNETMaths #NETJRF #LinearAlgebra #Eigenvalues #MScMaths #GATEMaths #IITJAM #MathReels #TutorDA",
-  "status": "rendered"
+  "status": "scheduled"
  },
  {
   "date": "2026-10-26",
@@ -151,7 +151,7 @@
   "file": "TutorDA_JEE_integral_x_1minusx_99.mp4",
   "first_comment": "Did you try expanding (1 − x)⁹⁹ first? 😅 👇",
   "caption": "JEE Main definite integrals: ∫₀¹ x(1 − x)⁹⁹ dx = ? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe 3-line method:\n1️⃣ Swap x for 1 − x: the value doesn't change\n2️⃣ It becomes ∫₀¹ (1 − x) x⁹⁹ dx = ∫₀¹ (x⁹⁹ − x¹⁰⁰) dx\n3️⃣ = 1/100 − 1/101\n\n✅ Answer: 1/10100\n\nWhen a power looks brutal, move it onto x with the a + b − x property.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #DefiniteIntegrals #Integration #MathsTricks #Class12Maths #MathReels #TutorDA",
-  "status": "rendered"
+  "status": "scheduled"
  },
  {
   "date": "2026-10-26",
@@ -165,7 +165,7 @@
   "file": "TutorDA_JEE_monty_hall.mp4",
   "first_comment": "Team stay or team switch? 👇",
   "caption": "Probability puzzle: 3 doors, 1 car. You pick a door, the host opens a goat door. Should you switch? 🚪\nComment A, B, C or D before the reveal 👇\n\nThe 20-second reason:\n1️⃣ Your first pick is right 1 time in 3\n2️⃣ So 2 times in 3 the car is behind one of the other two doors\n3️⃣ The host opens a goat door, and that whole 2/3 moves to the last door\n\n✅ Answer: switch. You win 2/3 of the time\n\nThe Monty Hall problem: the best test of conditional probability intuition.\n\n📌 Save this for revision · Share it with your JEE study partner\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #Probability #MontyHall #ConditionalProbability #JEEPreparation #JEEAspirants #Class12Maths #MathsPuzzle #MathReels #TutorDA",
-  "status": "rendered"
+  "status": "scheduled"
  },
  {
   "date": "2026-10-27",
@@ -179,7 +179,7 @@
   "file": "TutorDA_CSIR_harmonic_series.mp4",
   "first_comment": "Did you think it settles at 2? 👇",
   "caption": "CSIR-NET Mathematics: does 1 + 1/2 + 1/3 + 1/4 + … ever stop growing? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe grouping proof:\n1️⃣ 1/3 + 1/4 > 1/2\n2️⃣ 1/5 + … + 1/8 > 1/2, and 1/9 + … + 1/16 > 1/2\n3️⃣ Every block of terms adds at least 1/2, forever\n\n✅ Answer: the harmonic series diverges\n\nThe terms go to 0, but that alone never proves convergence. (π²/6 is the sum of 1/n², not 1/n.)\n\n📌 Save this for revision · Share it with your CSIR-NET study group\n👉 Follow @tutorda_ for more CSIR-NET maths\n🎯 Practise CSIR-NET Maths with TutorDA: tutorda.org\n\n#CSIRNET #CSIRNETMaths #NETJRF #RealAnalysis #Series #MScMaths #GATEMaths #IITJAM #MathReels #TutorDA",
-  "status": "rendered"
+  "status": "scheduled"
  },
  {
   "date": "2026-10-27",
@@ -193,6 +193,6 @@
   "file": "TutorDA_week_recap_quiz.mp4",
   "first_comment": "Drop your score: 0, 1, 2 or 3 👇",
   "caption": "Week recap: 3 questions from this week's reels. Can you get 3/3? 🧠\n\n1️⃣ How many solutions does |x| = cos x have?\n2️⃣ Which is bigger: 2¹⁰⁰ or 3⁶³?\n3️⃣ Rolling two dice, which total comes up most?\n\nAnswers are in the reel. Comment your score 👇\n\n📌 Save it and test a friend\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #MathsQuiz #MathsTricks #Class11Maths #Class12Maths #MathReels #TutorDA",
-  "status": "rendered"
+  "status": "scheduled"
  }
 ]

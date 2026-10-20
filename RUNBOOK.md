@@ -43,7 +43,7 @@ Metricool for 10:00 and 18:00 IST. Aro reviews the night before and can delete a
    6. Final: same build without `draft` → `media/<file>.mp4`. QA: duration 25–31 s, loudness about −14 LUFS
       (`ffmpeg -i f.mp4 -af ebur128 -f null -`).
 4. Publish media: commit `media/<file>.mp4` + the new topic/engine files, push to `main`.
-   Public URL: `https://raw.githubusercontent.com/<owner>/<repo>/main/media/<file>.mp4` (check it returns 200 + video/mp4 size).
+   Public URL: `https://raw.githubusercontent.com/AravindSundharesan/tutorda-reels/main/media/<file>.mp4` (repo created 20 Oct, Claude app installed; Metricool re-hosts the file at scheduling) (check it returns 200 + video/mp4 size).
 5. Schedule with Metricool `createScheduledPost` (brand 7477800, timezone Asia/Calcutta): caption (template below),
    firstCommentText, media [raw URL], instagramData {type REEL, showReelOnFeed true, isAiGenerated true, autoPublish true}.
    Confirm with `getScheduledPosts`. Then set the entry's status to "scheduled" in the plan JSON, commit, push.
