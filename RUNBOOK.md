@@ -6,6 +6,10 @@ Metricool for 10:00 and 18:00 IST. Aro reviews the night before and can delete a
 ## House rules (from Aro, non-negotiable)
 - Every number and answer is computed in Python before scripting. No statistics without a source. No tutorda.org images.
 - Voice: Runway `generate_speech`, model eleven_v3, voice Niki, stability 0.5. Say TutorDA as "Tutor-dah".
+- Emergency voice (approved by Aro, only when Runway credits run out or speech generation fails): Kokoro af_sarah shaped
+  to Niki with word stress: mark 2–3 key words per line with *asterisks*, then
+  `F0=196 RANGE=1.25 FLAT=0.6 EMPH_ST=2.5 EMPH_DB=3 python3 tools/kokoro_niki2.py af_sarah topics/<t>/vo_full.wav "line 1" …`
+  (then convert to mp3 and continue with cuts/split/align as usual). Say in the run summary that the Sarah voice was used.
 - Diagram-led format (see `engine/manim_math.py`: SinX, EPi, ModCos, Pow): hook visible on frame 0, "comment before the
   reveal" bubble, 3-step method with graphs, ONE spring moment on the answer, end card. 26–30 s. Captions in the footer band.
 - Instagram via Metricool brand 7477800 (tutorda_), type REEL, showReelOnFeed true, isAiGenerated true, autoPublish true.
