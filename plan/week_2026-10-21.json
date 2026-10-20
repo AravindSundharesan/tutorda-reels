@@ -173,7 +173,13 @@
   "aud": "CSIR-NET",
   "reel": "Does Σ 1/n converge?",
   "hook": "The terms shrink to 0, the sum still explodes",
-  "answer": "Diverges (group terms: each block ≥ 1/2)"
+  "answer": "Diverges (group terms: each block ≥ 1/2)",
+  "scene": "Harmonic",
+  "topic": "csir_harmonic",
+  "file": "TutorDA_CSIR_harmonic_series.mp4",
+  "first_comment": "Did you think it settles at 2? 👇",
+  "caption": "CSIR-NET Mathematics: does 1 + 1/2 + 1/3 + 1/4 + … ever stop growing? 🤔\nComment A, B, C or D before the reveal 👇\n\nThe grouping proof:\n1️⃣ 1/3 + 1/4 > 1/2\n2️⃣ 1/5 + … + 1/8 > 1/2, and 1/9 + … + 1/16 > 1/2\n3️⃣ Every block of terms adds at least 1/2, forever\n\n✅ Answer: the harmonic series diverges\n\nThe terms go to 0, but that alone never proves convergence. (π²/6 is the sum of 1/n², not 1/n.)\n\n📌 Save this for revision · Share it with your CSIR-NET study group\n👉 Follow @tutorda_ for more CSIR-NET maths\n🎯 Practise CSIR-NET Maths with TutorDA: tutorda.org\n\n#CSIRNET #CSIRNETMaths #NETJRF #RealAnalysis #Series #MScMaths #GATEMaths #IITJAM #MathReels #TutorDA",
+  "status": "rendered"
  },
  {
   "date": "2026-10-27",
@@ -181,6 +187,12 @@
   "aud": "All",
   "reel": "Week recap quiz",
   "hook": "3 questions, 30 seconds. Can you get 3/3?",
-  "answer": "Answers from this week's reels"
+  "answer": "Answers from this week's reels",
+  "scene": "Quiz",
+  "topic": "quiz_week1",
+  "file": "TutorDA_week_recap_quiz.mp4",
+  "first_comment": "Drop your score: 0, 1, 2 or 3 👇",
+  "caption": "Week recap: 3 questions from this week's reels. Can you get 3/3? 🧠\n\n1️⃣ How many solutions does |x| = cos x have?\n2️⃣ Which is bigger: 2¹⁰⁰ or 3⁶³?\n3️⃣ Rolling two dice, which total comes up most?\n\nAnswers are in the reel. Comment your score 👇\n\n📌 Save it and test a friend\n👉 Follow @tutorda_ for more JEE maths tricks\n🎯 Your first JEE Main mock is free: tutorda.org\n\n#JEEMain #JEE2027 #JEEMaths #IITJEE #JEEPreparation #JEEAspirants #MathsQuiz #MathsTricks #Class11Maths #Class12Maths #MathReels #TutorDA",
+  "status": "rendered"
  }
 ]

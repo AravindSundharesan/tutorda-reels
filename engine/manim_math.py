@@ -1205,3 +1205,99 @@ class Monty(ShortReel):
         fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
         self.until(C[4] + 1.6); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(a_, doors[0], doors[1], op, goat, yp, p1, p2b, fw, lb)
+
+
+class Harmonic(ShortReel):
+    EVENTS = "harm"; SERIES = "CSIR-NET in 20s"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = M(r"1+\tfrac12+\tfrac13+\tfrac14+\cdots", 100); fitw(q, 900); cx(q, 320)
+        opts = self.options_row([r"\to2", r"\to e", r"\to\tfrac{\pi^2}{6}", r"\infty"], 500)
+        N = 16; bw = px(52); base = np.array([X(540) - N * bw / 2, Y(1300), 0]); hU = px(560)
+        bars = VGroup(*[Rectangle(width=bw * 0.86, height=hU / n, stroke_width=0, fill_color=GREY_P, fill_opacity=0.55).move_to(base + np.array([(n - 0.5) * bw, hU / n / 2, 0])) for n in range(1, N + 1)])
+        bl = VGroup(*[M(r"\tfrac1{%d}" % n, 40, GREY_P).next_to(bars[n - 1], DOWN, buff=0.1) for n in (1, 2, 3, 4)])
+        self.add(q, opts)
+        cc = self.comment_chip()
+        # ===== 0. terms appear as bars on the words (frame 0 already moving) =====
+        self.play(GrowFromEdge(bars[0], DOWN), FadeIn(bl[0]), run_time=0.3)
+        for k, w_ in ((1, 3), (2, 6), (3, 9)):
+            self.until(wt(0, w_, 0.05)); self.play(GrowFromEdge(bars[k], DOWN), FadeIn(bl[k]), run_time=0.25)
+        self.play(LaggedStart(*[GrowFromEdge(b, DOWN) for b in bars[4:]], lag_ratio=0.08), run_time=0.8)
+        self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        # groups: [1/2], [1/3,1/4], [1/5..1/8], [1/9..1/16]
+        grp = [(1, 2), (2, 4), (4, 8), (8, 16)]; cols = [OR, "#14B8A6", "#FFC83D", "#E5484D"]
+        def mark(k):
+            a, b = grp[k]; g = VGroup(*bars[a:b])
+            br = Brace(g, UP, color=cols[k], buff=0.12) if k else Brace(g, UP, color=cols[k], buff=0.12)
+            lab = M(r">\tfrac12" if k else r"=\tfrac12", 56, INK)
+            if k == 0: lab.next_to(br, UR, buff=0.05).shift(RIGHT * 0.15 + UP * 0.35)
+            elif k == 1: lab.next_to(br, UP, buff=0.1).shift(UP * 0.1)
+            else: lab.next_to(br, UP, buff=0.1)
+            return g, br, lab
+        # ===== 1. group the terms: 1/3 + 1/4 > 1/2 =====
+        self.until(S[1]); self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), run_time=0.3)
+        ms = []
+        for k, (ci, w_) in enumerate(((1, 0), (1, 3), (2, 4), (3, 4))):
+            self.until(wt(ci, w_, 0.1) if k < 3 else S[3] + 0.1); self.ev("tick")
+            g, br, lab = mark(k); ms += [br, lab]
+            self.play(*[b.animate.set_fill(cols[k], 0.85) for b in g], GrowFromCenter(br), FadeIn(lab), run_time=0.35)
+        # ===== 3. every group adds at least a half =====
+        ps = M(r"S>1+\tfrac12+\tfrac12+\tfrac12+\cdots", 84); fitw(ps, 900); cx(ps, 430)
+        self.until(wt(3, 6, 0.1)); self.play(FadeIn(ps, shift=UP * 0.2), run_time=0.35)
+        # ===== 4. diverges =====
+        self.until(S[4])
+        ans = VGroup(M(r"\sum\frac1n", 96), B("diverges", 64, OR, SEMIBOLD)).arrange(RIGHT, buff=0.4)
+        ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+        a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 430)
+        self.ev("stamp"); self.play(FadeOut(ps), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        self.until(C[4] + 1.6); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(a_, bars, bl, *ms, fw, lb)
+
+
+class Quiz(ShortReel):
+    EVENTS = "quiz"; SERIES = "Week recap"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        t1 = at(H("3 questions.", 110, INK), 420); t2 = at(H("Can you get 3/3?", 84, OR), 560)
+        dots = VGroup(*[Circle(radius=px(34), stroke_color=INK, stroke_width=5) for _ in range(3)]).arrange(RIGHT, buff=px(40)); cx(dots, 1290)
+        self.add(t1)
+        self.play(FadeIn(t2, shift=UP * 0.2), LaggedStart(*[GrowFromCenter(d) for d in dots], lag_ratio=0.25), run_time=0.8, rate_func=EXPO)
+        def ring(t0, dur):
+            tr = ValueTracker(0); cxy = np.array([X(540), Y(1150), 0])
+            arc = always_redraw(lambda: Arc(radius=px(70), start_angle=PI / 2, angle=-TAU * (1 - tr.get_value()), arc_center=cxy, color=OR, stroke_width=12))
+            num = always_redraw(lambda: H(str(max(1, int(np.ceil(3 * (1 - tr.get_value()))))), 80, INK).move_to(cxy))
+            return tr, arc, num
+        def question(i, qm, vis, ans_m, k):
+            self.until(S[i]); self.ev("tick")
+            tag = B(f"Question {k}", 40, OR, SEMIBOLD); cx(tag, 300)
+            qq = qm; fitw(qq, 900); cx(qq, 450 if len(qm) > 1 and isinstance(qm, VGroup) else 430)
+            self.play(FadeIn(tag), FadeIn(qq, shift=UP * 0.2), FadeIn(vis, shift=UP * 0.2), run_time=0.4, rate_func=EXPO)
+            # thinking time: countdown ring over the silence before the answer
+            t0 = C[i + 1]; tr, arc, num = ring(t0, 1.6)
+            self.until(t0); self.add(arc, num); self.play(tr.animate.set_value(1), run_time=1.5, rate_func=linear)
+            arc.clear_updaters(); num.clear_updaters(); self.remove(arc, num)
+            a_ = ans_m; ap = RoundedRectangle(width=a_.width + px(80), height=a_.height + px(40), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
+            box = VGroup(ap, a_.move_to(ap)).move_to([0, Y(1150), 0])
+            self.ev("stamp"); self.play(GrowFromCenter(box), dots[k - 1].animate.set_fill(OR, 1).set_stroke(OR), run_time=0.35, rate_func=rate_functions.ease_out_back)
+            return VGroup(tag, qq, vis, box)
+        # ===== Q1 =====
+        self.until(S[1]); self.play(FadeOut(VGroup(t1, t2), shift=UP * 0.2), run_time=0.3)
+        ax = Axes(x_range=[-4, 4, 1], y_range=[-1.3, 2.3, 1], x_length=px(700), y_length=px(300), tips=False, axis_config={"color": RULE, "stroke_width": 3})
+        cx(ax, 800)
+        v1 = VGroup(ax, ax.plot(np.cos, x_range=[-4, 4], color=INK, stroke_width=5), ax.plot(lambda x: abs(x), x_range=[-2.3, 2.3], color=OR, stroke_width=6, use_smoothing=False))
+        g1 = question(1, VGroup(H("How many solutions?", 72, INK), M(r"|x|=\cos x", 96)).arrange(DOWN, buff=0.25), v1, VGroup(H("2", 110, OR), B("solutions", 44, INK, SEMIBOLD)).arrange(RIGHT, buff=0.25, aligned_edge=DOWN), 1)
+        # ===== Q2 =====
+        self.until(S[3] - 0.25); self.play(FadeOut(g1), run_time=0.25)
+        v2 = VGroup(M(r"2^{100}", 130), B("vs", 44, GREY_P, SEMIBOLD), M(r"3^{63}", 130, OR)).arrange(RIGHT, buff=0.6); cx(v2, 760)
+        g2 = question(3, H("Which is bigger?", 72, INK), v2, M(r"2^{100}>3^{63}", 96), 2)
+        # ===== Q3 =====
+        self.until(S[5] - 0.25); self.play(FadeOut(g2), run_time=0.25)
+        v3 = VGroup(die(2, 170), die(5, 170)).arrange(RIGHT, buff=px(60)); cx(v3, 760)
+        g3 = question(5, H("Most likely total?", 72, INK), v3, VGroup(H("7", 110, OR), M(r"P=\tfrac16", 64)).arrange(RIGHT, buff=0.35), 3)
+        # ===== score + follow =====
+        sc = self.comment_chip("Comment your score: 0, 1, 2 or 3"); sc[0].stretch_to_fit_width(px(720)); cx(sc, 1410)
+        self.until(C[6] + 1.6 + 0.6); self.play(FadeIn(sc, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(g3, dots, sc, lb)
