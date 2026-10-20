@@ -7,7 +7,7 @@ os.environ["CLIPS"] = os.path.join(TOPIC, "clips.json")
 os.environ["VO"] = os.path.join(TOPIC, "vo")
 os.environ["MUSIC"] = "cinematic"
 os.environ["MUSIC_FILE"] = os.path.join(KIT, "assets/jee/score.mp3")      # ACE-Step (Hugging Face) score
-os.environ["MUSIC_OFFSET"] = "14.0"
+os.environ["MUSIC_OFFSET"] = "5.0"
 os.environ["END_HOLD"] = "1.4"
 os.environ["START"] = "0.2"; os.environ["IN_GAP"] = "0.18"; os.environ["BEAT_GAP"] = "0.25"
 import numpy as np

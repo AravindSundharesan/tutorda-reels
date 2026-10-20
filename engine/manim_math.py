@@ -543,3 +543,91 @@ class Pow(MathReel):
         self.until(S[6])
         self.to(INK, a_, r1, r2, d31, cl, lb); self.remove(self.hdr_d)
         self.end_card(6, "Compare the logs, not the numbers.")
+
+
+class Motiv(MathReel):
+    EVENTS = "motiv"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        RD = "#E5484D"
+        # ===== 0. Bad mock score today? (visible on frame 0) =====
+        self.add(self.hdr); lb = self.label("For JEE aspirants", False); self.add(lb)
+        h1 = at(H("Bad mock score", 104, INK), 330); h2 = at(H("today?", 104, INK), 450)
+        sc = [132, 141, 138, 150, 156, 121]
+        cd = RoundedRectangle(width=px(860), height=px(470), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3); cx(cd, 870)
+        ma = Axes(x_range=[0, 5.4, 1], y_range=[100, 170, 20], x_length=px(700), y_length=px(300), tips=False, axis_config={"color": RULE, "stroke_width": 3})
+        ma.move_to(cd.get_center() + DOWN * px(20))
+        pts = [ma.c2p(i, v) for i, v in enumerate(sc)]
+        ml = VMobject(stroke_color=INK, stroke_width=6).set_points_as_corners(pts[:-1])
+        md = VMobject(stroke_color=RD, stroke_width=6).set_points_as_corners(pts[-2:])
+        dots = VGroup(*[Dot(p, radius=px(10), color=INK) for p in pts[:-1]], Dot(pts[-1], radius=px(13), color=RD))
+        tl = B("today", 32, RD, SEMIBOLD).next_to(pts[-1], DOWN, buff=0.18)
+        ct = B("Your mock scores", 30, GREY_P, SEMIBOLD).next_to(cd.get_corner(UL), DR, buff=0.3)
+        self.add(h1, h2, cd, ma, ml, md, dots, tl, ct)
+
+        # ===== 1. Here's the maths that should calm you down. =====
+        self.until(S[1])
+        hm = at(SER("Here's the maths.", 110, OR), 1290); fitw(hm, 900)
+        self.ev("tick"); self.play(FadeIn(hm, shift=UP * 0.2), run_time=0.4, rate_func=EXPO)
+
+        # ===== 2. 1% better every day: 1.01^365 ~ 37.8 =====
+        self.until(S[2])
+        ax = Axes(x_range=[0, 365, 73], y_range=[0, 40, 10], x_length=px(860), y_length=px(700), tips=False, axis_config={"color": INK, "stroke_width": 3})
+        ax.move_to([X(560), Y(940), 0])
+        xl = VGroup(B("day 0", 30, GREY_P).next_to(ax.c2p(0, 0), DOWN, buff=0.15), B("day 365", 30, GREY_P).next_to(ax.c2p(365, 0), DOWN, buff=0.15))
+        e1 = M(r"1.01^{365}\approx 37.8", 84); cx(e1, 330)
+        self.ev("tick")
+        self.play(FadeOut(VGroup(h1, h2, cd, ma, ml, md, dots, tl, ct, hm), shift=UP * 0.2), Create(ax), FadeIn(xl), run_time=0.45, rate_func=EXPO)
+        g1 = ax.plot(lambda x: 1.01 ** x, x_range=[0, 365], color=OR, stroke_width=8)
+        cnt = DecimalNumber(1.0, num_decimal_places=1, font_size=96, color=OR).move_to([X(330), Y(560), 0])
+        cx_ = M(r"\times", 80, OR).next_to(cnt, LEFT, buff=0.15)
+        trk = ValueTracker(0)
+        cnt.add_updater(lambda m: m.set_value(1.01 ** trk.get_value()))
+        self.until(wt(2, 0, 0.05)); self.add(cnt, cx_)
+        self.play(Create(g1), trk.animate.set_value(365), run_time=2.4, rate_func=rate_functions.ease_in_quad)
+        cnt.clear_updaters()
+        self.until(wt(2, 7, 0.1)); self.ev("tick"); self.play(FadeIn(e1, shift=DOWN * 0.2), run_time=0.35, rate_func=EXPO)
+        big = VGroup(M(r"\times", 70, OR), H("37.8", 110, OR)).arrange(RIGHT, buff=0.12).next_to(ax.c2p(365, 37.8), LEFT, buff=0.35)
+        self.until(wt(2, 10, 0.1)); self.ev("stamp")
+        self.play(ReplacementTransform(VGroup(cnt, cx_), big), run_time=0.45, rate_func=rate_functions.ease_out_back)
+
+        # ===== 3. 1% worse every day: 0.99^365 ~ 0.03 =====
+        self.until(S[3])
+        g2 = ax.plot(lambda x: 0.99 ** x, x_range=[0, 365], color=RD, stroke_width=8)
+        e2 = M(r"0.99^{365}\approx 0.03", 84, RD); cx(e2, 450)
+        self.ev("tick"); self.play(Create(g2), run_time=1.0, rate_func=rate_functions.ease_in_out_sine)
+        self.until(wt(3, 4, 0.1)); self.play(FadeIn(e2, shift=DOWN * 0.2), run_time=0.35, rate_func=EXPO)
+        sm = VGroup(M(r"\times", 56, RD), H("0.03", 70, RD)).arrange(RIGHT, buff=0.1).next_to(ax.c2p(365, 0), UP, buff=0.3).align_to(big, RIGHT)
+        self.until(wt(3, 5, 0.1)); self.ev("tick"); self.play(FadeIn(sm, shift=UP * 0.15), run_time=0.3)
+
+        # ===== 4. The gap isn't talent. It's 1%, every single day. =====
+        self.until(S[4])
+        br = DoubleArrow(ax.c2p(250, 0.3), ax.c2p(250, 1.01 ** 250 - 0.7), color=INK, stroke_width=6, buff=0, max_tip_length_to_length_ratio=0.08)
+        gl = B("the gap", 40, INK, SEMIBOLD).next_to(ax.c2p(250, 6.5), RIGHT, buff=0.25)
+        gp = at(SER("Not talent. 1% a day.", 92, INK), 1420); fitw(gp, 900)
+        self.ev("tick"); self.play(GrowArrow(br), FadeIn(gl, shift=LEFT * 0.1), run_time=0.45)
+        self.until(wt(4, 4, 0.1)); self.play(FadeIn(gp, shift=UP * 0.2), run_time=0.4, rate_func=EXPO)
+
+        # ===== 5. One mock is a single point. Your preparation is the whole curve. =====
+        self.until(S[5])
+        ms = [96, 104, 99, 112, 118, 109, 121, 130, 124, 137, 141, 122, 146, 151, 144, 158, 163, 155, 169, 174]
+        ax2 = Axes(x_range=[0, 21, 5], y_range=[80, 190, 20], x_length=px(860), y_length=px(640), tips=False, axis_config={"color": INK, "stroke_width": 3})
+        ax2.move_to([X(560), Y(900), 0])
+        t2 = B("Mock tests (illustration)", 30, GREY_P, SEMIBOLD).next_to(ax2.c2p(0, 190), RIGHT, buff=0.2)
+        p2 = [ax2.c2p(i + 1, v) for i, v in enumerate(ms)]
+        ln2 = VMobject(stroke_color=GREY_P, stroke_width=4).set_points_as_corners(p2)
+        d2 = VGroup(*[Dot(p, radius=px(9), color=INK) for p in p2])
+        self.play(FadeOut(VGroup(ax, xl, g1, g2, e1, e2, big, sm, br, gl, gp), shift=UP * 0.2), Create(ax2), FadeIn(t2), run_time=0.4, rate_func=EXPO)
+        self.ev("tick"); self.play(Create(ln2), LaggedStart(*[GrowFromCenter(d) for d in d2], lag_ratio=0.05), run_time=0.9)
+        ring = Circle(radius=px(34), color=RD, stroke_width=6).move_to(p2[11])
+        rl = B("one bad day", 32, RD, SEMIBOLD).next_to(ring, DOWN, buff=0.15)
+        self.until(wt(5, 4, 0.1)); self.ev("tick"); self.play(Create(ring), FadeIn(rl), d2[11].animate.set_color(RD), run_time=0.4)
+        k, b0 = np.polyfit(np.arange(1, 21), ms, 1)
+        tr = Line(ax2.c2p(0.5, k * 0.5 + b0), ax2.c2p(20.5, k * 20.5 + b0), color=OR, stroke_width=10)
+        trl = B("your curve", 36, OR, SEMIBOLD).next_to(ax2.c2p(16, k * 16 + b0), UP, buff=0.55).shift(LEFT * 0.6)
+        self.until(wt(5, 9, 0.1)); self.ev("chime"); self.play(Create(tr), FadeIn(trl), run_time=0.6, rate_func=EXPO)
+
+        # ===== 6. End =====
+        self.until(S[6])
+        self.to(INK, ax2, t2, ln2, d2, ring, rl, tr, trl, lb); self.remove(self.hdr_d)
+        self.end_card(6, "Keep showing up.")
