@@ -1,0 +1,182 @@
+[
+ {
+  "words": [
+   "Maths,",
+   "science,",
+   "exams",
+   "and",
+   "English.",
+   "All",
+   "in",
+   "one",
+   "place."
+  ],
+  "starts": [
+   0.05,
+   0.53,
+   1.042,
+   1.383,
+   1.61,
+   2.05,
+   2.29,
+   2.45,
+   2.73
+  ],
+  "match": 0.78,
+  "clip_start": 0.05
+ },
+ {
+  "words": [
+   "Interactive",
+   "courses",
+   "for",
+   "Class",
+   "10,",
+   "11",
+   "and",
+   "12,",
+   "with",
+   "live",
+   "labs",
+   "and",
+   "worked",
+   "solutions."
+  ],
+  "starts": [
+   3.273,
+   3.953,
+   4.393,
+   4.553,
+   4.873,
+   5.193,
+   5.673,
+   5.833,
+   6.233,
+   6.393,
+   6.713,
+   7.113,
+   7.273,
+   7.553
+  ],
+  "match": 1.0,
+  "clip_start": 3.273
+ },
+ {
+  "words": [
+   "Practice",
+   "that",
+   "adapts",
+   "to",
+   "you,",
+   "with",
+   "step-by-step",
+   "answers."
+  ],
+  "starts": [
+   8.535,
+   8.855,
+   8.975,
+   9.455,
+   9.575,
+   9.735,
+   10.035,
+   10.815
+  ],
+  "match": 0.88,
+  "clip_start": 8.495
+ },
+ {
+  "words": [
+   "Mock",
+   "tests",
+   "for",
+   "JEE,",
+   "NEET,",
+   "IELTS,",
+   "PTE",
+   "and",
+   "more.",
+   "The",
+   "first",
+   "mock",
+   "is",
+   "free."
+  ],
+  "starts": [
+   11.538,
+   11.778,
+   12.178,
+   12.462,
+   12.818,
+   13.138,
+   13.698,
+   14.018,
+   14.218,
+   14.538,
+   14.698,
+   14.978,
+   15.258,
+   15.458
+  ],
+  "match": 0.86,
+  "clip_start": 11.538
+ },
+ {
+  "words": [
+   "Maths",
+   "games",
+   "and",
+   "free",
+   "tools,",
+   "from",
+   "times",
+   "tables",
+   "to",
+   "graph",
+   "plotters."
+  ],
+  "starts": [
+   16.026,
+   16.386,
+   16.746,
+   16.906,
+   17.146,
+   17.626,
+   17.786,
+   18.146,
+   18.546,
+   18.706,
+   19.026
+  ],
+  "match": 0.91,
+  "clip_start": 16.026
+ },
+ {
+  "words": [
+   "Schools,",
+   "colleges",
+   "and",
+   "coaching",
+   "centres",
+   "can",
+   "partner",
+   "with",
+   "us",
+   "too."
+  ],
+  "starts": [
+   19.734,
+   20.254,
+   20.774,
+   20.934,
+   21.334,
+   21.814,
+   22.014,
+   22.454,
+   22.614,
+   22.774
+  ],
+  "match": 1.0,
+  "clip_start": 19.734
+ }
+]

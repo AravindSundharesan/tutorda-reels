@@ -1301,3 +1301,175 @@ class Quiz(ShortReel):
         sc = self.comment_chip("Comment your score: 0, 1, 2 or 3"); sc[0].stretch_to_fit_width(px(720)); cx(sc, 1410)
         self.until(C[6] + 1.6 + 0.6); self.play(FadeIn(sc, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(g3, dots, sc, lb)
+
+
+# ---------------- Promo remake (Aro's "all in one place" overview, 23 Oct) in the house style ----------------
+def _atom(c=OR, w=190):
+    g = VGroup(*[Ellipse(width=px(w), height=px(w * 0.36), stroke_color=c, stroke_width=6).rotate(a) for a in (0, PI / 3, -PI / 3)])
+    return g.add(Dot(radius=px(13), color=INK))
+def _clip(c=INK):
+    b = RoundedRectangle(width=px(124), height=px(156), corner_radius=0.1, stroke_color=c, stroke_width=6)
+    ls = VGroup(*[Line([-px(38), 0, 0], [px(30), 0, 0], stroke_color=c, stroke_width=5).shift(UP * px(40 - 26 * i) + RIGHT * px(8)) for i in range(3)])
+    tk = VMobject(stroke_color=OR, stroke_width=9).set_points_as_corners([[-px(30), -px(40), 0], [-px(10), -px(58), 0], [px(32), -px(16), 0]])
+    cl = RoundedRectangle(width=px(52), height=px(20), corner_radius=0.05, fill_color=c, fill_opacity=1, stroke_width=0).move_to(UP * px(78))
+    return VGroup(b, ls, tk, cl)
+def _school(c=WHITE_):
+    body = Rectangle(width=px(170), height=px(105), stroke_color=c, stroke_width=6).shift(DOWN * px(20))
+    roof = Polygon([-px(105), px(33), 0], [px(105), px(33), 0], [0, px(100), 0], stroke_color=c, stroke_width=6)
+    door = Rectangle(width=px(36), height=px(54), fill_color=OR, fill_opacity=1, stroke_width=0).shift(DOWN * px(46))
+    return VGroup(body, roof, door)
+def _college(c=WHITE_):
+    top = Polygon([0, px(62), 0], [px(115), px(16), 0], [0, -px(28), 0], [-px(115), px(16), 0], fill_color=c, fill_opacity=1, stroke_width=0)
+    cap = Arc(radius=px(64), start_angle=PI + 0.3, angle=PI - 0.6, stroke_color=c, stroke_width=6).shift(DOWN * px(8))
+    ts = Line([px(78), px(8), 0], [px(78), -px(64), 0], stroke_color=OR, stroke_width=6)
+    return VGroup(cap, top, ts)
+def _coaching(c=WHITE_):
+    bd = RoundedRectangle(width=px(184), height=px(120), corner_radius=0.08, fill_color=OR, fill_opacity=1, stroke_width=0)
+    sy = B("+ − × ÷", 32, WHITE_, SEMIBOLD).move_to(bd)
+    lg = VGroup(Line([-px(56), -px(60), 0], [-px(76), -px(106), 0]), Line([px(56), -px(60), 0], [px(76), -px(106), 0])).set_stroke(c, 6)
+    return VGroup(bd, sy, lg)
+
+
+class Promo(ShortReel):
+    EVENTS = "promo"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        LBL = "Learn · Practise · Test"
+        def lab(dark=False):
+            g = self.label(LBL, dark); self.add(g); return g
+        def title(s, y=250, color=INK, size=88):
+            return fitw(at(H(s, size, color), y), 888)
+        def pill(s, w, h=96, size=40, fill=WHITE_, fg=INK, stroke=RULE):
+            r = RoundedRectangle(width=px(w), height=px(h), corner_radius=0.16, fill_color=fill, fill_opacity=1, stroke_color=stroke, stroke_width=3)
+            t = B(s, size, fg, SEMIBOLD); fitw(t, w - 30); return VGroup(r, t.move_to(r))
+
+        # ===== A. Maths, science, exams and English. All in one place. (tiles already popping on frame 0) =====
+        self.add(self.hdr); lb = lab()
+        h1 = at(H("Maths, science,", 96, INK), 250); h2 = at(H("exams & English.", 96, INK), 360)
+        def tile(icon, name, x, y):
+            c_ = RoundedRectangle(width=px(430), height=px(350), corner_radius=0.22, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+            c_.move_to([X(x), Y(y), 0])
+            if icon.height > px(170): icon.scale_to_fit_height(px(170))
+            icon.move_to(c_.get_center() + UP * px(40))
+            return VGroup(c_, icon, B(name, 42, INK, SEMIBOLD).move_to(c_.get_center() + DOWN * px(118)))
+        im = M(r"\int\!\pi", 130); en = H("Aa", 130, INK); en[1].set_color(OR)
+        tl = [tile(im, "Maths", 315, 650), tile(_atom(), "Science", 765, 650), tile(_clip(), "Exams", 315, 1035), tile(en, "English", 765, 1035)]
+        self.add(h1, h2, tl[0])
+        self.play(Indicate(tl[0][1], color=OR, scale_factor=1.12), run_time=0.5)
+        for k, w in ((1, 1), (2, 2), (3, 4)):
+            self.until(wt(0, w, 0.08)); self.ev("tick"); self.play(GrowFromCenter(tl[k]), run_time=0.3, rate_func=EXPO)
+        op = VGroup(SER("All in", 110, INK), SER("one place.", 110, OR)).arrange(RIGHT, buff=0.3); cx(op, 1360)
+        ul = Line(op[1].get_corner(DL) + DOWN * 0.08, op[1].get_corner(DR) + DOWN * 0.08, color=OR, stroke_width=8)
+        self.until(wt(0, 5, 0.1)); self.play(FadeIn(op, shift=UP * 0.2), run_time=0.35, rate_func=EXPO)
+        self.until(wt(0, 7, 0.0)); self.play(Create(ul), run_time=0.35)
+
+        # ===== B. Interactive courses for Class 10, 11 and 12, with live labs and worked solutions. =====
+        self.until(S[1]); self.to(PAPER); lb = lab()
+        t1 = title("Interactive courses")
+        tabs = VGroup(*[pill(f"Class {n}", 260, 90, 38) for n in (10, 11, 12)]).arrange(RIGHT, buff=px(24)); cx(tabs, 375)
+        subs = VGroup(*[tag(s, 36) for s in ("Maths", "Physics", "Chemistry")]).arrange(RIGHT, buff=px(20)); cx(subs, 475)
+        self.ev("tick"); self.play(FadeIn(t1, shift=UP * 0.2), run_time=0.3, rate_func=EXPO)
+        on = None
+        for k, w in enumerate((4, 5, 7)):
+            self.until(wt(1, w, 0.08))
+            hi = tabs[k][0].copy().set_fill(OR).set_stroke(OR); tx = tabs[k][1].copy().set_color(WHITE_)
+            anims = [FadeIn(tabs[k], scale=0.9), FadeIn(hi), FadeIn(tx)]
+            if on is not None: anims.append(FadeOut(on))
+            if k == 0: anims.append(LaggedStart(*[FadeIn(s, shift=UP * 0.1) for s in subs], lag_ratio=0.2))
+            self.play(*anims, run_time=0.25); on = VGroup(hi, tx)
+        lc = card(888, 360, WHITE_, RULE); cx(lc, 735)
+        ltag = tag("Live lab", 30, WHITE_, INK).next_to(lc.get_corner(UL), DR, buff=0.22)
+        lf = M(r"y=a\sin x", 48).next_to(lc.get_corner(UR), DL, buff=0.25)
+        la = Axes(x_range=[0, 2 * PI, PI], y_range=[-1.6, 1.6, 1], x_length=px(600), y_length=px(170), tips=False, axis_config={"color": RULE, "stroke_width": 3})
+        la.move_to(lc.get_center() + UP * px(10))
+        amp = ValueTracker(0.5)
+        wave = always_redraw(lambda: la.plot(lambda x: amp.get_value() * math.sin(x), x_range=[0, 2 * PI], color=OR, stroke_width=7))
+        sl = Line([X(260), Y(870), 0], [X(820), Y(870), 0], color=RULE, stroke_width=6)
+        knob = always_redraw(lambda: Dot(sl.point_from_proportion((amp.get_value() - 0.3) / 1.2), radius=px(17), color=INK))
+        sla = B("a", 34, GREY_P, SEMIBOLD).next_to(sl, LEFT, buff=0.2)
+        self.until(wt(1, 9, 0.1)); self.ev("tick")
+        self.play(FadeIn(VGroup(lc, ltag, lf, la, sl, sla), shift=UP * 0.15), run_time=0.3, rate_func=EXPO); self.add(wave, knob)
+        self.play(amp.animate.set_value(1.4), run_time=0.9, rate_func=rate_functions.ease_in_out_sine)
+        sc = card(888, 520, WHITE_, RULE); cx(sc, 1240)
+        stag = tag("Worked solution", 30, WHITE_, INK).next_to(sc.get_corner(UL), DR, buff=0.22)
+        s1 = M(r"x^2-5x+6=0", 66); s2 = M(r"(x-2)(x-3)=0", 66); s3 = M(r"x=2,\ 3", 66, OR)
+        for m, y in ((s1, 1120), (s2, 1240), (s3, 1360)): cx(m, y)
+        tk3 = tick(0.26).next_to(s3, RIGHT, buff=0.3)
+        self.until(wt(1, 12, 0.25)); self.ev("tick")
+        self.play(FadeIn(VGroup(sc, stag), shift=UP * 0.15), FadeIn(s1), run_time=0.25, rate_func=EXPO)
+        self.play(LaggedStart(FadeIn(s2, shift=DOWN * 0.1), AnimationGroup(FadeIn(s3, shift=DOWN * 0.1), GrowFromCenter(tk3)), lag_ratio=0.6), run_time=0.5)
+
+        # ===== C. Practice that adapts to you, with step-by-step answers. =====
+        self.until(S[2]); self.to(PAPER); lb = lab()
+        t2 = title("Practice that adapts")
+        lv = VGroup(*[pill(s, 260, 90, 38) for s in ("Easy", "Medium", "Hard")]).arrange(RIGHT, buff=px(24)); cx(lv, 390)
+        hl = lv[0][0].copy().set_fill(OR).set_stroke(OR).set_z_index(1)
+        lvt = VGroup(*[p[1].copy().set_z_index(2) for p in lv]); lvt[0].set_color(WHITE_)
+        qc = card(888, 220, WHITE_, RULE); cx(qc, 610)
+        q = M(r"\text{Solve } 2x+3=11", 78).move_to(qc)
+        self.ev("tick"); self.play(FadeIn(t2, shift=UP * 0.2), FadeIn(lv), FadeIn(hl), FadeIn(lvt), FadeIn(qc), FadeIn(q), run_time=0.3, rate_func=EXPO)
+        self.until(wt(2, 2, 0.1)); self.ev("tick")
+        self.play(hl.animate.move_to(lv[1][0]), lvt[0].animate.set_color(INK), lvt[1].animate.set_color(WHITE_), run_time=0.35, rate_func=EXPO)
+        st = [M(r"2x=11-3", 76), M(r"2x=8", 76), M(r"x=4", 96, OR)]
+        for m, y in zip(st, (830, 960, 1110)): cx(m, y)
+        bx = self.answer_box(st[2]); tk = tick(0.3).next_to(bx, RIGHT, buff=0.3)
+        self.until(wt(2, 6, 0.15))
+        self.play(LaggedStart(*[FadeIn(m, shift=DOWN * 0.12) for m in st], lag_ratio=0.45), run_time=0.8)
+        self.ev("stamp"); self.play(Create(bx), GrowFromCenter(tk), run_time=0.3)
+
+        # ===== D. Mock tests for JEE, NEET, IELTS, PTE and more. The first mock is free. =====
+        self.until(S[3]); self.to(PAPER); lb = lab()
+        t3 = title("Mock tests")
+        big = [pill(s, 430, 120, 52) for s in ("JEE Main", "NEET-UG", "IELTS", "PTE")]
+        for p, (x, y) in zip(big, ((315, 420), (765, 420), (315, 565), (765, 565))): p.move_to([X(x), Y(y), 0])
+        sm = VGroup(*[tag(s, 34) for s in ("GATE", "CSIR-NET", "SAT", "TOEFL")]).arrange(RIGHT, buff=px(18))
+        sm2 = VGroup(*[tag(s, 34) for s in ("GRE", "GMAT", "TNPSC", "Duolingo")]).arrange(RIGHT, buff=px(18))
+        cx(sm, 715); cx(sm2, 795)
+        self.play(FadeIn(t3, shift=UP * 0.2), run_time=0.3, rate_func=EXPO)
+        for k, w in enumerate((3, 4, 5, 6)):
+            self.until(wt(3, w, 0.08)); self.ev("tick"); self.play(GrowFromCenter(big[k]), run_time=0.22, rate_func=EXPO)
+        self.until(wt(3, 8, 0.1)); self.play(LaggedStart(*[FadeIn(s, shift=UP * 0.1) for s in [*sm, *sm2]], lag_ratio=0.08), run_time=0.5)
+        sp = VGroup(H("First mock", 70, OR), H("FREE", 150, OR)).arrange(DOWN, buff=0.1)
+        sr = RoundedRectangle(width=sp.width + px(90), height=sp.height + px(60), corner_radius=0.2, stroke_color=OR, stroke_width=10, fill_color=WHITE_, fill_opacity=1)
+        stamp = VGroup(sr, sp.move_to(sr)).rotate(-8 * DEGREES); cx(stamp, 1140)
+        self.until(wt(3, 13, 0.12)); self.ev("stamp")
+        self.play(FadeIn(stamp, scale=1.6), run_time=0.4, rate_func=rate_functions.ease_out_back)
+
+        # ===== E. Maths games and free tools, from times tables to graph plotters. =====
+        self.until(S[4]); self.to(PAPER); lb = lab()
+        t4 = title("Maths games")
+        gm = [pill(s, 430, 96, 40) for s in ("Math Sprint", "Algebra Escape", "Times Table Blitz", "Sudoku")]
+        for p, (x, y) in zip(gm, ((315, 390), (765, 390), (315, 506), (765, 506))): p.move_to([X(x), Y(y), 0])
+        self.ev("tick"); self.play(FadeIn(t4, shift=UP * 0.2), run_time=0.3, rate_func=EXPO)
+        self.until(wt(4, 1, 0.1)); self.play(LaggedStart(*[GrowFromCenter(p) for p in gm], lag_ratio=0.15), run_time=0.5, rate_func=EXPO)
+        pc = card(888, 840, WHITE_, RULE); cx(pc, 1060)
+        ptag = tag("Free tool · Graph plotter", 30, WHITE_, INK).next_to(pc.get_corner(UL), DR, buff=0.22)
+        pa = Axes(x_range=[-3, 3, 1], y_range=[0, 9, 3], x_length=px(640), y_length=px(560), tips=False, axis_config={"color": INK, "stroke_width": 3})
+        pa.move_to(pc.get_center() + DOWN * px(40))
+        pg = pa.plot(lambda x: x * x, x_range=[-3, 3], color=OR, stroke_width=8)
+        pl = M(r"y=x^2", 60, OR).next_to(pa.c2p(0.25, 8.2), RIGHT, buff=0.1)
+        self.until(wt(4, 3, 0.1)); self.ev("tick"); self.play(FadeIn(VGroup(pc, ptag, pa), shift=UP * 0.15), run_time=0.3, rate_func=EXPO)
+        self.until(wt(4, 9, 0.3)); self.play(Create(pg), FadeIn(pl), run_time=0.9, rate_func=rate_functions.ease_in_out_sine)
+
+        # ===== F. Schools, colleges and coaching centres can partner with us too. (ink) =====
+        self.until(S[5]); self.to(INK); lb = lab(True)
+        t5 = title("For institutions", color=WHITE_)
+        ic = [(_school(), "Schools"), (_college(), "Colleges"), (_coaching(), "Coaching")]
+        cols = []
+        for (g, n), x in zip(ic, (230, 540, 850)):
+            g.move_to([X(x), Y(600), 0]); cols.append(VGroup(g, B(n, 38, WHITE_, SEMIBOLD).move_to([X(x), Y(760), 0])))
+        self.play(FadeIn(t5, shift=UP * 0.2), run_time=0.3, rate_func=EXPO)
+        for k, w in enumerate((0, 1, 3)):
+            self.until(wt(5, w, 0.05)); self.ev("tick"); self.play(FadeIn(cols[k], shift=UP * 0.2), run_time=0.3, rate_func=EXPO)
+        pw = SER("Partner with", 110, WHITE_); cx(pw, 1040)
+        wm2 = wordmark(px(560), dark=True); cx(wm2, 1200)
+        self.until(wt(5, 6, 0.1)); self.ev("chime"); self.rise(pw, wm2)
+
+        # ===== G. Start free today at tutorda.org. =====
+        self.until(S[6]); self.to(PAPER); lb = lab()
+        g1 = at(H("Start free", 140, INK), 600); g2 = at(SER("today.", 150, OR), 770)
+        bt = RoundedRectangle(width=px(700), height=px(150), corner_radius=0.3, fill_color=OR, fill_opacity=1, stroke_width=0)
+        btn = VGroup(bt, H("tutorda.org  →", 66, WHITE_).move_to(bt)); cx(btn, 1010)
+        self.rise(g1, g2, btn)
+        self.until(C[6] + 0.85); self.play(btn.animate.scale(0.94), run_time=0.12); self.play(btn.animate.scale(1 / 0.94), run_time=0.15)
+        self.brand_flash(g1, g2, btn, lb)
