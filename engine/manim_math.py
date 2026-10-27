@@ -1473,3 +1473,64 @@ class Promo(ShortReel):
         self.rise(g1, g2, btn)
         self.until(C[6] + 0.85); self.play(btn.animate.scale(0.94), run_time=0.12); self.play(btn.animate.scale(1 / 0.94), run_time=0.15)
         self.brand_flash(g1, g2, btn, lb)
+
+
+# ---------------- Hook reel (27 Oct): is 0.999... = 1? (Yes: 10x - x = 9.) ----------------
+class Nines(ShortReel):
+    EVENTS = "nines"; SERIES = "Maths in 15s"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        def MT(*p, size=104, color=INK): return MathTex(*p, font_size=size, color=color)
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        # ===== 0. nines already typing on frame 0, YES / NO on screen =====
+        q = fitw(at(H("Is this equal to 1?", 88, INK), 290), 888)
+        digs = H("0.99999999…", 150, INK); fitw(digs, 888); cx(digs, 500)
+        def pill(s, fill, fg):
+            r = RoundedRectangle(width=px(400), height=px(150), corner_radius=0.22, fill_color=fill, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+            return VGroup(r, H(s, 72, fg).move_to(r))
+        yes, no = pill("YES", WHITE_, INK), pill("NO", WHITE_, INK)
+        opts = VGroup(yes, no).arrange(RIGHT, buff=px(48)); cx(opts, 790)
+        self.add(q, opts, digs[:3])
+        for k in range(3, len(digs)):
+            self.add(digs[k]); self.wait(0.09)
+        cc = self.comment_chip("Comment YES or NO")
+        self.until(1.4); self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        # ===== 1. Call it x =====
+        self.until(S[1])
+        l1 = MT("x", "=", "0", r".999\ldots", size=96); l1.move_to([X(560), Y(600), 0])
+        l2 = MT("10x", "=", "9", r".999\ldots", size=96); l2.move_to([0, Y(450), 0]); l2.shift(RIGHT * (l1[3].get_left()[0] - l2[3].get_left()[0]))
+        dx = -VGroup(l1, l2).get_center()[0] + px(30); l1.shift(RIGHT * dx); l2.shift(RIGHT * dx)
+        self.ev("tick")
+        self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), ReplacementTransform(digs, l1), run_time=0.4, rate_func=EXPO)
+        # ===== 2. 10x = 9.999... (written above, decimals aligned) =====
+        self.until(S[2])
+        t10 = tag("× 10", 36, WHITE_, OR).next_to(l2, UP, buff=0.25).align_to(l2, LEFT)
+        self.until(wt(2, 0, 0.1)); self.ev("tick"); self.play(FadeIn(l2, shift=DOWN * 0.2), FadeIn(t10), run_time=0.35, rate_func=EXPO)
+        # ===== 3. Subtract: the endless nines cancel =====
+        self.until(S[3])
+        mn = MT("-", color=OR).next_to(l1, LEFT, buff=0.35)
+        rule = Line([X(150), Y(700), 0], [X(930), Y(700), 0], color=INK, stroke_width=5)
+        self.ev("tick"); self.play(FadeOut(t10), FadeIn(mn), Create(rule), run_time=0.3)
+        self.until(wt(3, 3, 0.1)); self.play(l1[3].animate.set_color(OR), l2[3].animate.set_color(OR), run_time=0.25)
+        st = [Line(m.get_left() + LEFT * 0.08, m.get_right() + RIGHT * 0.08, color=OR, stroke_width=9) for m in (l1[3], l2[3])]
+        self.until(wt(3, 5, 0.1)); self.ev("tick")
+        self.play(*[Create(s) for s in st], l1[3].animate.set_opacity(0.35), l2[3].animate.set_opacity(0.35), run_time=0.3)
+        # ===== 4. 9x = 9, x = 1 exactly =====
+        self.until(S[4])
+        l3 = MT("9x", "=", "9"); l3.move_to([0, Y(800), 0]).align_to(l1, RIGHT).shift(LEFT * (l1[3].width))
+        self.until(wt(4, 1, 0.1)); self.ev("tick"); self.play(FadeIn(l3, shift=DOWN * 0.15), run_time=0.3, rate_func=EXPO)
+        ans = MT("x", "=", "1", size=124, color=OR)
+        ap = RoundedRectangle(width=ans.width + px(110), height=ans.height + px(70), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=7)
+        a_ = VGroup(ap, ans.move_to(ap)).move_to([X(360), Y(1030), 0])
+        ys = VGroup(RoundedRectangle(width=px(300), height=px(130), corner_radius=0.22, fill_color=OR, fill_opacity=1, stroke_width=0))
+        ys.add(H("YES", 64, WHITE_).move_to(ys[0])); ys.move_to([X(810), Y(1030), 0])
+        self.until(wt(4, 7, 0.12)); self.ev("stamp")
+        self.play(FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        self.play(FadeIn(ys, scale=1.3), run_time=0.25, rate_func=EXPO)
+        # ===== 5. Same number, two names. Follow for more =====
+        self.until(S[5])
+        tn = VGroup(H("0.999…", 96, INK), H("=", 96, GREY_P), H("1", 96, OR)).arrange(RIGHT, buff=0.35); cx(tn, 1240)
+        self.ev("tick"); self.play(FadeIn(tn, shift=UP * 0.2), run_time=0.35, rate_func=EXPO)
+        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        self.until(C[5] + 1.1); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(l1, l2, mn, rule, *st, l3, a_, ys, tn, fw, lb)
