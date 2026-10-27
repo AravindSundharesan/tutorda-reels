@@ -647,8 +647,10 @@ class ShortReel(MathReel):
             row.add(VGroup(c_, t_))
         row.arrange(RIGHT, buff=px(22)); cx(row, y); return row
     def comment_chip(self, s="Comment A, B, C or D"):
-        g = VGroup(RoundedRectangle(width=px(560), height=px(76), corner_radius=0.18, fill_color=INK, fill_opacity=1, stroke_width=0))
-        g.add(B(s, 32, WHITE_, SEMIBOLD).move_to(g[0])); cx(g, 1410); return g
+        t = B(s, 32, WHITE_, SEMIBOLD)
+        g = VGroup(RoundedRectangle(width=max(px(560), t.width + px(64)), height=px(76), corner_radius=0.18, fill_color=INK, fill_opacity=1, stroke_width=0))
+        g.add(t.move_to(g[0])); cx(g, 1410); return g
+    CTA = "Comment TRICKS for the free sheet"   # keyword lead magnet (27 Oct): replaces "Follow for more"
     def brand_flash(self, *gone):
         C = K.C
         self.until(K.DUR - 0.95); self.to(INK, *gone); self.remove(self.hdr_d)
@@ -712,7 +714,7 @@ class Cubic(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 430)
         self.ev("stamp"); self.play(FadeOut(VGroup(d1, d1b)), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(wt(5, 3, 0.1) if len(K.WT) > 5 else C[5] + 1.0); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(eq, a_, ax, g, v1, v2, xl, p1, l1, a1, p2, l2, a2, *rd, fw, lb)
 
@@ -766,7 +768,7 @@ class Area(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)).move_to(ax.c2p(0.32, 0.72))
         self.ev("stamp"); self.play(FadeOut(cc), FadeOut(gl), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[4] + 1.1); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(it, a_, ax, sq, g, area, gl, tl, fw, lb)
 
@@ -830,7 +832,7 @@ class Dice(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 470)
         self.ev("stamp"); self.play(FadeOut(VGroup(bars, bl, six, five)), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[4] + 1.1); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(a_, cells, nums, hdr_r, hdr_c, fw, lb)
 
@@ -882,7 +884,7 @@ class RectCircle(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 470)
         self.ev("stamp"); self.play(FadeOut(VGroup(af, rd)), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[4] + 1.2); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         for m in (rect, dot, rad, arc, wl, hl): m.clear_updaters()
         self.brand_flash(a_, circ, rect, dot, rad, arc, wl, hl, d45, fw, lb)
@@ -941,7 +943,7 @@ class SinLim(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 420)
         self.ev("stamp"); self.play(FadeOut(sq), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[5] + 0.9); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         for m in (rad, t1, sec, t2, tline, live): m.clear_updaters()
         self.brand_flash(a_, axl, arc, rad, t1, sec, t2, tline, live, fw, lb)
@@ -1013,7 +1015,7 @@ class Groups4(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 440)
         self.ev("stamp"); self.play(FadeOut(cc), FadeOut(sym), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[4] + 1.2); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(a_, Z, V, kl, ds, fw, lb)
 
@@ -1064,7 +1066,7 @@ class OddSq(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); fitw(a_, 940); cx(a_, 470)
         self.ev("stamp"); self.play(FadeOut(toks), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[4] + 1.6); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(a_, *Ls, cur, *sums, fw, lb)
 
@@ -1112,7 +1114,7 @@ class Eigen(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(100), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 940)
         self.ev("stamp"); self.play(FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[4] + 1.0); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(a_, mat, ce, nr, fw, lb)
 
@@ -1155,7 +1157,7 @@ class KingInt(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)).scale(0.66); cx(a_, 1190)
         self.ev("stamp"); self.play(FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[5] + 0.9); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(a_, I0, *steps, fw, lb)
 
@@ -1202,7 +1204,7 @@ class Monty(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 470)
         self.ev("stamp"); self.play(FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[4] + 1.6); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(a_, doors[0], doors[1], op, goat, yp, p1, p2b, fw, lb)
 
@@ -1251,7 +1253,7 @@ class Harmonic(ShortReel):
         ap = RoundedRectangle(width=ans.width + px(80), height=ans.height + px(50), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=6)
         a_ = VGroup(ap, ans.move_to(ap)); cx(a_, 430)
         self.ev("stamp"); self.play(FadeOut(ps), FadeOut(cc), GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[4] + 1.6); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(a_, bars, bl, *ms, fw, lb)
 
@@ -1531,6 +1533,6 @@ class Nines(ShortReel):
         self.until(S[5])
         tn = VGroup(H("0.999…", 96, INK), H("=", 96, GREY_P), H("1", 96, OR)).arrange(RIGHT, buff=0.35); cx(tn, 1240)
         self.ev("tick"); self.play(FadeIn(tn, shift=UP * 0.2), run_time=0.35, rate_func=EXPO)
-        fw = self.comment_chip("Follow for more"); fw[0].set_fill(OR)
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[5] + 1.1); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(l1, l2, mn, rule, *st, l3, a_, ys, tn, fw, lb)

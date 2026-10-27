@@ -13,7 +13,8 @@ Metricool for 10:00 and 18:00 IST. Aro reviews the night before and can delete a
 - Short format (from the sin x insights, 20 Oct; use `ShortReel` in engine/manim_math.py, see Cubic and Area): 17–22 s.
   Frame 0 already moving (graph drawing) with the question + A–D options on screen; spoken hook ≤ 2 s; options are NOT read.
   No spoken "comment" line: an on-screen "Comment A, B, C or D" chip appears at ~1.5 s. Header tag "JEE in 20s" (or "CSIR-NET in 20s"), NO numbers (Aro, 20 Oct).
-  Answer lands in the last line, then "Follow for more" (never a number), then a ~1 s brand flash (`brand_flash`), no long end card.
+  Answer lands in the last line, then the keyword CTA "Comment TRICKS for the free sheet" (spoken and on the closing chip,
+  `self.CTA`; never "Follow for more", never a number), then a ~1 s brand flash (`brand_flash`), no long end card.
   Timing env: START=0.05 IN_GAP=0.12 BEAT_GAP=0.18 END_HOLD=0.9; split tempo 1.08, cap 0.16.
 - Instagram via Metricool brand 7477800 (tutorda_), type REEL, showReelOnFeed true, isAiGenerated true, autoPublish true.
 - Spoken words and captions must match the on-screen notation exactly (screen shows ln → say "L N", caption "ln"; never "log").
@@ -55,7 +56,8 @@ Metricool for 10:00 and 18:00 IST. Aro reviews the night before and can delete a
 Hook question + "Comment your answer BEFORE the reveal 👇" · blank line · the common wrong instinct + "The 20-second method:"
 · 1️⃣ 2️⃣ 3️⃣ steps · "✅ Answer: …" · one line on where it applies in JEE Main / CSIR-NET · blank line ·
 "📌 Save this for revision · Share it with your JEE study partner" / "👉 Follow @tutorda_ for …" /
-"🎯 Your first JEE Main mock is free: tutorda.org" · blank line · 10–13 hashtags: #JEEMain #JEE2027 #JEEMaths #IITJEE
-#JEEPreparation #JEEAspirants + 3–4 topic tags + #MathReels #TutorDA (CSIR-NET reels: #CSIRNET #CSIRNETMaths #NETJRF #MScMaths
-instead of the JEE tags, and "Follow @tutorda_ for CSIR-NET maths").
+"💬 Comment TRICKS and we'll DM you our free 1-page sheet of 12 JEE maths tricks" · "🎯 Your first JEE Main mock is free: tutorda.org"
+· blank line · EXACTLY 5 hashtags (Instagram's cap since Dec 2025): #JEEMain #JEEMaths + 2 topic tags + #TutorDA
+(CSIR-NET reels: #CSIRNET #CSIRNETMaths + 2 topic tags + #TutorDA).
+Free sheet (keyword TRICKS): https://raw.githubusercontent.com/AravindSundharesan/tutorda-reels/main/freebies/TutorDA_12_JEE_Maths_Tricks.pdf
 First comment: a two-way vote ("Team stay or team switch? 👇").
