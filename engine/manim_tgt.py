@@ -16,8 +16,9 @@ class Tgt(F.Film2):
         self.Tm = lambda: self.renderer.time
         self._ground = Rectangle(width=9.2, height=16.4, fill_color=PAPER, fill_opacity=1, stroke_width=0).set_z_index(-20); self.add(self._ground)
         self.captions()
-        self.hdr = wordmark(px(250)); left(self.hdr.move_to([0, Y(118), 0])); self.hdr.set_z_index(12)
-        self.hdr_d = wordmark(px(250), dark=True); left(self.hdr_d.move_to([0, Y(118), 0])); self.hdr_d.set_z_index(12)
+        hy = getattr(self, "HDR_Y", 118)
+        self.hdr = wordmark(px(250)); left(self.hdr.move_to([0, Y(hy), 0])); self.hdr.set_z_index(12)
+        self.hdr_d = wordmark(px(250), dark=True); left(self.hdr_d.move_to([0, Y(hy), 0])); self.hdr_d.set_z_index(12)
         self.S = [c - 0.25 for c in K.C]
 
     def to(self, color, *gone):
@@ -27,7 +28,7 @@ class Tgt(F.Film2):
         self.add(self.hdr_d if color == INK else self.hdr)
 
     def label(self, s, dark):
-        g = B(s, 40, OR, SEMIBOLD); g.move_to([0, Y(118), 0]).align_to([X(984), 0, 0], RIGHT); g.set_z_index(12)
+        g = B(s, 40, OR, SEMIBOLD); g.move_to([0, Y(getattr(self, "HDR_Y", 118)), 0]).align_to([X(getattr(self, "HDR_R", 984)), 0, 0], RIGHT); g.set_z_index(12)
         return g
 
     # ---------- Dynamic Assessment (ink): question card + accuracy / time / confidence tiles ----------

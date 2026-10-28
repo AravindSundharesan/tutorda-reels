@@ -104,8 +104,13 @@ class Film2(ReelScene):
         m.add_updater(upd); return m
 
     def captions(self):
-        band = Rectangle(width=9.2, height=px(1920 - BAND_TOP), fill_color=INK, fill_opacity=1, stroke_width=0)
-        band.move_to([0, Y(BAND_TOP) - band.height / 2, 0]).set_z_index(14); self.add(band); self._keep = [band]
+        pill = getattr(self, "CAP_PILL", False)          # v2 (28 Oct): floating caption inside Instagram's safe zone, no band
+        cap_y = getattr(self, "CAP_Y", BAND_TOP + 150)
+        if pill:
+            self._keep = []
+        else:
+            band = Rectangle(width=9.2, height=px(1920 - BAND_TOP), fill_color=INK, fill_opacity=1, stroke_width=0)
+            band.move_to([0, Y(BAND_TOP) - band.height / 2, 0]).set_z_index(14); self.add(band); self._keep = [band]
         now = lambda: self.renderer.time; caps = []
         for i in range(len(K.CLIPS) - 1):
             cap = K.CLIPS[i][2]; lines = [l.split() for l in cap.split("|")]
@@ -118,7 +123,11 @@ class Film2(ReelScene):
                                      t2c=({f"[{spans[k][1]}:{spans[k][2]}]": OR} if k >= 0 and spans[k][0] == li else {}))
                                 for li in range(len(lines))])
                 for li, r in enumerate(rows): r.shift(UP * (-li * px(58) - baseline(r)))
-                return rows.move_to([0, Y(BAND_TOP + 150), 0])
+                rows.move_to([getattr(self, "CAP_X", 0), Y(cap_y), 0])
+                if not pill: return rows
+                bg = RoundedRectangle(width=max(r.width for r in rows) + px(56), height=rows.height + px(44), corner_radius=0.16,
+                                      fill_color=INK, fill_opacity=0.92, stroke_width=0).move_to(rows)
+                return VGroup(bg, rows)
             variants = [make(k) for k in range(-1, len(words))]
             starts = np.array(K.WT[i]["starts"]) + K._shift(i)
             t0 = -1.0 if i == 0 else K.C[i] - 0.05
