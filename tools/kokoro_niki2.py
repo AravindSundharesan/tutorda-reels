@@ -20,11 +20,29 @@ k = Kokoro(os.path.join(KIT, "models/kokoro-v1.0.onnx"), os.path.join(KIT, "mode
 d = os.path.join(KIT, "models", "sherpa-onnx-zipformer-en-2023-06-26")
 rec = sherpa_onnx.OfflineRecognizer.from_transducer(encoder=f"{d}/encoder-epoch-99-avg-1.int8.onnx", decoder=f"{d}/decoder-epoch-99-avg-1.onnx",
       joiner=f"{d}/joiner-epoch-99-avg-1.int8.onnx", tokens=f"{d}/tokens.txt", num_threads=2)
+# Pronunciation dictionary (28 Oct): Kokoro's reader says JEE as "gee", blurs Tutor-dah, reads CSIR as "see-sir".
+# Words here are spoken from fixed IPA; everything else goes through Kokoro's own reader.
+LEX = {"tutorda": "tˈuːtɚ dˈɑː", "tutor-dah": "tˈuːtɚ dˈɑː", "jee": "dʒˌeɪ ˌiː ˈiː", "csir": "sˌiː ˌɛs ˌaɪ ˈɑːɹ",
+       "csir-net": "sˌiː ˌɛs ˌaɪ ˈɑːɹ nˈɛt", "ielts": "ˈaɪ ˈɛlts", "pte": "pˌiː ˌtiː ˈiː", "iit": "ˌaɪ ˌaɪ ˈtiː",
+       "neet": "nˈiːt", "neet-ug": "nˈiːt jˌuː dʒˈiː", "ln": "ˌɛl ˈɛn", "pdf": "pˌiː dˌiː ˈɛf", "nta": "ˌɛn ˌtiː ˈeɪ",
+       "tutorda.org": "tˈuːtɚ dˈɑː, dˈɑːt ˈɔːɹɡ"}   # the short break keeps "dah" from merging into "dot"
+LEX.update(json.loads(E("LEX_JSON", "{}")))
+def to_phonemes(text):
+    out, chunk = [], []
+    def flush():
+        if chunk: out.append(k.tokenizer.phonemize(" ".join(chunk), "en-us")); chunk.clear()
+    for w in text.split():
+        core = w.strip(".,!?;:'\"()").lower(); tail = w[len(w.rstrip(".,!?;:")):]
+        if core in LEX: flush(); out.append(LEX[core] + tail)
+        else: chunk.append(w)
+    flush(); return " ".join(out)
 sr = 24000; tmp = "/tmp/_kn_line.wav"; outs = []
 for line in lines:
     words = line.split(); stress = [w.startswith("*") or w.rstrip(".,!?").endswith("*") for w in words]
     plain = [w.replace("*", "") for w in words]
-    a, sr = k.create(" ".join(plain), voice=voice, speed=SPEED, lang="en-us"); a = a.astype(np.float64)
+    ph = to_phonemes(" ".join(plain))
+    if E("SHOW_PH"): print(ph, file=sys.stderr)
+    a, sr = k.create(ph, voice=voice, speed=SPEED, lang="en-us", is_phonemes=True); a = a.astype(np.float64)
     m, h = speech_mask(a, sr, -40); idx = np.where(m)[0]; a = a[max(0, idx[0] * h - 480): (idx[-1] + 1) * h + 960]
     sf.write(tmp, a, sr); rw, dur = recognise(rec, tmp)
     starts, _ = align(plain, rw, 0.0, dur); ends = starts[1:] + [dur]

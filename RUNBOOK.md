@@ -10,6 +10,9 @@ Metricool for 10:00 and 18:00 IST. Aro reviews the night before and can delete a
   to Niki with word stress: mark 2–3 key words per line with *asterisks*, then
   `F0=196 RANGE=1.25 FLAT=0.6 EMPH_ST=2.5 EMPH_DB=3 python3 tools/kokoro_niki2.py af_sarah topics/<t>/vo_full.wav "line 1" …`
   (then convert to mp3 and continue with cuts/split/align as usual). Say in the run summary that the Sarah voice was used.
+  Pronunciation dictionary (28 Oct) in kokoro_niki2.py: write JEE, NEET, IELTS, PTE, CSIR-NET, PDF, TutorDA and tutorda.org
+  as plain words in the line; they are spoken from fixed phonetics (J-E-E, C-S-I-R, "Tutor-dah"). Add new acronyms to LEX
+  (or pass LEX_JSON='{"word": "IPA"}'). Check with tools/check_voice.py: TutorDA should come back as "Tutarda" (as Niki's does).
 - Short format (from the sin x insights, 20 Oct; use `ShortReel` in engine/manim_math.py, see Cubic and Area): 17–22 s.
   Frame 0 already moving (graph drawing) with the question + A–D options on screen; spoken hook ≤ 2 s; options are NOT read.
   No spoken "comment" line: an on-screen "Comment A, B, C or D" chip appears at ~1.5 s. Header tag "JEE in 20s" (or "CSIR-NET in 20s"), NO numbers (Aro, 20 Oct).
