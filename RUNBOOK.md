@@ -61,3 +61,18 @@ Hook question + "Comment your answer BEFORE the reveal 👇" · blank line · th
 (CSIR-NET reels: #CSIRNET #CSIRNETMaths + 2 topic tags + #TutorDA).
 Free sheet (keyword TRICKS): https://raw.githubusercontent.com/AravindSundharesan/tutorda-reels/main/freebies/TutorDA_12_JEE_Maths_Tricks.pdf
 First comment: a two-way vote ("Team stay or team switch? 👇").
+
+## Template v2 and audit rules (28 Oct, from the 17–26 Oct Instagram audit; these override older lines above)
+- Build every new reel on `ShortReel2` (see `Nines2`): header at y 262, all text inside y 330–1440 and x 96–870
+  (Instagram's top bar, bottom caption overlay and right action rail cover the rest), floating caption pill at y 1352,
+  chips at y 1205. The hook question sits inside the profile-grid crop (y 240–1680).
+- Length 22–25 s (watch time drove reach; the 16–20 s cuts lost it). Seven lines: hook → the common wrong answer
+  ("Most people say …") → method → payoff → a second angle or check ("Still not sure? …") → answer → keyword CTA.
+  Something must move in every beat; no static frame longer than 2 s.
+- Early chip: "Pause and guess" (A–D comment prompts got no comments). The only comment ask is the end keyword:
+  "Comment TRICKS for the free sheet".
+- Series label "Daily maths trick" (bio promises "One JEE maths trick a day").
+- Mix: JEE first. CSIR-NET at most once a week. Favour "which is bigger / which total / should you switch" puzzles: they get shared.
+- Never post promos as reels (213 views, 30% followers). Promos go to stories or a pinned post.
+- Post a story with each reel (reel + Yes/No poll) and answer real comments within the first hour (draft with /ig-reply).
+- Track weekly: follows per 1,000 viewers (27 Oct baseline 0.3; target 2+), from each reel's Instagram insights.

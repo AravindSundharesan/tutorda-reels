@@ -1548,7 +1548,7 @@ class ShortReel2(ShortReel):
 
 
 class Nines2(ShortReel2):
-    EVENTS = "nines2"; SERIES = "Maths in 25s"
+    EVENTS = "nines2"; SERIES = "Daily maths trick"
     def construct(self):
         self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
         RD = "#E5484D"
