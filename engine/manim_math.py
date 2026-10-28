@@ -1543,7 +1543,7 @@ class Nines(ShortReel):
 # for the action rail), header below the Reels top bar, floating caption pill instead of the bottom band (which the
 # Instagram caption overlay covers), hook inside the profile-grid crop, 22-25 s with a trap beat and motion to the end. ----------------
 class ShortReel2(ShortReel):
-    HDR_Y = 262; HDR_R = 870; CAP_PILL = True; CAP_Y = 1352; CAP_X = px(490 - 540); CHIP_Y = 1205; CX = 490
+    HDR_Y = 262; HDR_R = 870; CAP_PILL = False; BAND_TOP = 1460; CAP_Y = 1545; CAP_X = 0; CHIP_Y = 1250; CX = 490   # captions in the footer band (Aro, 28 Oct)
     def c2(self, m, y):           # centre on the safe-zone axis (x = 490)
         return m.move_to([X(490), Y(y), 0])
 

@@ -64,8 +64,8 @@ First comment: a two-way vote ("Team stay or team switch? 👇").
 
 ## Template v2 and audit rules (28 Oct, from the 17–26 Oct Instagram audit; these override older lines above)
 - Build every new reel on `ShortReel2` (see `Nines2`): header at y 262, all text inside y 330–1440 and x 96–870
-  (Instagram's top bar, bottom caption overlay and right action rail cover the rest), floating caption pill at y 1352,
-  chips at y 1205. The hook question sits inside the profile-grid crop (y 240–1680).
+  (Instagram's top bar, bottom caption overlay and right action rail cover the rest). Captions stay in the ink FOOTER
+  band (Aro, 28 Oct): band from y 1460, caption text at y 1545 (upper part of the band); chips at y 1250. The hook question sits inside the profile-grid crop (y 240–1680).
 - Length 22–25 s (watch time drove reach; the 16–20 s cuts lost it). Seven lines: hook → the common wrong answer
   ("Most people say …") → method → payoff → a second angle or check ("Still not sure? …") → answer → keyword CTA (Follow TutorDA + comment TRICKS).
   Something must move in every beat; no static frame longer than 2 s.

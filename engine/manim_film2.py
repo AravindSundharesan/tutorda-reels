@@ -105,12 +105,13 @@ class Film2(ReelScene):
 
     def captions(self):
         pill = getattr(self, "CAP_PILL", False)          # v2 (28 Oct): floating caption inside Instagram's safe zone, no band
-        cap_y = getattr(self, "CAP_Y", BAND_TOP + 150)
+        bt = getattr(self, "BAND_TOP", BAND_TOP)
+        cap_y = getattr(self, "CAP_Y", bt + 150)
         if pill:
             self._keep = []
         else:
-            band = Rectangle(width=9.2, height=px(1920 - BAND_TOP), fill_color=INK, fill_opacity=1, stroke_width=0)
-            band.move_to([0, Y(BAND_TOP) - band.height / 2, 0]).set_z_index(14); self.add(band); self._keep = [band]
+            band = Rectangle(width=9.2, height=px(1920 - bt), fill_color=INK, fill_opacity=1, stroke_width=0)
+            band.move_to([0, Y(bt) - band.height / 2, 0]).set_z_index(14); self.add(band); self._keep = [band]
         now = lambda: self.renderer.time; caps = []
         for i in range(len(K.CLIPS) - 1):
             cap = K.CLIPS[i][2]; lines = [l.split() for l in cap.split("|")]
