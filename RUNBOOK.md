@@ -62,7 +62,7 @@ Hook question + "Comment your answer BEFORE the reveal 👇" · blank line · th
 "👉 Follow @tutorda_ and comment TRICKS to get the PDF: 12 JEE maths tricks on one page" · "🎯 Your first JEE Main mock is free: tutorda.org"
 · blank line · EXACTLY 5 hashtags (Instagram's cap since Dec 2025): #JEEMain #JEEMaths + 2 topic tags + #TutorDA
 (CSIR-NET reels: #CSIRNET #CSIRNETMaths + 2 topic tags + #TutorDA).
-Free sheet (keyword TRICKS): https://raw.githubusercontent.com/AravindSundharesan/tutorda-reels/main/freebies/TutorDA_12_JEE_Maths_Tricks.pdf
+Free sheet (keyword TRICKS): https://cdn.jsdelivr.net/gh/AravindSundharesan/tutorda-reels@main/freebies/TutorDA_12_JEE_Maths_Tricks.pdf (jsDelivr serves it as a real PDF; raw.githubusercontent sends octet-stream, which stalls in the Instagram browser)
 First comment: a two-way vote ("Team stay or team switch? 👇").
 
 ## Template v2 and audit rules (28 Oct, from the 17–26 Oct Instagram audit; these override older lines above)
