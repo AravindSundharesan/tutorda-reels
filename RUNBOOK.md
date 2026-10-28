@@ -13,7 +13,7 @@ Metricool for 10:00 and 18:00 IST. Aro reviews the night before and can delete a
 - Short format (from the sin x insights, 20 Oct; use `ShortReel` in engine/manim_math.py, see Cubic and Area): 17–22 s.
   Frame 0 already moving (graph drawing) with the question + A–D options on screen; spoken hook ≤ 2 s; options are NOT read.
   No spoken "comment" line: an on-screen "Comment A, B, C or D" chip appears at ~1.5 s. Header tag "JEE in 20s" (or "CSIR-NET in 20s"), NO numbers (Aro, 20 Oct).
-  Answer lands in the last line, then the keyword CTA "Comment TRICKS for the free sheet" (spoken and on the closing chip,
+  Answer lands in the last line, then the CTA "Follow TutorDA and comment TRICKS to get the PDF" (spoken "Follow Tutor-dah, and comment tricks to get the P D F", closing chip
   `self.CTA`; never "Follow for more", never a number), then a ~1 s brand flash (`brand_flash`), no long end card.
   Timing env: START=0.05 IN_GAP=0.12 BEAT_GAP=0.18 END_HOLD=0.9; split tempo 1.08, cap 0.16.
 - Instagram via Metricool brand 7477800 (tutorda_), type REEL, showReelOnFeed true, isAiGenerated true, autoPublish true.
@@ -56,7 +56,7 @@ Metricool for 10:00 and 18:00 IST. Aro reviews the night before and can delete a
 Hook question + "Comment your answer BEFORE the reveal 👇" · blank line · the common wrong instinct + "The 20-second method:"
 · 1️⃣ 2️⃣ 3️⃣ steps · "✅ Answer: …" · one line on where it applies in JEE Main / CSIR-NET · blank line ·
 "📌 Save this for revision · Share it with your JEE study partner" / "👉 Follow @tutorda_ for …" /
-"💬 Comment TRICKS and we'll DM you our free 1-page sheet of 12 JEE maths tricks" · "🎯 Your first JEE Main mock is free: tutorda.org"
+"👉 Follow @tutorda_ and comment TRICKS to get the PDF: 12 JEE maths tricks on one page" · "🎯 Your first JEE Main mock is free: tutorda.org"
 · blank line · EXACTLY 5 hashtags (Instagram's cap since Dec 2025): #JEEMain #JEEMaths + 2 topic tags + #TutorDA
 (CSIR-NET reels: #CSIRNET #CSIRNETMaths + 2 topic tags + #TutorDA).
 Free sheet (keyword TRICKS): https://raw.githubusercontent.com/AravindSundharesan/tutorda-reels/main/freebies/TutorDA_12_JEE_Maths_Tricks.pdf
@@ -67,10 +67,10 @@ First comment: a two-way vote ("Team stay or team switch? 👇").
   (Instagram's top bar, bottom caption overlay and right action rail cover the rest), floating caption pill at y 1352,
   chips at y 1205. The hook question sits inside the profile-grid crop (y 240–1680).
 - Length 22–25 s (watch time drove reach; the 16–20 s cuts lost it). Seven lines: hook → the common wrong answer
-  ("Most people say …") → method → payoff → a second angle or check ("Still not sure? …") → answer → keyword CTA.
+  ("Most people say …") → method → payoff → a second angle or check ("Still not sure? …") → answer → keyword CTA (Follow TutorDA + comment TRICKS).
   Something must move in every beat; no static frame longer than 2 s.
 - Early chip: "Pause and guess" (A–D comment prompts got no comments). The only comment ask is the end keyword:
-  "Comment TRICKS for the free sheet".
+  "Follow TutorDA and comment TRICKS to get the PDF" (Aro, 28 Oct).
 - Series label "Daily maths trick" (bio promises "One JEE maths trick a day").
 - Mix: JEE first. CSIR-NET at most once a week. Favour "which is bigger / which total / should you switch" puzzles: they get shared.
 - Never post promos as reels (213 views, 30% followers). Promos go to stories or a pinned post.

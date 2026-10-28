@@ -647,10 +647,11 @@ class ShortReel(MathReel):
             row.add(VGroup(c_, t_))
         row.arrange(RIGHT, buff=px(22)); cx(row, y); return row
     def comment_chip(self, s="Comment A, B, C or D"):
-        t = B(s, 32, WHITE_, SEMIBOLD)
-        g = VGroup(RoundedRectangle(width=max(px(560), t.width + px(64)), height=px(76), corner_radius=0.18, fill_color=INK, fill_opacity=1, stroke_width=0))
+        rows = [B(l.strip(), 40 if s == self.CTA else 32, WHITE_, SEMIBOLD) for l in s.split("|")]   # "|" = line break; CTA larger
+        t = VGroup(*rows).arrange(DOWN, buff=px(10))
+        g = VGroup(RoundedRectangle(width=max(px(560), t.width + px(64)), height=t.height + px(44), corner_radius=0.18, fill_color=INK, fill_opacity=1, stroke_width=0))
         g.add(t.move_to(g[0])); g.move_to([px(getattr(self, "CX", 540)) - 4.5, Y(getattr(self, "CHIP_Y", 1410)), 0]); return g
-    CTA = "Comment TRICKS for the free sheet"   # keyword lead magnet (27 Oct): replaces "Follow for more"
+    CTA = "Follow TutorDA | and comment TRICKS | to get the PDF"   # keyword lead magnet (Aro, 28 Oct)
     def brand_flash(self, *gone):
         C = K.C
         self.until(K.DUR - 0.95); self.to(INK, *gone); self.remove(self.hdr_d)
