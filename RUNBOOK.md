@@ -59,10 +59,10 @@ Metricool for 10:00 and 18:00 IST. Aro reviews the night before and can delete a
 Hook question + "Comment your answer BEFORE the reveal 👇" · blank line · the common wrong instinct + "The 20-second method:"
 · 1️⃣ 2️⃣ 3️⃣ steps · "✅ Answer: …" · one line on where it applies in JEE Main / CSIR-NET · blank line ·
 "📌 Save this for revision · Share it with your JEE study partner" / "👉 Follow @tutorda_ for …" /
-"👉 Follow @tutorda_ and comment TRICKS to get the PDF: 12 JEE maths tricks on one page" · "🎯 Your first JEE Main mock is free: tutorda.org"
+"👉 Follow @tutorda_ and comment TRICKS to get the PDF: 14 JEE maths tricks on one page" · "🎯 Your first JEE Main mock is free: tutorda.org"
 · blank line · EXACTLY 5 hashtags (Instagram's cap since Dec 2025): #JEEMain #JEEMaths + 2 topic tags + #TutorDA
 (CSIR-NET reels: #CSIRNET #CSIRNETMaths + 2 topic tags + #TutorDA).
-Free sheet (keyword TRICKS): https://cdn.jsdelivr.net/gh/AravindSundharesan/tutorda-reels@main/freebies/TutorDA_12_JEE_Maths_Tricks.pdf (jsDelivr serves it as a real PDF; raw.githubusercontent sends octet-stream, which stalls in the Instagram browser)
+Free sheet (keyword TRICKS, 14 tricks since 29 Oct): https://cdn.jsdelivr.net/gh/AravindSundharesan/tutorda-reels@5064618/freebies/TutorDA_JEE_Maths_Tricks.pdf (pin the commit so the CDN never serves an old copy). ManyChat free plan: add one "Auto-DM links from comments" automation per new reel (jsDelivr serves it as a real PDF; raw.githubusercontent sends octet-stream, which stalls in the Instagram browser)
 First comment: a two-way vote ("Team stay or team switch? 👇").
 
 ## Template v2 and audit rules (28 Oct, from the 17–26 Oct Instagram audit; these override older lines above)
