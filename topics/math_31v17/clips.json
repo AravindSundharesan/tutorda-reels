@@ -1,0 +1,37 @@
+[
+[
+"A",
+"ELEVENLABS",
+"31^11 or 17^14. | Which is bigger?"
+],
+[
+"B",
+"ELEVENLABS",
+"Most people pick 31^11, | because the base is bigger."
+],
+[
+"C",
+"ELEVENLABS",
+"Don't compute anything. | Compare both with powers of 2."
+],
+[
+"D",
+"ELEVENLABS",
+"31 is less than 32, | so 31^11 is less than 2^55."
+],
+[
+"E",
+"ELEVENLABS",
+"17 is more than 16, | so 17^14 is more than 2^56."
+],
+[
+"F",
+"ELEVENLABS",
+"2^56 beats 2^55. | 17^14 wins, by more than 6 times."
+],
+[
+"G",
+"ELEVENLABS",
+"Save this for your exam. | Follow TutorDA and comment TRICKS to get the PDF."
+]
+]

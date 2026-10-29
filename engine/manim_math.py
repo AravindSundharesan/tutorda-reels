@@ -1642,3 +1642,162 @@ class Nines2(ShortReel2):
         fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[6] + 1.0); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(tn, two, fw, lb)
+
+
+def _opts2(self, vals, y, w=176):
+    row = VGroup()
+    for L, v in zip("ABCD", vals):
+        c_ = RoundedRectangle(width=px(w), height=px(104), corner_radius=0.14, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+        t_ = VGroup(B(L, 32, OR, SEMIBOLD), M(v, 50)).arrange(RIGHT, buff=0.18)
+        if t_.width > px(w - 18): t_.scale_to_fit_width(px(w - 18))
+        row.add(VGroup(c_, t_.move_to(c_)))
+    row.arrange(RIGHT, buff=px(18)); return self.c2(row, y)
+ShortReel2.opts2 = _opts2
+ShortReel2.SAVE = "Save this for your exam"
+
+
+class Telescope(ShortReel2):
+    EVENTS = "tele"; SERIES = "Daily maths trick"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        RD = "#E5484D"
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        # ===== A. Can you add all 99 of these in 10 seconds? (terms writing on frame 0) =====
+        q = self.c2(fitw(H("Add all 99 in 10 seconds?", 70, INK), 760), 360)
+        parts = [r"\frac{1}{1\cdot2}", "+", r"\frac{1}{2\cdot3}", "+", r"\frac{1}{3\cdot4}", r"+\cdots+", r"\frac{1}{99\cdot100}"]
+        sm = MathTex(*parts, font_size=72, color=INK); fitw(sm, 760); self.c2(sm, 530)
+        opts = self.opts2([r"1", r"\tfrac{99}{100}", r"\tfrac{100}{99}", r"\tfrac{1}{100}"], 700)
+        self.add(q, sm[0], opts)
+        self.play(LaggedStart(*[FadeIn(p, shift=LEFT * 0.15) for p in sm[1:]], lag_ratio=0.35), run_time=1.1, rate_func=EXPO)
+        cc = self.comment_chip(self.SAVE)
+        self.until(1.3); self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), run_time=0.3)
+        # ===== B. Most students hunt for a common denominator. Don't. =====
+        self.until(S[1])
+        self.ev("tick"); self.play(FadeOut(VGroup(q, opts), shift=UP * 0.2), sm.animate.scale(0.85).move_to([X(490), Y(400), 0]), run_time=0.4, rate_func=EXPO)
+        cd = self.c2(B("common denominator?", 44, GREY_P, SEMIBOLD), 560)
+        big = self.c2(M(r"1\cdot2\cdot3\cdot4\cdots99\cdot100", 64), 660)
+        self.until(wt(1, 5, 0.1)); self.play(FadeIn(cd), FadeIn(big, shift=UP * 0.1), run_time=0.35, rate_func=EXPO)
+        x1 = Line(big.get_corner(UL) + LEFT * 0.1, big.get_corner(DR) + RIGHT * 0.1, color=RD, stroke_width=10)
+        x2 = Line(big.get_corner(DL) + LEFT * 0.1, big.get_corner(UR) + RIGHT * 0.1, color=RD, stroke_width=10)
+        self.until(wt(1, 7, 0.05)); self.ev("tick"); self.play(Create(x1), Create(x2), run_time=0.3)
+        # ===== C. Split every term: 1/k - 1/(k+1) =====
+        self.until(S[2])
+        idn = MathTex(r"\frac{1}{k(k+1)}", "=", r"\frac{1}{k}", "-", r"\frac{1}{k+1}", font_size=84, color=INK); self.c2(idn, 600)
+        self.ev("tick"); self.play(FadeOut(VGroup(cd, big, x1, x2), shift=UP * 0.2), FadeIn(idn[0], shift=UP * 0.15), run_time=0.35, rate_func=EXPO)
+        self.until(wt(2, 3, 0.1)); self.play(FadeIn(idn[1:3], shift=LEFT * 0.15), run_time=0.3)
+        self.until(wt(2, 5, 0.15)); self.play(FadeIn(idn[3:], shift=LEFT * 0.15), idn[2].animate.set_color(OR), run_time=0.3)
+        self.play(idn[4].animate.set_color(OR), run_time=0.2)
+        # ===== D. Write them out, and the middle terms cancel in pairs. =====
+        self.until(S[3])
+        tk1 = ["1", "-", r"\tfrac12", "+", r"\tfrac12", "-", r"\tfrac13", "+", r"\tfrac13", "-", r"\tfrac14"]
+        tk2 = ["+", r"\cdots", "+", r"\tfrac{1}{99}", "-", r"\tfrac{1}{100}"]
+        e1 = MathTex(*tk1, font_size=84, color=INK); fitw(e1, 780); self.c2(e1, 770)
+        e2 = MathTex(*tk2, font_size=84, color=INK); e2.scale(e1[2].height / MathTex(r"\tfrac12", font_size=84).height); self.c2(e2, 900)
+        ex = VGroup(e1, e2)
+        self.ev("tick"); self.play(idn.animate.scale(0.75).move_to([X(490), Y(590), 0]), Write(e1), run_time=0.8)
+        self.play(Write(e2), run_time=0.4)
+        def sl(m0, m1): return Line(m0.get_left() + LEFT * 0.05, m1.get_right() + RIGHT * 0.05, color=OR, stroke_width=8)
+        st = [sl(e1[1], e1[4]), sl(e1[5], e1[8]), sl(e1[9], e1[10]), sl(e2[0], e2[3])]
+        dim = [VGroup(*e1[1:5]), VGroup(*e1[5:9]), VGroup(*e1[9:11]), VGroup(*e2[0:4])]
+        self.until(wt(3, 7, 0.15)); self.ev("tick")
+        self.play(LaggedStart(*[AnimationGroup(Create(s_), d_.animate.set_opacity(0.3)) for s_, d_ in zip(st, dim)], lag_ratio=0.4), run_time=1.1)
+        # ===== E. Only the first and the last survive: 1 - 1/100 =====
+        self.until(S[4])
+        self.play(e1[0].animate.set_color(OR).scale(1.2), run_time=0.25)
+        self.until(wt(4, 5, 0.1)); self.play(e2[4:6].animate.set_color(OR).scale(1.2), run_time=0.25)
+        rs = MathTex("=", "1", "-", r"\frac{1}{100}", font_size=84, color=INK); self.c2(rs, 1040); rs[1].set_color(OR); rs[3].set_color(OR)
+        self.until(wt(4, 7, 0.1)); self.ev("tick"); self.play(TransformFromCopy(VGroup(e1[0], e2[4], e2[5]), rs[1:]), FadeIn(rs[0]), run_time=0.5, rate_func=EXPO)
+        # ===== F. So the sum is 99/100. Option B. =====
+        self.until(S[5])
+        self.play(FadeOut(VGroup(idn, ex, *st), shift=UP * 0.2), rs.animate.move_to([X(490), Y(560), 0]), run_time=0.35, rate_func=EXPO)
+        ans = MathTex(r"\frac{99}{100}", font_size=120, color=OR)
+        ap = RoundedRectangle(width=ans.width + px(110), height=ans.height + px(60), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=7)
+        a_ = VGroup(ap, ans.move_to(ap)).move_to([X(400), Y(880), 0])
+        ob = VGroup(RoundedRectangle(width=px(230), height=px(110), corner_radius=0.2, fill_color=OR, fill_opacity=1, stroke_width=0)); ob.add(H("B", 64, WHITE_).move_to(ob[0])); ob.next_to(a_, RIGHT, buff=px(30))
+        self.play(FadeOut(cc), run_time=0.2)
+        self.until(wt(5, 4, 0.12)); self.ev("stamp"); self.play(GrowFromCenter(a_), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        self.until(wt(5, 6, 0.1)); self.play(FadeIn(ob, scale=1.3), run_time=0.25, rate_func=EXPO)
+        # ===== G. Save this. Follow TutorDA and comment TRICKS to get the PDF. =====
+        self.until(S[6])
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
+        self.until(C[6] + 1.2); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(sm, rs, a_, ob, fw, lb)
+
+
+class Pow2(ShortReel2):
+    EVENTS = "pw2"; SERIES = "Daily maths trick"
+    def construct(self):
+        self.setup_common(); C, wt, S, T = K.C, K.wt, self.S, self.Tm
+        RD = "#E5484D"
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        q = self.c2(H("Which is bigger?", 84, INK), 360)
+        ang = ValueTracker(6 * DEGREES); piv = [X(490), Y(700), 0]; L = px(560); drop = 0
+        lt, rt = MathTex(r"31^{11}", font_size=84, color=INK), MathTex(r"17^{14}", font_size=84, color=INK)
+        la, ra = B("A", 34, OR, SEMIBOLD), B("B", 34, OR, SEMIBOLD)
+        def card(num, lab):
+            r = RoundedRectangle(width=num.width + px(70), height=px(150), corner_radius=0.16, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+            num.move_to(r); return VGroup(r, num)
+        cl, cr = card(lt, la), card(rt, ra)
+        def bal():
+            a = ang.get_value(); d = np.array([np.cos(a), np.sin(a), 0]) * L / 2
+            pl, pr = np.array(piv) - d, np.array(piv) + d
+            cl.move_to(pl + UP * (cl.height / 2 + 0.05)); cr.move_to(pr + UP * (cr.height / 2 + 0.05))
+            return Line(pl, pr, color=INK, stroke_width=10)
+        stand = VGroup(Polygon([X(490), Y(700), 0], [X(440), Y(810), 0], [X(540), Y(810), 0], fill_color=INK, fill_opacity=1, stroke_width=0))
+        scale_ = always_redraw(bal)
+        self.add(q, stand, scale_, cl, cr)
+        self.play(ang.animate.set_value(-6 * DEGREES), run_time=0.9, rate_func=rate_functions.ease_in_out_sine)
+        self.play(ang.animate.set_value(4 * DEGREES), run_time=0.7, rate_func=rate_functions.ease_in_out_sine)
+        cc = self.comment_chip(self.SAVE); self.ev("tick"); self.play(FadeIn(cc, shift=UP * 0.15), ang.animate.set_value(0), run_time=0.5)
+        # ===== B. Most people pick 31^11 (base is bigger) =====
+        self.until(S[1])
+        bb = self.c2(SER("bigger base?", 72, RD), 960)
+        self.until(wt(1, 3, 0.1)); self.ev("tick")
+        self.play(ang.animate.set_value(10 * DEGREES), lt.animate.set_color(RD), run_time=0.5, rate_func=EXPO)
+        self.until(wt(1, 6, 0.1)); self.play(FadeIn(bb, shift=UP * 0.15), run_time=0.3)
+        # ===== C. Compare both with powers of 2 =====
+        self.until(S[2])
+        pw = VGroup(*[tag(s, 40, INK, PAPER2) for s in ("2", "4", "8", "16", "32", "64")]).arrange(RIGHT, buff=px(14)); self.c2(pw, 960)
+        self.ev("tick"); self.play(FadeOut(bb), lt.animate.set_color(INK), ang.animate.set_value(0), run_time=0.35)
+        self.until(wt(2, 6, 0.15)); self.play(LaggedStart(*[FadeIn(p, shift=UP * 0.1) for p in pw], lag_ratio=0.15), run_time=0.7)
+        self.play(Indicate(pw[3], color=OR), Indicate(pw[4], color=OR), run_time=0.6)
+        # ===== D. 31 < 32 so 31^11 < 2^55 =====
+        self.until(S[3])
+        sc = VGroup(stand, lt, rt, la, ra)
+        self.remove(scale_); frozen = bal(); self.add(frozen)
+        allsc = VGroup(frozen, stand, cl, cr)
+        self.ev("tick"); self.play(FadeOut(VGroup(q, pw), shift=UP * 0.2), allsc.animate.scale(0.62).move_to([X(490), Y(450), 0]), run_time=0.45, rate_func=EXPO)
+        r1 = MathTex("31", "<", "32", "=", "2^5", font_size=76, color=INK); self.c2(r1, 680)
+        r2 = MathTex(r"31^{11}", "<", r"32^{11}", "=", r"2^{55}", font_size=76, color=INK); self.c2(r2, 790)
+        self.until(wt(3, 4, 0.15)); self.play(FadeIn(r1, shift=UP * 0.12), run_time=0.35, rate_func=EXPO)
+        self.until(wt(3, 6, 0.15)); self.play(FadeIn(r2, shift=UP * 0.12), run_time=0.35, rate_func=EXPO)
+        self.until(wt(3, 10, 0.15)); self.play(r2[4].animate.set_color(OR), run_time=0.25)
+        # ===== E. 17 > 16 so 17^14 > 2^56 =====
+        self.until(S[4])
+        r3 = MathTex("17", ">", "16", "=", "2^4", font_size=76, color=INK); self.c2(r3, 930)
+        r4 = MathTex(r"17^{14}", ">", r"16^{14}", "=", r"2^{56}", font_size=76, color=INK); self.c2(r4, 1040)
+        self.until(wt(4, 4, 0.15)); self.ev("tick"); self.play(FadeIn(r3, shift=UP * 0.12), run_time=0.35, rate_func=EXPO)
+        self.until(wt(4, 6, 0.15)); self.play(FadeIn(r4, shift=UP * 0.12), run_time=0.35, rate_func=EXPO)
+        self.until(wt(4, 10, 0.15)); self.play(r4[4].animate.set_color(OR), run_time=0.25)
+        # ===== F. 2^56 beats 2^55: 17^14 wins (by more than 6 times) =====
+        self.until(S[5])
+        ch = MathTex(r"31^{11}", "<", r"2^{55}", "<", r"2^{56}", "<", r"17^{14}", font_size=80, color=INK); fitw(ch, 760); self.c2(ch, 1010)
+        ch[2].set_color(OR); ch[4].set_color(OR)
+        self.play(FadeOut(VGroup(r1, r3), shift=UP * 0.15), r2.animate.move_to([X(490), Y(700), 0]), r4.animate.move_to([X(490), Y(840), 0]), run_time=0.35, rate_func=EXPO)
+        self.play(FadeOut(cc), run_time=0.2)
+        self.until(wt(5, 1, 0.1)); self.ev("tick"); self.play(FadeIn(ch[:6], shift=UP * 0.12), run_time=0.4, rate_func=EXPO)
+        self.until(wt(5, 3, 0.1)); self.play(FadeIn(ch[6], shift=UP * 0.12), ch[6].animate.set_color(OR), run_time=0.3)
+        # tip the (small) balance to B and box 17^14
+        piv2 = stand.get_top(); self.remove(frozen)
+        ang.set_value(0); L = L * 0.62; drop = drop * 0.62; piv = piv2
+        scale2 = always_redraw(bal); self.add(scale2)
+        cr[0].set_stroke(OR, 6)
+        self.until(wt(5, 4, 0.1)); self.ev("stamp")
+        self.play(ang.animate.set_value(-12 * DEGREES), rt.animate.set_color(OR), run_time=0.5, rate_func=rate_functions.ease_out_back)
+        x6 = tag("× 6.6", 40, WHITE_, OR).next_to(cr, UP, buff=0.12)
+        self.until(wt(5, 8, 0.15)); self.play(FadeIn(x6, scale=1.2), run_time=0.3)
+        # ===== G. CTA =====
+        self.until(S[6])
+        fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
+        self.until(C[6] + 1.2); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
+        self.brand_flash(scale2, stand, cl, cr, x6, r2, r4, ch, fw, lb)
