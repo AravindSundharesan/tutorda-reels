@@ -1,0 +1,6 @@
+cb0.wav https://resembleai-chatterbox.hf.space/--replicas/7j24s/gradio_api/file=/tmp/gradio/1c90bbd1a204640cbd76306c52b5b0bb80edc2197fbf10e9512a407330f264d3/audio.wav
+cb1.wav https://resembleai-chatterbox.hf.space/--replicas/7j24s/gradio_api/file=/tmp/gradio/e2fd8d8487978af81cea0b5ec199297b478a163bf568abad09afd4e033feb6e3/audio.wav
+cb2.wav https://resembleai-chatterbox.hf.space/--replicas/7j24s/gradio_api/file=/tmp/gradio/463a7ef46f3a069e9ee20c5795407549d44176904f2f5025dd07cc95751af1ae/audio.wav
+cb3.wav https://resembleai-chatterbox.hf.space/--replicas/7j24s/gradio_api/file=/tmp/gradio/38bd6883a7709713ac1497f4d38345fd2a672e5438b17169c95eb7c58c33a5a1/audio.wav
+cb4.wav https://resembleai-chatterbox.hf.space/--replicas/7j24s/gradio_api/file=/tmp/gradio/c32f5f8ad57235115f65d135d56423ad83a7b6dfab7f6de6c67f11bb33bc5f32/audio.wav
+cb5.wav https://resembleai-chatterbox.hf.space/--replicas/7j24s/gradio_api/file=/tmp/gradio/6d0684228f0cfeb172920146b92f7fb601a17c2827acdc7b68ec85b0676adf90/audio.wav
