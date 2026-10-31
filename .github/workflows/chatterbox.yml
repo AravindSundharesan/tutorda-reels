@@ -1,0 +1,35 @@
+name: chatterbox
+on:
+  push:
+    paths: ["tts/lines.json"]
+permissions:
+  contents: write
+jobs:
+  tts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Install Chatterbox (CPU)
+        run: |
+          pip install --quiet torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet chatterbox-tts
+      - name: Generate lines from tts/lines.json
+        run: |
+          python - <<'PY'
+          import json, torch, torchaudio
+          from chatterbox.tts import ChatterboxTTS
+          m = ChatterboxTTS.from_pretrained(device="cpu")
+          cfg = json.load(open("tts/lines.json"))
+          for L in cfg["lines"]:
+              torch.manual_seed(L.get("seed", 1))
+              wav = m.generate(L["text"], audio_prompt_path=cfg["ref"], exaggeration=L.get("ex", 0.7), cfg_weight=L.get("cfg", 0.45), temperature=L.get("temp", 0.7))
+              torchaudio.save("tts/" + L["name"], wav, m.sr); print("done", L["name"])
+          PY
+      - name: Commit
+        run: |
+          git config user.name "tts-bot"; git config user.email "tts-bot@users.noreply.github.com"
+          git pull -q --rebase || true
+          git add tts/*.wav && git commit -m "Chatterbox lines" && git push || echo "nothing new"
