@@ -1,0 +1,22 @@
+name: fetch-tts
+on:
+  push:
+    paths: ["tts/urls.txt"]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download generated audio listed in tts/urls.txt (name url per line)
+        run: |
+          while read -r name url; do
+            [ -z "$name" ] && continue
+            curl -fsSL -o "tts/$name" "$url"
+          done < tts/urls.txt
+          ls -la tts
+      - name: Commit
+        run: |
+          git config user.name "tts-bot"; git config user.email "tts-bot@users.noreply.github.com"
+          git add tts/*.wav && git commit -m "TTS audio fetched" && git push || echo "nothing new"
