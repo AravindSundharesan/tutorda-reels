@@ -2,14 +2,88 @@
  "ref": "voice/sarah_ref.wav",
  "lines": [
   {
-   "name": "ln0b_7.wav",
+   "name": "p2a_7.wav",
    "seed": 7,
-   "text": "Under twelve weeks to J E E Main. Do you know where you're losing marks?"
+   "text": "A Tutor Dah mock shows your accuracy, your time, and your confidence.",
+   "ex": 0.6,
+   "cfg": 0.5
   },
   {
-   "name": "ln0b_21.wav",
+   "name": "p2a_21.wav",
    "seed": 21,
-   "text": "Under twelve weeks to J E E Main. Do you know where you're losing marks?"
+   "text": "A Tutor Dah mock shows your accuracy, your time, and your confidence.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "p2b_7.wav",
+   "seed": 7,
+   "text": "A Tyootor-Dah mock shows your accuracy, your time, and your confidence.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "p2b_21.wav",
+   "seed": 21,
+   "text": "A Tyootor-Dah mock shows your accuracy, your time, and your confidence.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "p2c_7.wav",
+   "seed": 7,
+   "text": "A TutorDAH... mock shows your accuracy, your time, and your confidence.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "p2c_21.wav",
+   "seed": 21,
+   "text": "A TutorDAH... mock shows your accuracy, your time, and your confidence.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "p3a_7.wav",
+   "seed": 7,
+   "text": "Stuck on a question? Send it on WhatsApp. A Tutor Dah tutor answers.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "p3a_21.wav",
+   "seed": 21,
+   "text": "Stuck on a question? Send it on WhatsApp. A Tutor Dah tutor answers.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "p3b_7.wav",
+   "seed": 7,
+   "text": "Stuck on a question? Send it on WhatsApp. A Tyootor-Dah tutor answers.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "p3b_21.wav",
+   "seed": 21,
+   "text": "Stuck on a question? Send it on WhatsApp. A Tyootor-Dah tutor answers.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "p3c_7.wav",
+   "seed": 7,
+   "text": "Stuck on a question? Send it on WhatsApp. A TutorDAH... tutor answers.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "p3c_21.wav",
+   "seed": 21,
+   "text": "Stuck on a question? Send it on WhatsApp. A TutorDAH... tutor answers.",
+   "ex": 0.6,
+   "cfg": 0.5
   }
  ]
 }
