@@ -1,7 +1,65 @@
-{"ref": "voice/sarah_ref.wav",
+{
+ "ref": "voice/sarah_ref.wav",
  "lines": [
-  {"name": "cb5a.wav", "seed": 7,  "text": "Works for any power. Save this for your exam. Follow Tutor-dah, and comment TRICKS to get the P D F."},
-  {"name": "cb5b.wav", "seed": 11, "text": "Works for any power. Save this for your exam. Follow Tutor-dah, and comment TRICKS to get the PDF."},
-  {"name": "cb5c.wav", "seed": 21, "text": "Works for any power. Save this for your exam. Follow Tutor-dah, and comment TRICKS to get the P.D.F."},
-  {"name": "cb0c.wav", "seed": 21, "text": "Same J E E integral. School method, versus one trick. Let's go!"}
- ]}
+  {
+   "name": "ln0_7.wav",
+   "seed": 7,
+   "text": "Under twelve weeks to J E E Main. Do you know your weakest chapter?"
+  },
+  {
+   "name": "ln0_21.wav",
+   "seed": 21,
+   "text": "Under twelve weeks to J E E Main. Do you know your weakest chapter?"
+  },
+  {
+   "name": "ln1_7.wav",
+   "seed": 7,
+   "text": "Most mocks just give you a score. That's it."
+  },
+  {
+   "name": "ln1_21.wav",
+   "seed": 21,
+   "text": "Most mocks just give you a score. That's it."
+  },
+  {
+   "name": "ln2_7.wav",
+   "seed": 7,
+   "text": "A Tutor-dah mock shows your accuracy, your time, and your confidence."
+  },
+  {
+   "name": "ln2_21.wav",
+   "seed": 21,
+   "text": "A Tutor-dah mock shows your accuracy, your time, and your confidence."
+  },
+  {
+   "name": "ln3_7.wav",
+   "seed": 7,
+   "text": "Stuck on a question? Send it on WhatsApp. A Tutor-dah tutor answers."
+  },
+  {
+   "name": "ln3_21.wav",
+   "seed": 21,
+   "text": "Stuck on a question? Send it on WhatsApp. A Tutor-dah tutor answers."
+  },
+  {
+   "name": "ln4_7.wav",
+   "seed": 7,
+   "text": "Your first mock is free, with seven days of doubt support. After that, just ninety-nine rupees a month."
+  },
+  {
+   "name": "ln4_21.wav",
+   "seed": 21,
+   "text": "Your first mock is free, with seven days of doubt support. After that, just ninety-nine rupees a month."
+  },
+  {
+   "name": "ln5_7.wav",
+   "seed": 7,
+   "text": "Comment MOCK, or tap the link in bio."
+  },
+  {
+   "name": "ln5_21.wav",
+   "seed": 21,
+   "text": "Comment MOCK, or tap the link in bio."
+  }
+ ]
+}
