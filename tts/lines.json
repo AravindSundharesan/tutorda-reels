@@ -2,52 +2,100 @@
  "ref": "voice/sarah_ref.wav",
  "lines": [
   {
-   "name": "in_hf_alpha_0.wav",
+   "name": "hb0_7.wav",
    "seed": 7,
    "text": "J E E Main is less than twelve weeks away. Is your mock score stuck?",
-   "ex": 0.6,
+   "ex": 0.65,
    "cfg": 0.5,
-   "ref": "voice/ref_hf_alpha.wav"
+   "ref": "voice/ref_hf_beta.wav"
   },
   {
-   "name": "in_hf_alpha_1.wav",
-   "seed": 7,
-   "text": "Your first mock is free, and so is a week of doubt support. After that, it's ninety-nine rupees a month. About three rupees a day.",
-   "ex": 0.6,
-   "cfg": 0.5,
-   "ref": "voice/ref_hf_alpha.wav"
-  },
-  {
-   "name": "in_hf_alpha_2.wav",
-   "seed": 7,
-   "text": "A Tutorda mock shows exactly where your marks went.",
-   "ex": 0.6,
-   "cfg": 0.5,
-   "ref": "voice/ref_hf_alpha.wav"
-  },
-  {
-   "name": "in_hm_omega_0.wav",
-   "seed": 7,
+   "name": "hb0_21.wav",
+   "seed": 21,
    "text": "J E E Main is less than twelve weeks away. Is your mock score stuck?",
-   "ex": 0.6,
+   "ex": 0.65,
    "cfg": 0.5,
-   "ref": "voice/ref_hm_omega.wav"
+   "ref": "voice/ref_hf_beta.wav"
   },
   {
-   "name": "in_hm_omega_1.wav",
+   "name": "hb1_7.wav",
    "seed": 7,
-   "text": "Your first mock is free, and so is a week of doubt support. After that, it's ninety-nine rupees a month. About three rupees a day.",
-   "ex": 0.6,
+   "text": "Here's the problem. A score tells you how you did... not why.",
+   "ex": 0.65,
    "cfg": 0.5,
-   "ref": "voice/ref_hm_omega.wav"
+   "ref": "voice/ref_hf_beta.wav"
   },
   {
-   "name": "in_hm_omega_2.wav",
-   "seed": 7,
-   "text": "A Tutorda mock shows exactly where your marks went.",
-   "ex": 0.6,
+   "name": "hb1_21.wav",
+   "seed": 21,
+   "text": "Here's the problem. A score tells you how you did... not why.",
+   "ex": 0.65,
    "cfg": 0.5,
-   "ref": "voice/ref_hm_omega.wav"
+   "ref": "voice/ref_hf_beta.wav"
+  },
+  {
+   "name": "hb2_7.wav",
+   "seed": 7,
+   "text": "A Tutorda mock shows exactly where your marks went: the wrong answers, the slow ones, and the lucky guesses.",
+   "ex": 0.65,
+   "cfg": 0.5,
+   "ref": "voice/ref_hf_beta.wav"
+  },
+  {
+   "name": "hb2_21.wav",
+   "seed": 21,
+   "text": "A Tutorda mock shows exactly where your marks went: the wrong answers, the slow ones, and the lucky guesses.",
+   "ex": 0.65,
+   "cfg": 0.5,
+   "ref": "voice/ref_hf_beta.wav"
+  },
+  {
+   "name": "hb3_7.wav",
+   "seed": 7,
+   "text": "Stuck on a question? WhatsApp it. A real tutor explains it, step by step.",
+   "ex": 0.65,
+   "cfg": 0.5,
+   "ref": "voice/ref_hf_beta.wav"
+  },
+  {
+   "name": "hb3_21.wav",
+   "seed": 21,
+   "text": "Stuck on a question? WhatsApp it. A real tutor explains it, step by step.",
+   "ex": 0.65,
+   "cfg": 0.5,
+   "ref": "voice/ref_hf_beta.wav"
+  },
+  {
+   "name": "hb4_7.wav",
+   "seed": 7,
+   "text": "Your first mock is free, and so is a week of doubt support. After that, it's ninety-nine rupees a month. About three rupees a day!",
+   "ex": 0.65,
+   "cfg": 0.5,
+   "ref": "voice/ref_hf_beta.wav"
+  },
+  {
+   "name": "hb4_21.wav",
+   "seed": 21,
+   "text": "Your first mock is free, and so is a week of doubt support. After that, it's ninety-nine rupees a month. About three rupees a day!",
+   "ex": 0.65,
+   "cfg": 0.5,
+   "ref": "voice/ref_hf_beta.wav"
+  },
+  {
+   "name": "hb5_7.wav",
+   "seed": 7,
+   "text": "Comment MOCK, and we'll send you the link.",
+   "ex": 0.65,
+   "cfg": 0.5,
+   "ref": "voice/ref_hf_beta.wav"
+  },
+  {
+   "name": "hb5_21.wav",
+   "seed": 21,
+   "text": "Comment MOCK, and we'll send you the link.",
+   "ex": 0.65,
+   "cfg": 0.5,
+   "ref": "voice/ref_hf_beta.wav"
   }
  ]
 }
