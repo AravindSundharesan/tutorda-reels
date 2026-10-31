@@ -2,30 +2,58 @@
  "ref": "voice/sarah_ref.wav",
  "lines": [
   {
-   "name": "p2d_7.wav",
+   "name": "q2f_7.wav",
    "seed": 7,
-   "text": "With Tutor Dah, every mock shows your accuracy, your time, and your confidence.",
+   "text": "A mock from Tutorda shows your accuracy, your time, and your confidence.",
    "ex": 0.6,
    "cfg": 0.5
   },
   {
-   "name": "p2d_21.wav",
+   "name": "q2f_21.wav",
    "seed": 21,
-   "text": "With Tutor Dah, every mock shows your accuracy, your time, and your confidence.",
+   "text": "A mock from Tutorda shows your accuracy, your time, and your confidence.",
    "ex": 0.6,
    "cfg": 0.5
   },
   {
-   "name": "p2e_7.wav",
+   "name": "q2g_7.wav",
    "seed": 7,
-   "text": "A mock from Tutor Dah shows your accuracy, your time, and your confidence.",
+   "text": "A mock from Tutordah shows your accuracy, your time, and your confidence.",
    "ex": 0.6,
    "cfg": 0.5
   },
   {
-   "name": "p2e_21.wav",
+   "name": "q2g_21.wav",
    "seed": 21,
-   "text": "A mock from Tutor Dah shows your accuracy, your time, and your confidence.",
+   "text": "A mock from Tutordah shows your accuracy, your time, and your confidence.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "q3f_7.wav",
+   "seed": 7,
+   "text": "Stuck on a question? Send it on WhatsApp. A Tutorda tutor answers.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "q3f_21.wav",
+   "seed": 21,
+   "text": "Stuck on a question? Send it on WhatsApp. A Tutorda tutor answers.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "q3g_7.wav",
+   "seed": 7,
+   "text": "Stuck on a question? Send it on WhatsApp. A Tutordah tutor answers.",
+   "ex": 0.6,
+   "cfg": 0.5
+  },
+  {
+   "name": "q3g_21.wav",
+   "seed": 21,
+   "text": "Stuck on a question? Send it on WhatsApp. A Tutordah tutor answers.",
    "ex": 0.6,
    "cfg": 0.5
   }
