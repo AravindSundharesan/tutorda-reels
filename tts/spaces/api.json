@@ -1,0 +1,2337 @@
+{
+ "Qwen/Qwen3-TTS": {
+  "named_endpoints": {
+   "/generate_voice_design": {
+    "parameters": [
+     {
+      "label": "Text to Synthesize",
+      "parameter_name": "text",
+      "parameter_has_default": true,
+      "parameter_default": "It's in the top drawer... wait, it's empty? No way, that's impossible! I'm sure I put it there!",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "Language",
+      "parameter_name": "language",
+      "parameter_has_default": true,
+      "parameter_default": "Auto",
+      "type": {
+       "type": "string",
+       "enum": [
+        "Auto",
+        "Chinese",
+        "English",
+        "Japanese",
+        "Korean",
+        "French",
+        "German",
+        "Spanish",
+        "Portuguese",
+        "Russian"
+       ]
+      },
+      "python_type": {
+       "type": "Literal['Auto', 'Chinese', 'English', 'Japanese', 'Korean', 'French', 'German', 'Spanish', 'Portuguese', 'Russian']",
+       "description": ""
+      },
+      "component": "Dropdown",
+      "example_input": "Auto"
+     },
+     {
+      "label": "Voice Description",
+      "parameter_name": "voice_description",
+      "parameter_has_default": true,
+      "parameter_default": "Speak in an incredulous tone, but with a hint of panic beginning to creep into your voice.",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     }
+    ],
+    "returns": [
+     {
+      "label": "Generated Audio",
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": ""
+      },
+      "component": "Audio"
+     },
+     {
+      "label": "Status",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox"
+     }
+    ],
+    "description": "Generate speech using Voice Design model (1.7B only)."
+   },
+   "/generate_voice_clone": {
+    "parameters": [
+     {
+      "label": "Reference Audio (Upload a voice sample to clone)",
+      "parameter_name": "ref_audio",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "component": "Audio",
+      "example_input": {
+       "path": "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav",
+       "meta": {
+        "_type": "gradio.FileData"
+       },
+       "orig_name": "audio_sample.wav",
+       "url": "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+      }
+     },
+     {
+      "label": "Reference Text (Transcript of the reference audio)",
+      "parameter_name": "ref_text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "Target Text (Text to synthesize with cloned voice)",
+      "parameter_name": "target_text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "Language",
+      "parameter_name": "language",
+      "parameter_has_default": true,
+      "parameter_default": "Auto",
+      "type": {
+       "type": "string",
+       "enum": [
+        "Auto",
+        "Chinese",
+        "English",
+        "Japanese",
+        "Korean",
+        "French",
+        "German",
+        "Spanish",
+        "Portuguese",
+        "Russian"
+       ]
+      },
+      "python_type": {
+       "type": "Literal['Auto', 'Chinese', 'English', 'Japanese', 'Korean', 'French', 'German', 'Spanish', 'Portuguese', 'Russian']",
+       "description": ""
+      },
+      "component": "Dropdown",
+      "example_input": "Auto"
+     },
+     {
+      "label": "Use x-vector only (No reference text needed, but lower quality)",
+      "parameter_name": "use_xvector_only",
+      "parameter_has_default": true,
+      "parameter_default": false,
+      "type": {
+       "type": "boolean"
+      },
+      "python_type": {
+       "type": "bool",
+       "description": ""
+      },
+      "component": "Checkbox",
+      "example_input": true
+     },
+     {
+      "label": "Model Size",
+      "parameter_name": "model_size",
+      "parameter_has_default": true,
+      "parameter_default": "1.7B",
+      "type": {
+       "type": "string",
+       "enum": [
+        "0.6B",
+        "1.7B"
+       ]
+      },
+      "python_type": {
+       "type": "Literal['0.6B', '1.7B']",
+       "description": ""
+      },
+      "component": "Dropdown",
+      "example_input": "0.6B"
+     }
+    ],
+    "returns": [
+     {
+      "label": "Generated Audio",
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": ""
+      },
+      "component": "Audio"
+     },
+     {
+      "label": "Status",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox"
+     }
+    ],
+    "description": "Generate speech using Base (Voice Clone) model."
+   },
+   "/generate_custom_voice": {
+    "parameters": [
+     {
+      "label": "Text to Synthesize",
+      "parameter_name": "text",
+      "parameter_has_default": true,
+      "parameter_default": "Hello! Welcome to Text-to-Speech system. This is a demo of our TTS capabilities.",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "Language",
+      "parameter_name": "language",
+      "parameter_has_default": true,
+      "parameter_default": "English",
+      "type": {
+       "type": "string",
+       "enum": [
+        "Auto",
+        "Chinese",
+        "English",
+        "Japanese",
+        "Korean",
+        "French",
+        "German",
+        "Spanish",
+        "Portuguese",
+        "Russian"
+       ]
+      },
+      "python_type": {
+       "type": "Literal['Auto', 'Chinese', 'English', 'Japanese', 'Korean', 'French', 'German', 'Spanish', 'Portuguese', 'Russian']",
+       "description": ""
+      },
+      "component": "Dropdown",
+      "example_input": "Auto"
+     },
+     {
+      "label": "Speaker",
+      "parameter_name": "speaker",
+      "parameter_has_default": true,
+      "parameter_default": "Ryan",
+      "type": {
+       "type": "string",
+       "enum": [
+        "Aiden",
+        "Dylan",
+        "Eric",
+        "Ono_anna",
+        "Ryan",
+        "Serena",
+        "Sohee",
+        "Uncle_fu",
+        "Vivian"
+       ]
+      },
+      "python_type": {
+       "type": "Literal['Aiden', 'Dylan', 'Eric', 'Ono_anna', 'Ryan', 'Serena', 'Sohee', 'Uncle_fu', 'Vivian']",
+       "description": ""
+      },
+      "component": "Dropdown",
+      "example_input": "Aiden"
+     },
+     {
+      "label": "Style Instruction (Optional)",
+      "parameter_name": "instruct",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "Model Size",
+      "parameter_name": "model_size",
+      "parameter_has_default": true,
+      "parameter_default": "1.7B",
+      "type": {
+       "type": "string",
+       "enum": [
+        "0.6B",
+        "1.7B"
+       ]
+      },
+      "python_type": {
+       "type": "Literal['0.6B', '1.7B']",
+       "description": ""
+      },
+      "component": "Dropdown",
+      "example_input": "0.6B"
+     }
+    ],
+    "returns": [
+     {
+      "label": "Generated Audio",
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": ""
+      },
+      "component": "Audio"
+     },
+     {
+      "label": "Status",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox"
+     }
+    ],
+    "description": "Generate speech using CustomVoice model."
+   }
+  },
+  "unnamed_endpoints": {}
+ },
+ "Qwen/Qwen3-TTS-Voice-Design": {
+  "named_endpoints": {
+   "/tts_interface": {
+    "parameters": [
+     {
+      "label": "\ud83d\udcdd Input Text",
+      "parameter_name": "text",
+      "parameter_has_default": true,
+      "parameter_default": "Welcome to the speech synthesis system. Please enter the text you would like to have read aloud.",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "\ud83c\udfa8 Voice Instruction",
+      "parameter_name": "instruct",
+      "parameter_has_default": true,
+      "parameter_default": "A clear and natural female voice, moderate speed, stable tone, suitable for news broadcasting or daily conversation.",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     }
+    ],
+    "returns": [
+     {
+      "label": "\ud83d\udd0a Generated Result",
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": ""
+      },
+      "component": "Audio"
+     }
+    ],
+    "description": ""
+   },
+   "/lambda": {
+    "parameters": [],
+    "returns": [
+     {
+      "label": "\ud83d\udcdd Input Text",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox"
+     },
+     {
+      "label": "\ud83c\udfa8 Voice Instruction",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox"
+     },
+     {
+      "label": "\ud83d\udd0a Generated Result",
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": ""
+      },
+      "component": "Audio"
+     }
+    ],
+    "description": ""
+   }
+  },
+  "unnamed_endpoints": {}
+ },
+ "maya-research/maya2-native-studio": {
+  "named_endpoints": {
+   "/speak": {
+    "parameters": [
+     {
+      "label": "1st",
+      "parameter_name": "text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "..."
+     },
+     {
+      "label": "2nd",
+      "parameter_name": "lang",
+      "parameter_has_default": true,
+      "parameter_default": "hi",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "hi"
+     },
+     {
+      "label": "3rd",
+      "parameter_name": "voice",
+      "parameter_has_default": true,
+      "parameter_default": "Ritvik",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "Ritvik"
+     },
+     {
+      "label": "4th",
+      "parameter_name": "normalize",
+      "parameter_has_default": true,
+      "parameter_default": true,
+      "type": {
+       "type": "boolean"
+      },
+      "python_type": {
+       "type": "bool",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": true
+     },
+     {
+      "label": "5th",
+      "parameter_name": "seed",
+      "parameter_has_default": true,
+      "parameter_default": 0,
+      "type": {
+       "type": "number"
+      },
+      "python_type": {
+       "type": "float",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": 0
+     },
+     {
+      "label": "6th",
+      "parameter_name": "randomize",
+      "parameter_has_default": true,
+      "parameter_default": true,
+      "type": {
+       "type": "boolean"
+      },
+      "python_type": {
+       "type": "bool",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": true
+     }
+    ],
+    "returns": [
+     {
+      "label": "1st",
+      "type": {
+       "type": "object",
+       "additionalProperties": {}
+      },
+      "python_type": {
+       "type": "dict(str, Any)",
+       "description": ""
+      },
+      "component": "Api"
+     }
+    ],
+    "description": "Speak text with one of the 20 built-in Maya voices (12 languages)."
+   },
+   "/clone_speak": {
+    "parameters": [
+     {
+      "label": "1st",
+      "parameter_name": "text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "..."
+     },
+     {
+      "label": "2nd",
+      "parameter_name": "ref_audio",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "..."
+     },
+     {
+      "label": "3rd",
+      "parameter_name": "ref_text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "..."
+     },
+     {
+      "label": "4th",
+      "parameter_name": "ref_lang",
+      "parameter_has_default": true,
+      "parameter_default": "hi",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "hi"
+     },
+     {
+      "label": "5th",
+      "parameter_name": "lang",
+      "parameter_has_default": true,
+      "parameter_default": "hi",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "hi"
+     },
+     {
+      "label": "6th",
+      "parameter_name": "normalize",
+      "parameter_has_default": true,
+      "parameter_default": true,
+      "type": {
+       "type": "boolean"
+      },
+      "python_type": {
+       "type": "bool",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": true
+     },
+     {
+      "label": "7th",
+      "parameter_name": "seed",
+      "parameter_has_default": true,
+      "parameter_default": 0,
+      "type": {
+       "type": "number"
+      },
+      "python_type": {
+       "type": "float",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": 0
+     },
+     {
+      "label": "8th",
+      "parameter_name": "randomize",
+      "parameter_has_default": true,
+      "parameter_default": true,
+      "type": {
+       "type": "boolean"
+      },
+      "python_type": {
+       "type": "bool",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": true
+     }
+    ],
+    "returns": [
+     {
+      "label": "1st",
+      "type": {
+       "type": "object",
+       "additionalProperties": {}
+      },
+      "python_type": {
+       "type": "dict(str, Any)",
+       "description": ""
+      },
+      "component": "Api"
+     }
+    ],
+    "description": "Clone the speaker of an uploaded 3\u201310 s reference clip (cross-lingual OK)."
+   },
+   "/speak_stream": {
+    "parameters": [
+     {
+      "label": "1st",
+      "parameter_name": "text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "..."
+     },
+     {
+      "label": "2nd",
+      "parameter_name": "lang",
+      "parameter_has_default": true,
+      "parameter_default": "hi",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "hi"
+     },
+     {
+      "label": "3rd",
+      "parameter_name": "voice",
+      "parameter_has_default": true,
+      "parameter_default": "Ritvik",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "Ritvik"
+     },
+     {
+      "label": "4th",
+      "parameter_name": "normalize",
+      "parameter_has_default": true,
+      "parameter_default": true,
+      "type": {
+       "type": "boolean"
+      },
+      "python_type": {
+       "type": "bool",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": true
+     },
+     {
+      "label": "5th",
+      "parameter_name": "seed",
+      "parameter_has_default": true,
+      "parameter_default": 0,
+      "type": {
+       "type": "number"
+      },
+      "python_type": {
+       "type": "float",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": 0
+     },
+     {
+      "label": "6th",
+      "parameter_name": "randomize",
+      "parameter_has_default": true,
+      "parameter_default": true,
+      "type": {
+       "type": "boolean"
+      },
+      "python_type": {
+       "type": "bool",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": true
+     },
+     {
+      "label": "7th",
+      "parameter_name": "ref_audio",
+      "parameter_has_default": true,
+      "parameter_default": null,
+      "type": {
+       "oneOf": [
+        {
+         "type": "null"
+        },
+        {
+         "type": "string"
+        }
+       ]
+      },
+      "python_type": {
+       "type": "None | str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "..."
+     },
+     {
+      "label": "8th",
+      "parameter_name": "ref_text",
+      "parameter_has_default": true,
+      "parameter_default": "",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": ""
+     },
+     {
+      "label": "9th",
+      "parameter_name": "ref_lang",
+      "parameter_has_default": true,
+      "parameter_default": "hi",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Api",
+      "example_input": "hi"
+     }
+    ],
+    "returns": [
+     {
+      "label": "1st",
+      "type": {
+       "type": "object",
+       "additionalProperties": {}
+      },
+      "python_type": {
+       "type": "dict(str, Any)",
+       "description": ""
+      },
+      "component": "Api"
+     }
+    ],
+    "description": "Stream a take as base64 int16 PCM events (24 kHz), then a done event. Runs through gradio's API dispatch (not a raw FastAPI route) so that LocalContext.request is set and the ZeroGPU take bills the visitor's own quota \u2014 the same dispatch path as the other @server.api endpoints."
+   },
+   "/warmup": {
+    "parameters": [],
+    "returns": [
+     {
+      "label": "1st",
+      "type": {
+       "type": "object",
+       "additionalProperties": {}
+      },
+      "python_type": {
+       "type": "dict(str, Any)",
+       "description": ""
+      },
+      "component": "Api"
+     }
+    ],
+    "description": "Pre-build the engine in the GPU worker; the studio calls this on page load."
+   }
+  },
+  "unnamed_endpoints": {}
+ },
+ "ai4bharat/indic-parler-tts": {
+  "error": "ValueError('Could not fetch api info for https://ai4bharat-indic-parler-tts.hf.space: Traceback (most recent call last):\\n  File \"/usr/local/lib/python3.10/site-packages/starlette/middleware/errors.py\", line 164, in __call__\\n    await self.app(scope, receive, _send)\\n  File \"/usr/local/lib/python3.10/site-packages/starlette/middleware/base.py\", line 191, in __call__\\n    with recv_stream, send_stream, collapse_excgroups():\\n  File \"/usr/local/lib/python3.10/contextlib.py\", line 153, in __exit__"
+ },
+ "BreezeBlue/breeze-tts-2-demo": {
+  "named_endpoints": {
+   "/voice_design": {
+    "parameters": [
+     {
+      "label": "Text to speak",
+      "parameter_name": "text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "Voice description",
+      "parameter_name": "instruction",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "CFG scale",
+      "parameter_name": "cfg_scale",
+      "parameter_has_default": true,
+      "parameter_default": 4.0,
+      "type": {
+       "type": "number",
+       "description": "numeric value between 1.0 and 10.0"
+      },
+      "python_type": {
+       "type": "float",
+       "description": ""
+      },
+      "component": "Slider",
+      "example_input": 1.0
+     },
+     {
+      "label": "Seed",
+      "parameter_name": "seed",
+      "parameter_has_default": true,
+      "parameter_default": 42,
+      "type": {
+       "type": "integer"
+      },
+      "python_type": {
+       "type": "int",
+       "description": ""
+      },
+      "component": "Number",
+      "example_input": 3
+     }
+    ],
+    "returns": [
+     {
+      "label": "Generated audio",
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": ""
+      },
+      "component": "Audio"
+     }
+    ],
+    "description": "Generate speech with a designed voice from a natural-language description."
+   },
+   "/transcribe_reference": {
+    "parameters": [
+     {
+      "label": "Reference audio",
+      "parameter_name": "ref_audio_path",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "component": "Audio",
+      "example_input": {
+       "path": "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav",
+       "meta": {
+        "_type": "gradio.FileData"
+       },
+       "orig_name": "audio_sample.wav",
+       "url": "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+      }
+     }
+    ],
+    "returns": [
+     {
+      "label": "Reference transcript (exact)",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox"
+     }
+    ],
+    "description": "Auto-transcribe uploaded/recorded reference audio with Whisper on CPU. The result populates the (still editable) reference transcript field."
+   },
+   "/voice_clone": {
+    "parameters": [
+     {
+      "label": "Text to speak",
+      "parameter_name": "text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "Reference audio",
+      "parameter_name": "ref_audio_path",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "component": "Audio",
+      "example_input": {
+       "path": "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav",
+       "meta": {
+        "_type": "gradio.FileData"
+       },
+       "orig_name": "audio_sample.wav",
+       "url": "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+      }
+     },
+     {
+      "label": "Reference transcript (exact)",
+      "parameter_name": "ref_text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "Seed",
+      "parameter_name": "seed",
+      "parameter_has_default": true,
+      "parameter_default": 42,
+      "type": {
+       "type": "integer"
+      },
+      "python_type": {
+       "type": "int",
+       "description": ""
+      },
+      "component": "Number",
+      "example_input": 3
+     }
+    ],
+    "returns": [
+     {
+      "label": "Generated audio",
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": ""
+      },
+      "component": "Audio"
+     }
+    ],
+    "description": "Clone a voice from reference audio and its exact transcript."
+   },
+   "/transcribe_reference_direction": {
+    "parameters": [
+     {
+      "label": "Reference audio",
+      "parameter_name": "ref_audio_path",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "component": "Audio",
+      "example_input": {
+       "path": "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav",
+       "meta": {
+        "_type": "gradio.FileData"
+       },
+       "orig_name": "audio_sample.wav",
+       "url": "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+      }
+     }
+    ],
+    "returns": [
+     {
+      "label": "Reference transcript (exact)",
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox"
+     }
+    ],
+    "description": "Auto-transcribe uploaded/recorded reference audio with Whisper on CPU. The result populates the (still editable) reference transcript field."
+   },
+   "/voice_direction": {
+    "parameters": [
+     {
+      "label": "Text to speak",
+      "parameter_name": "text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "Direction",
+      "parameter_name": "instruction",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "Reference audio",
+      "parameter_name": "ref_audio_path",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "component": "Audio",
+      "example_input": {
+       "path": "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav",
+       "meta": {
+        "_type": "gradio.FileData"
+       },
+       "orig_name": "audio_sample.wav",
+       "url": "https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav"
+      }
+     },
+     {
+      "label": "Reference transcript (exact)",
+      "parameter_name": "ref_text",
+      "parameter_has_default": false,
+      "parameter_default": null,
+      "type": {
+       "type": "string"
+      },
+      "python_type": {
+       "type": "str",
+       "description": ""
+      },
+      "component": "Textbox",
+      "example_input": "Hello!!"
+     },
+     {
+      "label": "CFG scale",
+      "parameter_name": "cfg_scale",
+      "parameter_has_default": true,
+      "parameter_default": 4.0,
+      "type": {
+       "type": "number",
+       "description": "numeric value between 1.0 and 10.0"
+      },
+      "python_type": {
+       "type": "float",
+       "description": ""
+      },
+      "component": "Slider",
+      "example_input": 1.0
+     },
+     {
+      "label": "Seed",
+      "parameter_name": "seed",
+      "parameter_has_default": true,
+      "parameter_default": 42,
+      "type": {
+       "type": "integer"
+      },
+      "python_type": {
+       "type": "int",
+       "description": ""
+      },
+      "component": "Number",
+      "example_input": 3
+     }
+    ],
+    "returns": [
+     {
+      "label": "Generated audio",
+      "type": {
+       "$defs": {
+        "FileDataMeta": {
+         "properties": {
+          "_type": {
+           "const": "gradio.FileData",
+           "title": "Type",
+           "type": "string"
+          }
+         },
+         "required": [
+          "_type"
+         ],
+         "title": "FileDataMeta",
+         "type": "object"
+        }
+       },
+       "properties": {
+        "path": {
+         "title": "Path",
+         "type": "string"
+        },
+        "url": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Url"
+        },
+        "size": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Size"
+        },
+        "orig_name": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Orig Name"
+        },
+        "mime_type": {
+         "anyOf": [
+          {
+           "type": "string"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "title": "Mime Type"
+        },
+        "is_stream": {
+         "default": false,
+         "title": "Is Stream",
+         "type": "boolean"
+        },
+        "meta": {
+         "$ref": "#/$defs/FileDataMeta"
+        }
+       },
+       "required": [
+        "path"
+       ],
+       "title": "FileData",
+       "type": "object",
+       "additional_description": "The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\n\nAttributes:\n    path: The server file path where the file is stored.\n    url: The normalized server URL pointing to the file.\n    size: The size of the file in bytes.\n    orig_name: The original filename before upload.\n    mime_type: The MIME type of the file.\n    is_stream: Indicates whether the file is a stream.\n    meta: Additional metadata used internally (should not be changed)."
+      },
+      "python_type": {
+       "type": "filepath",
+       "description": ""
+      },
+      "component": "Audio"
+     }
+    ],
+    "description": "Clone a reference voice while steering tone, emotion, and pace via instructions."
+   }
+  },
+  "unnamed_endpoints": {}
+ }
+}
