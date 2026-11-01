@@ -1,0 +1,26 @@
+{
+ "0": {
+  "audio_url": "/gradio_api/file=/tmp/gradio/maya_618d37925bffae31.wav",
+  "duration": 4.0,
+  "seed": 7,
+  "voice": "Charvi",
+  "reason": "aeos_argmax"
+ },
+ "1": {
+  "audio_url": "/gradio_api/file=/tmp/gradio/maya_dc5aacbe810b4f92.wav",
+  "duration": 4.4,
+  "seed": 7,
+  "voice": "Charvi",
+  "reason": "aeos_argmax"
+ },
+ "2": {
+  "audio_url": "/gradio_api/file=/tmp/gradio/maya_5672db72b243cb48.wav",
+  "duration": 7.8,
+  "seed": 7,
+  "voice": "Charvi",
+  "reason": "aeos_argmax"
+ },
+ "3": "error AppError('You have exceeded your ZeroGPU runs limit. Authenticate with a Hugging Face token for more quota - https://huggingface.co/settings/tokens')",
+ "4": "error AppError('You have exceeded your ZeroGPU runs limit. Authenticate with a Hugging Face token for more quota - https://huggingface.co/settings/tokens')",
+ "5": "error AppError('You have exceeded your ZeroGPU runs limit. Authenticate with a Hugging Face token for more quota - https://huggingface.co/settings/tokens')"
+}
