@@ -1,0 +1,22 @@
+name: spaces
+on:
+  push:
+    paths: ["tts/spaces/job.py"]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install --quiet gradio_client soundfile numpy
+      - name: Run tts/spaces/job.py (calls public Hugging Face Spaces, writes into tts/spaces/)
+        run: python tts/spaces/job.py || true
+      - name: Commit
+        run: |
+          git config user.name "tts-bot"; git config user.email "tts-bot@users.noreply.github.com"
+          git pull -q --rebase || true
+          git add tts/spaces && git commit -m "Spaces job output" && git push || echo "nothing new"
