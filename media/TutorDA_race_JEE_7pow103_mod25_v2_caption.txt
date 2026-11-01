@@ -1,0 +1,9 @@
+Share this with the friend who's still expanding 7^103 term by term.
+
+A JEE Main maths remainder question. The binomial theorem route? 52 terms.
+
+The TutorDA trick takes 4 lines: 7^2 = 49, and that's -1 mod 25, so 7^4 = 1. Then 103 = 4 x 25 + 3, which leaves 7^3 = 343. Remainder 18.
+
+Did you get there first?
+
+#JEEMain #JEEMaths #TutorDA
