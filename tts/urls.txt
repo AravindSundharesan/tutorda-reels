@@ -1,2 +1,3 @@
-cb0b.wav https://resembleai-chatterbox.hf.space/--replicas/7j24s/gradio_api/file=/tmp/gradio/af4fea96a505a9cca827404d2ded6759c76aec62769dbac89f734f7d202a62ed/audio.wav
-cb2b.wav https://resembleai-chatterbox.hf.space/--replicas/7j24s/gradio_api/file=/tmp/gradio/4e2435bdd82c336a5b780b1104b88d2922c443e0cf084548792ce4020a387aab/audio.wav
+maya_Charvi.wav https://maya-research-maya2-native-studio.hf.space/gradio_api/file=/tmp/gradio/maya_df900ca4548a99c4.wav
+maya_Jahnavi.wav https://maya-research-maya2-native-studio.hf.space/gradio_api/file=/tmp/gradio/maya_8548fdd07cda36c0.wav
+maya_Kayal.wav https://maya-research-maya2-native-studio.hf.space/gradio_api/file=/tmp/gradio/maya_a9e3350bf2e23d7a.wav
