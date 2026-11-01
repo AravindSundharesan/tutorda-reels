@@ -1,0 +1,9 @@
+Share this with the friend who's still expanding a 5x5 determinant to find eigenvalues.
+
+The matrix has 2 on the diagonal and 1 everywhere else. Expand det(A − λI) = 0 the school way and you're looking at 120 terms.
+
+Don't. Write A = I + J, where J is the all-ones matrix. J has rank 1 and trace 5, so its eigenvalues are 5, 0, 0, 0, 0. Add 1 to each: 6, 1, 1, 1, 1.
+
+You can use this on any matrix of that shape. If it's n×n with a on the diagonal and b everywhere else, you get a + (n−1)b once and a − b for the other n−1 eigenvalues, a pattern worth knowing for CSIR NET mathematics and any linear algebra paper.
+
+#CSIRNET #LinearAlgebra #TutorDA
