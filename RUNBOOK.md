@@ -87,3 +87,12 @@ First comment: a two-way vote ("Team stay or team switch? 👇").
   1. Frame 0 already moving, with the outcome in words ("School: 31 digits and still dividing. Trick: 3 steps."). No line that assumes context ("Same JEE integral").
   2. One spoken ask at the end: "Comment SCHOOL or TRICK". The PDF offer goes in the caption only.
   3. 18–20 s; the answer is held on screen to the last frame so the loop lands.
+
+## 1 Nov 2026: Instagram-skills QA gate (Aro: "whatever videos you generate, check and correct with Instagram skills, then produce")
+Every reel passes these before it is delivered or scheduled. Fix and re-run until each passes; report the scores.
+1. **ig-reel** `hookscore.py`: three hooks from different formulas, keep the top one; it must score 70+ (aim 80+). Spoken hook 8 words or fewer, under 3 s.
+2. **ig-reel** `beats.py --target 20`: every beat 4 s or less unless the screen changes inside it; last line echoes a hook word (loop); length on target.
+3. **ig-human** `detect.py` on the voice-over script (digits version): PASS (70+, no check below 55). Contractions and varied sentence length; no stock phrases.
+4. **ig-caption**: Job A (the reel carries the hook); `caption.py --keywords "..."` must say READY: one ask, no link, 3 hashtags max, search phrases in the text; `detect.py` PASS.
+5. **Safe zone** (measured on the rendered frames): no content above y 230, nothing below y 1440 above the caption band, nothing right of x 850 below the header.
+6. Maths checked in Python; nothing fabricated.
