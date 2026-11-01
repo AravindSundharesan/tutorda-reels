@@ -1,0 +1,8 @@
+{
+ "Charvi": "no file: {'audio_url': '/gradio_api/file=/tmp/gradio/maya_df900ca4548a99c4.wav', 'duration': 19.0, 'seed': 7, 'voice': 'Charvi', 'reason': 'aeos_argmax'}",
+ "Jahnavi": "no file: {'audio_url': '/gradio_api/file=/tmp/gradio/maya_8548fdd07cda36c0.wav', 'duration': 17.2, 'seed': 7, 'voice': 'Jahnavi', 'reason': 'aeos_argmax'}",
+ "Kayal": "no file: {'audio_url': '/gradio_api/file=/tmp/gradio/maya_a9e3350bf2e23d7a.wav', 'duration': 17.4, 'seed': 7, 'voice': 'Kayal', 'reason': 'aeos_argmax'}",
+ "Nivedita": "error AppError('You have exceeded your ZeroGPU runs limit. Authenticate with a Hugging Face token for more quota - https://huggingface.co/settings/tokens')",
+ "Satvik": "error AppError('You have exceeded your ZeroGPU runs limit. Authenticate with a Hugging Face token for more quota - https://huggingface.co/settings/tokens')",
+ "qwen_design": "error AppError('You have exceeded your ZeroGPU quota (90s requested vs. 0s left). Try again in 0:00:00. Authenticate with a Hugging Face token for more quota - https://huggingface.co/settings/tokens')"
+}
