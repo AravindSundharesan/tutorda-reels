@@ -1,0 +1,3 @@
+{
+ "spot": "error AppError('You have exceeded your ZeroGPU quota (114s requested vs. 85s left). Try again in 18:16:46. Authenticate with a Hugging Face token for more quota - https://huggingface.co/settings/tokens')"
+}
