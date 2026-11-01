@@ -79,3 +79,11 @@ First comment: a two-way vote ("Team stay or team switch? 👇").
 - Never post promos as reels (213 views, 30% followers). Promos go to stories or a pinned post.
 - Post a story with each reel (reel + Yes/No poll) and answer real comments within the first hour (draft with /ig-reply).
 - Track weekly: follows per 1,000 viewers (27 Oct baseline 0.3; target 2+), from each reel's Instagram insights.
+
+## 1 Nov 2026: voice and race-reel rules (from the 31 Oct race reel analysis)
+- **Voice: Maya 2 Native, voice "Charvi"** (young Indian female, energetic; Apache-2.0; Aro's choice, 1 Nov). Free path: the public Space `maya-research/maya2-native-studio` (`/speak`, lang "en", voice "Charvi", normalize True, seed 7) called from the `spaces` GitHub workflow; the result is a file URL fetched back from the Space. The anonymous GPU quota allows about 3 requests per window, so send a whole script in ONE request and split by silences afterwards. Fallback voice: Kokoro hf_beta with natural pitch (kokoro_niki2.py NO_EQ=1 FLAT=1.0 RANGE=1.0, LEX mock = mˈɒk).
+- **TutorDA** is said as one word (Aro, 31 Oct). Never splice a word from another voice into a line.
+- **Race reels** ("School method vs TutorDA trick"): the race format earned the most shares, saves and follows (31 Oct reel: 12 shares, 11 saves, 4 follows = 2.1 per 1,000 views), but lost viewers in the first 3 s (43.8% hold, 17th of 19). So:
+  1. Frame 0 already moving, with the outcome in words ("School: 31 digits and still dividing. Trick: 3 steps."). No line that assumes context ("Same JEE integral").
+  2. One spoken ask at the end: "Comment SCHOOL or TRICK". The PDF offer goes in the caption only.
+  3. 18–20 s; the answer is held on screen to the last frame so the loop lands.
