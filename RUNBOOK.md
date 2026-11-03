@@ -96,3 +96,5 @@ Every reel passes these before it is delivered or scheduled. Fix and re-run unti
 4. **ig-caption**: Job A (the reel carries the hook); `caption.py --keywords "..."` must say READY: one ask, no link, 3 hashtags max, search phrases in the text; `detect.py` PASS.
 5. **Safe zone** (measured on the rendered frames): no content above y 230, nothing below y 1440 above the caption band, nothing right of x 850 below the header.
 6. Maths checked in Python; nothing fabricated.
+
+- 3 Nov 2026 (Aro): rotate units. No two consecutive reels from the same chapter/question type. Recent: remainders (7^103 mod 25, 428^2024 mod 21) -> next was Limits.

@@ -1,0 +1,9 @@
+Share this with the friend who's still differentiating this limit twice.
+
+It's a real JEE Main 2024 PYQ (31 January, Shift 1): the limit as x goes to 0 of (e^(2|sin x|) - 2|sin x| - 1)/x^2. L'Hopital works, but you'd do it twice and handle both sides of 0.
+
+You don't have to. Let t = 2|sin x|. Near 0, e^t is 1 + t + t^2/2, so the top is just t^2/2 = 2 sin^2 x. Divide by x^2 and the limit is 2.
+
+Got 2 too, or did you pick "does not exist"?
+
+#JEEMain #JEEMainPYQ #TutorDA
