@@ -1,0 +1,9 @@
+Share this with the friend who's still expanding 428^2024 term by term.
+
+This one's a real JEE Main 2024 PYQ (9 April, Shift 1): the remainder when 428^2024 is divided by 21. If you go the binomial theorem route, you're writing 2025 terms.
+
+You don't need them. 428 = 21 x 20 + 8, so it leaves 8. Then 8^2 = 64, one more than 63, so that leaves 1. 2024 is even. Remainder 1.
+
+Did you get it before the reel did?
+
+#JEEMain #JEEMainPYQ #TutorDA
