@@ -98,3 +98,4 @@ Every reel passes these before it is delivered or scheduled. Fix and re-run unti
 6. Maths checked in Python; nothing fabricated.
 
 - 3 Nov 2026 (Aro): rotate units. No two consecutive reels from the same chapter/question type. Recent: remainders (7^103 mod 25, 428^2024 mod 21) -> next was Limits.
+- 4 Nov 2026: new PYQ MCQ format (PyqCx5): question + all 4 options visible on frame 0, spoken 3-2-1 countdown, school vs trick in the middle, trap option called out, send prompt names the trap ("friend who'd pick D"). Unit: Complex Numbers.
