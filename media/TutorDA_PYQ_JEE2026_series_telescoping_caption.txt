@@ -1,7 +1,8 @@
 Share this with the friend still adding 30 fractions.
+JEE Main 2026 PYQ (21 Jan, Shift 1), sequences and series.
 
-It's from JEE Main 2026 (21 January, Shift 1), sequences and series: the sum from n = 1 to 15 of 1/(n(n+1)) - 1/((n+2)(n+3)).
+The question: the sum from n = 1 to 15 of 1/(n(n+1)) - 1/((n+2)(n+3)).
 
-You don't need all 30. Call T(n) = 1/(n(n+1)) and the second part's just T(n+2), the same list shifted by 2. That's a telescoping sum, so 13 pairs cancel and you're left with 4 terms: T1 + T2 = 2/3, T16 + T17 = 1/144. 2/3 - 1/144 = 95/144. Option B.
+You don't need all 30 fractions. Call T(n) = 1/(n(n+1)) and the second part's just T(n+2), the same list shifted by 2. It's a telescoping sum, so 13 pairs cancel and you're left with 4 terms: T1 + T2 = 2/3, T16 + T17 = 1/144. 2/3 - 1/144 = 95/144. Option B.
 
 #JEEMain #SequencesAndSeries #TutorDA
