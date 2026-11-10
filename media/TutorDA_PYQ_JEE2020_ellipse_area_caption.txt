@@ -1,0 +1,8 @@
+Share this with the friend still doing that integral.
+JEE Main 2020 PYQ (2 Sep, Shift 1), area under curves.
+
+The question: the area inside the ellipse x^2/4 + y^2/9 = 1 but outside |x|/2 + |y|/3 = 1.
+
+You don't need 4 integrals. The shaded part's just the ellipse minus the diamond. An ellipse is pi a b, so pi x 2 x 3 = 6 pi. The diamond's half of its diagonals, 1/2 x 4 x 6 = 12. So 6 pi - 12 = 6(pi - 2). Option A.
+
+#JEEMain #JEEMaths #TutorDA
