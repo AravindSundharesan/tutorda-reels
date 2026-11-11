@@ -1,0 +1,129 @@
+{
+  "_about": "TutorDA reel spec template (v1, 11 Nov 2026). n8n's Claude step fills one of these per reel; the render workflow turns it into a video. Pick ONE template. Fields in <angle brackets> are placeholders. Spoken text: numbers as words. Captions: digits, max 3 lines split by ' | '.",
+
+  "rules": {
+    "length_seconds": "18-24 (about 50-60 spoken words)",
+    "hook": "max 8 words, asks the viewer something, said within 3 s",
+    "frame_0": "a picture or the bare question, already moving; never a wall of text",
+    "beats": "each spoken line max 4 s, unless something new appears on screen inside it",
+    "loop": "the CTA repeats one word from the hook",
+    "one_ask": "spoken CTA = send/share only; no follow, no comment, no link",
+    "voice": "Sarah (af_sarah), one take, TutorDA said as one word",
+    "maths": "answer and every step checked in Python; source URL required for any PYQ",
+    "caption": "line 1 = share ask; line 2 = exam + year + PYQ + unit; question; 2-4 sentence solution; last line exactly '#JEEMain #JEEMaths #TutorDA'; no links, no emojis",
+    "unit_rotation": "never the same chapter two reels in a row"
+  },
+
+  "templates": {
+
+    "mcq_pyq": {
+      "template": "mcq_pyq",
+      "topic_id": "<e.g. jee2019-10jan-s2-q62>",
+      "source": { "exam": "JEE Main", "year": "<2019>", "date": "<10 Jan>", "shift": "<2>", "question_no": "<62>", "url": "<source page>" },
+      "unit": "<Complex Numbers>",
+      "question_latex": "<z=(\\tfrac{\\sqrt3}{2}+\\tfrac{i}{2})^5+(\\tfrac{\\sqrt3}{2}-\\tfrac{i}{2})^5>",
+      "options_latex": { "A": "<...>", "B": "<...>", "C": "<...>", "D": "<...>" },
+      "correct_option": "<A>",
+      "trap_option": "<D, or null>",
+      "trap_reason_latex": "<z=-\\sqrt3,\\ \\text{not}\\ -3>",
+      "countdown": true,
+      "lines": [
+        { "beat": "hook",      "spoken": "<Don't expand this. Pick one in three seconds.>", "caption": "<Don't expand this. | Pick one in 3 seconds.>" },
+        { "beat": "countdown", "spoken": "Three. Two. One.",                                "caption": "3, 2, 1." },
+        { "beat": "school",    "spoken": "<School way? Expand both. Twelve terms.>",        "caption": "<School way? Expand both. | 12 terms.>" },
+        { "beat": "trick",     "spoken": "<TutorDA trick: ...>",                             "caption": "<TutorDA trick: ...>" },
+        { "beat": "answer",    "spoken": "<So the imaginary part's zero. Answer, ay!>",      "caption": "<So the imaginary part's 0. | Answer A!>" },
+        { "beat": "trap",      "spoken": "<Option dee is the trap. ...>",                    "caption": "<Option D is the trap. | ...>" },
+        { "beat": "cta",       "spoken": "<Send this to the friend who'd pick dee.>",        "caption": "<Send this to the friend | who'd pick D.>" }
+      ],
+      "trick_steps_latex": ["<step 1>", "<step 2>", "<result>"],
+      "school_latex": "<\\tbinom50 a^5+\\tbinom51 a^4 b+\\cdots>",
+      "cta_card": { "line1": "Send this to the friend", "line2": "<who'd pick D>" },
+      "ig_caption": "<see rules.caption>"
+    },
+
+    "race": {
+      "template": "race",
+      "topic_id": "<e.g. jee2024-9apr-s1-q82>",
+      "source": { "exam": "JEE Main", "year": "<2024>", "date": "<9 Apr>", "shift": "<1>", "question_no": "<82>", "url": "<source page>" },
+      "unit": "<Binomial Theorem>",
+      "question_latex": "<428^{2024} \\div 21:\\ \\text{remainder} = \\,?>",
+      "claim_tag": "<3 lines>",
+      "left_rows":  [ { "latex": "<(420+8)^{2024}>", "cue_beat": null, "label": null },
+                      { "latex": "<420^{2024}+\\cdots>", "cue_beat": "question", "label": "Step 2" },
+                      { "text": "<2025 terms…>", "cue_beat": "school", "label": "Step 3" } ],
+      "right_rows": [ { "latex": "<428 = 21\\cdot 20 + 8>", "cue_beat": "trick", "label": "Line 1" },
+                      { "latex": "<8^2 = 64 \\equiv 1>", "cue_beat": "trick", "label": "Line 2" },
+                      { "latex": "<(8^2)^{1012} \\equiv 1>", "cue_beat": "answer", "label": "Line 3" } ],
+      "answer_latex": "<\\text{remainder } 1>",
+      "lines": [
+        { "beat": "hook",     "spoken": "<Stop expanding this JEE question. Three lines.>", "caption": "<...>" },
+        { "beat": "question", "spoken": "<...>", "caption": "<...>" },
+        { "beat": "school",   "spoken": "<School way? ...>", "caption": "<...>" },
+        { "beat": "trick",    "spoken": "<TutorDA trick: ...>", "caption": "<...>" },
+        { "beat": "answer",   "spoken": "<... Remainder one!>", "caption": "<...>" },
+        { "beat": "cta",      "spoken": "<Three lines. Send this to the friend who's still expanding.>", "caption": "<...>" }
+      ],
+      "cta_card": { "line1": "Send this to the friend", "line2": "<who's still expanding>" },
+      "ig_caption": "<see rules.caption>"
+    },
+
+    "picture_q": {
+      "template": "picture_q",
+      "topic_id": "<e.g. jee2020-2sep-s1-q17>",
+      "source": { "exam": "JEE Main", "year": "<2020>", "date": "<2 Sep>", "shift": "<1>", "question_no": "<17>", "url": "<source page>" },
+      "unit": "<Area under curves>",
+      "figure": {
+        "kind": "<ellipse_diamond | parabola_line | circle_square | graph_count | custom>",
+        "params": { "<a>": 2, "<b>": 3 },
+        "shaded": "<region description>",
+        "labels_latex": ["<\\tfrac{x^2}{4}+\\tfrac{y^2}{9}=1>", "<\\tfrac{|x|}{2}+\\tfrac{|y|}{3}=1>"]
+      },
+      "question_line": "Shaded area = ?",
+      "options_latex": { "A": "<6(\\pi-2)>", "B": "<3(\\pi-2)>", "C": "<3(4-\\pi)>", "D": "<6(4-\\pi)>" },
+      "correct_option": "<A>",
+      "lines": [
+        { "beat": "hook",   "spoken": "<Shaded area? You don't need a single integral.>", "caption": "<Shaded area? | You don't need a single integral.>" },
+        { "beat": "pick",   "spoken": "<JEE Main twenty twenty. Pick one.>",            "caption": "<JEE Main 2020. Pick one.>" },
+        { "beat": "school", "spoken": "<School way? Four integrals.>",                   "caption": "<School way? 4 integrals.>" },
+        { "beat": "trick",  "spoken": "<TutorDA trick: ...>",                            "caption": "<TutorDA trick: ...>" },
+        { "beat": "step",   "spoken": "<Diamond? Half of four times six. Twelve.>",      "caption": "<Diamond? Half of 4 times 6. 12.>" },
+        { "beat": "answer", "spoken": "<Six pie minus twelve. It's ay!>",                "caption": "<6 pi minus 12. It's A!>" },
+        { "beat": "cta",    "spoken": "<Send this to the friend still doing that integral.>", "caption": "<Send this to the friend | still doing that integral.>" }
+      ],
+      "trick_steps_latex": ["<\\text{shaded} = \\text{ellipse} - \\text{diamond}>", "<\\text{ellipse} = \\pi ab = 6\\pi>", "<\\text{diamond} = \\tfrac12\\cdot4\\cdot6 = 12>"],
+      "answer_latex": "<6\\pi - 12 = 6(\\pi - 2)>",
+      "cta_card": { "line1": "Send this to the friend", "line2": "<still doing that integral>" },
+      "ig_caption": "<see rules.caption>"
+    }
+  },
+
+  "example_filled_picture_q": {
+    "template": "picture_q",
+    "topic_id": "jee2020-2sep-s1-q17",
+    "source": { "exam": "JEE Main", "year": "2020", "date": "2 Sep", "shift": "1", "question_no": "17", "url": "https://cracku.in/17-area-in-sq-units-of-the-region-outside-fracx2-frac-x-nta-jee-main-2-sep-2020-shift-1-mathematics" },
+    "unit": "Area under curves",
+    "figure": {
+      "kind": "ellipse_diamond",
+      "params": { "a": 2, "b": 3 },
+      "shaded": "inside the ellipse, outside the diamond",
+      "labels_latex": ["\\tfrac{x^2}{4}+\\tfrac{y^2}{9}=1", "\\tfrac{|x|}{2}+\\tfrac{|y|}{3}=1"]
+    },
+    "question_line": "Shaded area = ?",
+    "options_latex": { "A": "6(\\pi-2)", "B": "3(\\pi-2)", "C": "3(4-\\pi)", "D": "6(4-\\pi)" },
+    "correct_option": "A",
+    "lines": [
+      { "beat": "hook",   "spoken": "Shaded area? You don't need a single integral.", "caption": "Shaded area? | You don't need a single integral." },
+      { "beat": "pick",   "spoken": "JEE Main twenty twenty. Pick one.", "caption": "JEE Main 2020. Pick one." },
+      { "beat": "school", "spoken": "School way? Four integrals.", "caption": "School way? 4 integrals." },
+      { "beat": "trick",  "spoken": "TutorDA trick: the shaded part's just the ellipse minus the diamond, and an ellipse is pie ay bee, so six pie.", "caption": "TutorDA trick: the shaded part's just the ellipse | minus the diamond, and an ellipse is pi a b, | so 6 pi." },
+      { "beat": "step",   "spoken": "Diamond? Half of four times six. Twelve.", "caption": "Diamond? Half of 4 times 6. 12." },
+      { "beat": "answer", "spoken": "Six pie minus twelve. It's ay!", "caption": "6 pi minus 12. It's A!" },
+      { "beat": "cta",    "spoken": "Send this to the friend still doing that integral.", "caption": "Send this to the friend | still doing that integral." }
+    ],
+    "trick_steps_latex": ["\\text{shaded} = \\text{ellipse} - \\text{diamond}", "\\text{ellipse} = \\pi ab = \\pi\\cdot2\\cdot3 = 6\\pi", "\\text{diamond} = \\tfrac12\\cdot4\\cdot6 = 12"],
+    "answer_latex": "6\\pi - 12 = 6(\\pi - 2)",
+    "cta_card": { "line1": "Send this to the friend", "line2": "still doing that integral" },
+    "ig_caption": "Share this with the friend still doing that integral.\nJEE Main 2020 PYQ (2 Sep, Shift 1), area under curves.\n\nThe question: the area inside the ellipse x^2/4 + y^2/9 = 1 but outside |x|/2 + |y|/3 = 1.\n\nSkip the 4 integrals. The shaded part's just the ellipse with the diamond taken out, and an ellipse is pi a b, so that's pi x 2 x 3 = 6 pi. The diamond? Half its diagonals: 1/2 x 4 x 6 = 12. You're left with 6 pi - 12 = 6(pi - 2). Option A.\n\n#JEEMain #JEEMaths #TutorDA"
+  }
+}
