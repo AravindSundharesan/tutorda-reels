@@ -99,3 +99,9 @@ Every reel passes these before it is delivered or scheduled. Fix and re-run unti
 
 - 3 Nov 2026 (Aro): rotate units. No two consecutive reels from the same chapter/question type. Recent: remainders (7^103 mod 25, 428^2024 mod 21) -> next was Limits.
 - 4 Nov 2026: new PYQ MCQ format (PyqCx5): question + all 4 options visible on frame 0, spoken 3-2-1 countdown, school vs trick in the middle, trap option called out, send prompt names the trap ("friend who'd pick D"). Unit: Complex Numbers.
+
+## Subtitle safe zone (13 Nov 2026)
+Instagram covers the bottom of a reel (below about y 1440 on 1080x1920) with the caption, buttons and audio label.
+From the physics projectile reel on: set `BAND_TOP = 1290; CAP_Y = 1362; CAP_X = X(490)` on the scene, keep all content between y 330 and 1270,
+and put the closing CTA card inside the band (`c2(card, 1362)`, z-index above 14). Check: subtitle bottom <= 1440, right edge <= 850.
+Also on frame 0: the hook as on-screen text (not only spoken). CTA card max 6 words.
