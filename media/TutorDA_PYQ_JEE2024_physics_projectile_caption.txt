@@ -3,6 +3,6 @@ JEE Main 2024 PYQ (8 Apr, Shift 2), physics: projectile motion.
 
 The question: at what angle of projection are the horizontal range and the maximum height equal?
 
-You don't need both formulas. For any projectile, R = 4H / tan(theta). Set R = H and tan(theta) = 4, so the angle is tan^-1(4), about 76 degrees. Option A. Option B, tan^-1(1/4), is the same idea flipped upside down.
+Skip the two formulas. For any projectile you throw, the range is R = 4H / tan(theta), so when R = H you get tan(theta) = 4. That's tan^-1(4). About 76 degrees. Option A. B is the trap: it's the same answer flipped.
 
 #JEEMain #JEEPhysics #TutorDA
