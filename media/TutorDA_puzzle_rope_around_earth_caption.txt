@@ -1,0 +1,8 @@
+Share this with the friend who'd guess a hair.
+A maths puzzle for JEE Main prep: a rope hugs the Earth all the way round. Add 1 metre to it. How high does it lift?
+
+You probably guessed a hair or a millimetre. It's about 16 cm, enough to slide your phone under.
+
+The circumference is 2 pi r. Make it 1 metre longer and 2 pi (r + h) = 2 pi r + 1, so h = 1/(2 pi), about 0.16 m. The r cancels. The Earth, a football or a coin: same 16 cm gap.
+
+#JEEMain #JEEMaths #MathsPuzzle #TutorDA
