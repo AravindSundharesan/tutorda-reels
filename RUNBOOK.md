@@ -105,3 +105,7 @@ Instagram covers the bottom of a reel (below about y 1440 on 1080x1920) with the
 From the physics projectile reel on: set `BAND_TOP = 1290; CAP_Y = 1362; CAP_X = X(490)` on the scene, keep all content between y 330 and 1270,
 and put the closing CTA card inside the band (`c2(card, 1362)`, z-index above 14). Check: subtitle bottom <= 1440, right edge <= 850.
 Also on frame 0: the hook as on-screen text (not only spoken). CTA card max 6 words.
+
+## Layout and voice (14 Nov 2026, Aro)
+- No footer band. Captions as a floating pill: `CAP_PILL = True; CAP_Y = 1362; CAP_FS = 38; CAP_X = X(490)`. Content block centred between the header and the pill (questions ~430-500, figure ~560-1210, options ~1252). Check: nothing below y 1440, nothing right of x 850.
+- Voice: Kokoro `af_sarah` read naturally (plain `k.create`, speed 1.0), lines joined with 1.2 s gaps. Do not run `kokoro_niki2.py` pitch shaping: Aro found the shaped pitch and pronunciation "extremely bad".
