@@ -49,7 +49,7 @@ class ReelScene(Scene):
     K = None
     def until(self, t):
         dt = t - self.renderer.time
-        if dt > 1 / 60: self.wait(dt)
+        if dt > 1 / 60: self.wait(dt, frozen_frame=False)   # 13 Nov: keep updaters (captions) live during waits
         elif dt < -0.08: print(f"LATE {-dt:.2f}s for cue at {t:.2f}s", file=sys.stderr)
 
     def setup_ui(self, subject, logo_png):

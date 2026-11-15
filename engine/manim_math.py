@@ -1801,3 +1801,82 @@ class Pow2(ShortReel2):
         fw = self.comment_chip(self.CTA); fw[0].set_fill(OR)
         self.until(C[6] + 1.2); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.25)
         self.brand_flash(scale2, stand, cl, cr, x6, r2, r4, ch, fw, lb)
+
+
+class AvgSpeed(ShortReel2):
+    """Average speed trap (15 Nov). 60 km/h there, 40 back, same distance: average = 2ab/(a+b) = 48, not 50.
+    Checked in Python with fractions for d = 1, 7, 120, 300 km: always 48. Rope-reel format: guessable question on frame 0,
+    assumption said out loud ("same distance both ways"), the middle step spoken, a save-worthy rule card, send line echoes the hook."""
+    EVENTS = "avgspeed"; SERIES = "JEE Main · Maths"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)     # subtitles in the footer space (Aro, 14 Nov)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        q1 = self.c2(H("60 there, 40 back.", 66, INK), 410)
+        q2 = self.c2(H("Average speed?", 58, OR), 482)
+        # ---- the road: home -> college ----
+        xa, xb, ry = 190, 770, 650
+        road = Line(P(xa, ry), P(xb, ry), color=INK, stroke_width=6)
+        da, db = Dot(P(xa, ry), radius=px(13), color=INK), Dot(P(xb, ry), radius=px(13), color=INK)
+        la, lbb = B("Home", 32, GREY_P, SEMIBOLD).move_to(P(xa, ry + 44)), B("College", 32, GREY_P, SEMIBOLD).move_to(P(xb, ry + 44))
+        s60 = H("60 km/h  →", 36, BLUE).move_to(P(480, ry - 50))
+        s40 = H("←  40 km/h", 36, OR).move_to(P(480, ry + 92))
+        car = Dot(P(xa, ry), radius=px(20), color=OR).set_z_index(5)
+        # the car shuttles for the whole reel: out in 1.0 s (60), back in 1.5 s (40), so the screen never stands still
+        t0 = self.renderer.time
+        def drive(m):
+            u = (self.renderer.time - t0) % 2.5
+            f = u / 1.0 if u < 1.0 else 1 - (u - 1.0) / 1.5
+            m.move_to(P(xa + (xb - xa) * f, ry))
+        car.add_updater(drive)
+        self.add(road, da, db, la, lbb, s60, car, q1, q2)
+        self.until(wt(0, 6, 0.08)); self.ev("tick"); self.play(FadeIn(s40, shift=LEFT * 0.1), run_time=0.3, rate_func=EXPO)
+        self.until(C[1] - 0.05)
+        # ===== B. options; "50" crossed on "Nope" =====
+        def pill(s):
+            r = RoundedRectangle(width=px(200), height=px(74), corner_radius=0.14, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+            return VGroup(r, H(s, 44, INK).move_to(r))
+        ops = [pill("50"), pill("48"), pill("45")]
+        for o, x in zip(ops, (270, 490, 710)): o.move_to(P(x, 840))
+        self.ev("tick"); self.play(LaggedStart(*[FadeIn(o, shift=UP * 0.08) for o in ops], lag_ratio=0.12), run_time=0.4, rate_func=EXPO)
+        self.until(wt(1, 4, 0.08)); self.play(Indicate(ops[0], color=OR, scale_factor=1.1), run_time=0.4)
+        x50 = Line(ops[0][0].get_corner(DL) + UR * px(10), ops[0][0].get_corner(UR) + DL * px(10), color=RD, stroke_width=8)
+        self.until(wt(1, 5, 0.06)); self.ev("stamp"); self.play(Create(x50), ops[0][1].animate.set_color(GREY_P), run_time=0.25)
+        # ===== C. 120 km: 2 h going, 3 h back (time bars, 120 px per hour) =====
+        km = tag("120 km", 30, WHITE_, INK).move_to(P(480, ry))
+        self.until(wt(2, 1, 0.08)); self.ev("tick"); self.play(FadeIn(km, scale=1.15), run_time=0.3, rate_func=EXPO)
+        bx, by, hh = 190, 975, 64
+        def bar(x0, hours, col, txt):
+            r = Rectangle(width=px(120 * hours), height=px(hh), fill_color=col, fill_opacity=1, stroke_width=0)
+            r.move_to(P(x0 + 60 * hours, by)); t = H(txt, 36, WHITE_).move_to(r); return VGroup(r, t)
+        g = bar(bx, 2, BLUE, "2 h"); b3 = bar(bx + 240, 3, OR, "3 h")
+        tl = B("time", 28, GREY_P, SEMIBOLD).move_to(P(bx - 10, by - 58)).align_to(g, LEFT)
+        self.until(wt(2, 3, 0.08)); self.play(FadeIn(tl), GrowFromEdge(g, LEFT), run_time=0.6, rate_func=rate_functions.linear)
+        self.until(wt(2, 6, 0.08)); self.play(GrowFromEdge(b3, LEFT), run_time=0.9, rate_func=rate_functions.linear)
+        # ===== D. 240 km / 5 h = 48 (the one spring moment) =====
+        eq = M(r"\frac{240\ \text{km}}{5\ \text{h}} = 48\ \text{km/h}", 54, INK).move_to(P(490, 1105))
+        self.until(C[3] - 0.05); self.ev("wipe"); self.play(FadeIn(eq, shift=UP * 0.08), run_time=0.4, rate_func=EXPO)
+        ans = ops[1]
+        tick = VGroup(Circle(radius=px(18), fill_color=WHITE_, fill_opacity=1, stroke_width=0), B("✓", 24, OR, SEMIBOLD)); tick[1].move_to(tick[0])
+        tick.move_to(ans[0].get_left() + RIGHT * px(32))
+        self.until(wt(3, 5, 0.12)); self.ev("stamp")
+        self.play(ans[0].animate.set_fill(OR, 1).set_stroke(OR, 6), ans[1].animate.set_color(WHITE_).shift(RIGHT * px(16)), FadeIn(tick, scale=1.4),
+                  ops[2].animate.set_opacity(0.4), eq.animate.set_color(OR_D),
+                  run_time=0.45, rate_func=rate_functions.ease_out_back)
+        # ===== E. the rule: same distance both ways -> 2ab/(a+b) =====
+        rt = B("Same distance both ways", 30, GREY_P, SEMIBOLD)
+        rf = M(r"\bar v = \frac{2ab}{a+b}", 60, INK)
+        rule = VGroup(rt, rf).arrange(DOWN, buff=px(14))
+        rbox = RoundedRectangle(width=rule.width + px(90), height=rule.height + px(48), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=5)
+        card = VGroup(rbox, rule.move_to(rbox)); self.c2(card, 1298)
+        self.until(wt(4, 3, 0.1)); self.ev("tick"); self.play(FadeIn(rbox), FadeIn(rt, shift=UP * 0.06), run_time=0.35, rate_func=EXPO)
+        self.until(wt(4, 9, 0.1)); self.play(Write(rf), run_time=0.6)
+        # ===== F. send line, held to the last frame =====
+        self.until(C[-1] - 0.02)
+        ft = VGroup(H("Send this to", 44, WHITE_), H("a 50 guesser", 44, WHITE_)).arrange(DOWN, buff=px(6))
+        fw = VGroup(RoundedRectangle(width=ft.width + px(80), height=ft.height + px(40), corner_radius=0.2, fill_color=OR, fill_opacity=1, stroke_width=0)); fw.add(ft.move_to(fw[0]))
+        self.c2(fw, 1560); fw.set_z_index(22); self.ev("tick"); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.4, rate_func=EXPO)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))

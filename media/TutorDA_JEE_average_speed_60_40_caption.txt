@@ -1,0 +1,8 @@
+Share this with the friend who'd say 50.
+JEE Main maths: average speed. You drive to college at 60 km/h and come back the same road at 40 km/h. What's your average speed?
+
+48. Not 50. Take 120 km each way: 2 hours going, 3 hours coming back, so you cover 240 km in 5 hours, and 240/5 = 48. You spend longer at the slow speed, which pulls the average towards 40.
+
+Same distance both ways? Average speed = 2ab/(a + b). That's the harmonic mean of the two speeds, and it's never more than the plain average.
+
+#JEEMain #JEEMaths #HarmonicMean #TutorDA

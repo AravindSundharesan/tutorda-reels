@@ -109,3 +109,9 @@ Also on frame 0: the hook as on-screen text (not only spoken). CTA card max 6 wo
 ## Layout and voice (14 Nov 2026, Aro)
 - No footer band. Captions as a floating pill in the footer space (Aro chose this over y 1362): `CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)`. Content block centred between the header and the pill (questions ~430-500, figure ~560-1210, options ~1252). Check: nothing below y 1440, nothing right of x 850.
 - Voice: Kokoro `af_sarah` read naturally (plain `k.create`, speed 1.0), lines joined with 1.2 s gaps. Do not run `kokoro_niki2.py` pitch shaping: Aro found the shaped pitch and pronunciation "extremely bad".
+
+## Format that worked (15 Nov 2026)
+Rope reel (14 Nov): 1,843 views in 23 h, 57.1% past 3 s, 9.5 s of 16.4 s watched, 12 shares. Repeat its shape:
+frame 0 = one everyday question anyone can guess, already moving; 3 options with the intuitive wrong one; say the key assumption out loud;
+say the middle step, not only show it; end on a rule worth saving; send line echoes the hook; 16-20 s.
+Letters in formulas: speak them from IPA (tˈuː ˈeɪ bˈiː), or Kokoro reads "a" as "uh".

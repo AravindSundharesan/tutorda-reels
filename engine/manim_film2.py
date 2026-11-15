@@ -120,10 +120,10 @@ class Film2(ReelScene):
                 c = 0
                 for w_ in l: spans.append((li, c, c + len(w_))); c += len(w_) + 1
             def make(k, lines=lines, line_txt=line_txt, spans=spans):
-                rows = VGroup(*[Text(line_txt[li], font="Poppins", weight=SEMIBOLD, color="#EDEFF5", font_size=42 * 0.6,
+                rows = VGroup(*[Text(line_txt[li], font="Poppins", weight=SEMIBOLD, color="#EDEFF5", font_size=getattr(self, "CAP_FS", 42) * 0.6,
                                      t2c=({f"[{spans[k][1]}:{spans[k][2]}]": OR} if k >= 0 and spans[k][0] == li else {}))
                                 for li in range(len(lines))])
-                for li, r in enumerate(rows): r.shift(UP * (-li * px(58) - baseline(r)))
+                for li, r in enumerate(rows): r.shift(UP * (-li * px(58 * getattr(self, "CAP_FS", 42) / 42) - baseline(r)))
                 rows.move_to([getattr(self, "CAP_X", 0), Y(cap_y), 0])
                 if not pill: return rows
                 bg = RoundedRectangle(width=max(r.width for r in rows) + px(56), height=rows.height + px(44), corner_radius=0.16,
