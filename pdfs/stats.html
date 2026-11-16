@@ -1,0 +1,103 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@page { size: A4; margin: 16mm 16mm 18mm 16mm; }
+:root { --ink:#0F172A; --slate:#475569; --blue:#2453C9; --or:#F26B1D; --paper:#FBF8F3; --rule:#E2DED6; --teal:#0D9488; }
+* { box-sizing: border-box; }
+body { font-family: Poppins, sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.5; margin: 0; }
+.mast { display:flex; justify-content:space-between; align-items:baseline; border-bottom: 2px solid var(--rule); padding-bottom: 6px; }
+.logo { font-weight:700; font-size: 20pt; letter-spacing: -0.3px; }
+.logo .t { color: var(--blue); } .logo .d { color: var(--or); }
+.tagline { color: var(--or); font-weight: 600; font-size: 10pt; }
+h1 { font-size: 22pt; line-height: 1.15; margin: 16px 0 4px; }
+.sub { color: var(--slate); margin: 0 0 14px; }
+.rules { border: 2px solid var(--or); border-radius: 10px; padding: 10px 14px; margin: 0 0 16px; background: #FFF7F1; }
+.rules b { color: var(--or); }
+.rules ul { margin: 4px 0 0; padding-left: 18px; }
+.q { padding: 10px 0 10px; border-bottom: 1px solid var(--rule); break-inside: avoid; }
+.q:last-child { border-bottom: 0; }
+.qh { display:flex; gap:10px; align-items: baseline; }
+.n { font-weight:700; color: var(--blue); font-size: 12pt; min-width: 22px; }
+.tag { font-size: 8.5pt; font-weight: 600; color: var(--slate); background: #EEF1F6; border-radius: 4px; padding: 1px 7px; margin-left: auto; white-space: nowrap; }
+.opts { display:grid; grid-template-columns: repeat(4, auto); gap: 2px 22px; margin: 4px 0 0 32px; justify-content: start; }
+.body { margin-left: 32px; }
+table.data { border-collapse: collapse; margin: 6px 0 2px 32px; font-size: 10pt; }
+table.data td { border: 1px solid var(--rule); padding: 2px 10px; text-align: center; }
+table.data td:first-child { font-weight: 600; background: #F4F2EE; }
+.frac { display:inline-flex; flex-direction:column; vertical-align: middle; text-align:center; font-size: 0.9em; line-height: 1.1; margin: 0 2px; }
+.frac > span:first-child { border-bottom: 1px solid currentColor; padding: 0 2px; }
+.page { break-before: page; }
+.ans { padding: 6px 0 7px; font-size: 10pt; line-height: 1.45; border-bottom: 1px solid var(--rule); break-inside: avoid; }
+.ans .key { font-weight: 700; color: var(--or); }
+.ans .why { margin-left: 32px; color: #1E293B; }
+.foot { margin-top: 8px; font-size: 8.5pt; color: var(--slate); }
+.cta { margin-top: 10px; background: var(--ink); color: #fff; border-radius: 10px; padding: 10px 14px; font-weight: 600; }
+.cta span { color: #FFC83D; }
+i.v { font-family: "Times New Roman", serif; font-style: italic; font-size: 1.08em; }
+</style></head>
+<body>
+<div class="mast"><div class="logo"><span class="t">Tutor</span><span class="d">DA</span></div><div class="tagline">JEE Main · Statistics</div></div>
+<h1>10 JEE Main statistics questions</h1>
+<p class="sub">Real past questions on mean, variance and standard deviation, easiest first. Answers and worked solutions on the last pages. Try them first.</p>
+
+<div class="rules"><b>Rules you'll use</b>
+<ul>
+<li>Add a constant to every value (<i class="v">x</i> + <i class="v">c</i>): the mean moves by <i class="v">c</i>, the variance and σ don't change.</li>
+<li>Multiply every value by <i class="v">k</i>: σ is multiplied by |<i class="v">k</i>|, the variance by <i class="v">k</i>².</li>
+<li>σ² = <span class="frac"><span>Σ<i class="v">x</i>²</span><span><i class="v">n</i></span></span> − <i class="v">x̄</i>². Variance of 1, 2, …, <i class="v">n</i> = <span class="frac"><span><i class="v">n</i>² − 1</span><span>12</span></span>.</li>
+</ul></div>
+
+<div class="q"><div class="qh"><span class="n">1</span><span>All the students of a class performed poorly in Mathematics. The teacher decided to give grace marks of 10 to each student. Which of the following statistical measures will not change even after the grace marks were given?</span><span class="tag">JEE Main 2013 · 7 Apr</span></div>
+<div class="opts"><span>(A) mode</span><span>(B) variance</span><span>(C) mean</span><span>(D) median</span></div></div>
+
+<div class="q"><div class="qh"><span class="n">2</span><span>If the variance of the first <i class="v">n</i> natural numbers is 10 and the variance of the first <i class="v">m</i> even natural numbers is 16, then <i class="v">m</i> + <i class="v">n</i> is equal to ______.</span><span class="tag">2020 · 7 Jan · Shift 1</span></div></div>
+
+<div class="q"><div class="qh"><span class="n">3</span><span>If the variance of the terms in an increasing A.P. <i class="v">b</i>₁, <i class="v">b</i>₂, …, <i class="v">b</i>₁₁ is 90, then the common difference of this A.P. is ______.</span><span class="tag">2020 · 2 Sep · Shift 2</span></div></div>
+
+<div class="q"><div class="qh"><span class="n">4</span><span>Let <i class="v">X</i> = {<i class="v">x</i> ∈ ℕ : 1 ≤ <i class="v">x</i> ≤ 17} and <i class="v">Y</i> = {<i class="v">ax</i> + <i class="v">b</i> : <i class="v">x</i> ∈ <i class="v">X</i> and <i class="v">a</i>, <i class="v">b</i> ∈ ℝ, <i class="v">a</i> &gt; 0}. If the mean and variance of the elements of <i class="v">Y</i> are 17 and 216 respectively, then <i class="v">a</i> + <i class="v">b</i> is equal to:</span><span class="tag">2020 · 2 Sep · Shift 1</span></div>
+<div class="opts"><span>(A) 7</span><span>(B) −7</span><span>(C) −27</span><span>(D) 9</span></div></div>
+
+<div class="q"><div class="qh"><span class="n">5</span><span>Consider a set of 2<i class="v">n</i> observations: half of them are equal to <i class="v">a</i> and the other half are equal to −<i class="v">a</i>. If a constant <i class="v">b</i> is added to each observation, the mean and standard deviation of the new set become 5 and 20 respectively. Then <i class="v">a</i>² + <i class="v">b</i>² is equal to:</span><span class="tag">2021 · 18 Mar · Shift 2</span></div>
+<div class="opts"><span>(A) 425</span><span>(B) 650</span><span>(C) 250</span><span>(D) 925</span></div></div>
+
+<div class="q"><div class="qh"><span class="n">6</span><span>The marks obtained by a student in five tests are 45, 54, 41, 57 and 43. If the mean of the marks in six tests is 48, the standard deviation of the marks in all six tests is:</span><span class="tag">2019 · 8 Apr · Shift 2</span></div>
+<div class="opts"><span>(A) <span class="frac"><span>10</span><span>3</span></span></span><span>(B) <span class="frac"><span>100</span><span>3</span></span></span><span>(C) <span class="frac"><span>10</span><span>√3</span></span></span><span>(D) <span class="frac"><span>100</span><span>√3</span></span></span></div></div>
+
+<div class="q"><div class="qh"><span class="n">7</span><span>The mean and standard deviation of 20 observations were found to be 10 and 2 respectively. On rechecking, it was found that an observation 8 was incorrect; it should have been 12. The correct standard deviation is:</span><span class="tag">2024 · 6 Apr · Shift 1</span></div>
+<div class="opts"><span>(A) 1.8</span><span>(B) 1.94</span><span>(C) √3.96</span><span>(D) √3.86</span></div></div>
+
+<div class="q"><div class="qh"><span class="n">8</span><span>The mean and variance of the data 65, 68, 58, 44, 48, 45, 60, α, β, 60, where α &gt; β, are 56 and 66.2 respectively. Then α² + β² is equal to ______.</span><span class="tag">2024 · 29 Jan · Shift 1</span></div></div>
+
+<div class="q"><div class="qh"><span class="n">9</span><span>If the variance σ² of the data below is <i class="v">k</i>, find [<i class="v">k</i>], the greatest integer ≤ <i class="v">k</i>.</span><span class="tag">2024 · 30 Jan · Shift 2</span></div>
+<table class="data"><tr><td><i class="v">x</i><sub>i</sub></td><td>0</td><td>1</td><td>5</td><td>6</td><td>10</td><td>12</td><td>17</td></tr><tr><td><i class="v">f</i><sub>i</sub></td><td>3</td><td>2</td><td>3</td><td>2</td><td>6</td><td>3</td><td>3</td></tr></table></div>
+
+<div class="q"><div class="qh"><span class="n">10</span><span>Consider 10 observations <i class="v">x</i>₁, …, <i class="v">x</i>₁₀ such that Σ(<i class="v">x</i><sub>i</sub> − α) = 2 and Σ(<i class="v">x</i><sub>i</sub> − β)² = 40, where α, β are positive integers. If the mean and variance of the observations are <span class="frac"><span>6</span><span>5</span></span> and <span class="frac"><span>84</span><span>25</span></span> respectively, then <span class="frac"><span>β</span><span>α</span></span> is equal to:</span><span class="tag">2024 · 1 Feb · Shift 2</span></div>
+<div class="opts"><span>(A) 2</span><span>(B) <span class="frac"><span>3</span><span>2</span></span></span><span>(C) <span class="frac"><span>5</span><span>2</span></span></span><span>(D) 1</span></div></div>
+
+<div class="page">
+<div class="mast"><div class="logo"><span class="t">Tutor</span><span class="d">DA</span></div><div class="tagline">Answers and solutions</div></div>
+
+<div class="ans"><span class="n">1</span> <span class="key">(B) variance.</span><div class="why">Adding 10 to every mark moves the mean, median and mode up by 10. The gaps between marks stay the same, so the variance doesn't change.</div></div>
+
+<div class="ans"><span class="n">2</span> <span class="key">18</span><div class="why">Variance of 1, …, <i class="v">n</i> = (<i class="v">n</i>² − 1)/12 = 10, so <i class="v">n</i> = 11. The first <i class="v">m</i> even numbers are 2 × (1, …, <i class="v">m</i>), so their variance is 4(<i class="v">m</i>² − 1)/12 = 16, giving <i class="v">m</i> = 7. <i class="v">m</i> + <i class="v">n</i> = 18.</div></div>
+
+<div class="ans"><span class="n">3</span> <span class="key">3</span><div class="why">An A.P. is <i class="v">b</i>₁ + <i class="v">d</i>·(0, 1, …, 10). Adding <i class="v">b</i>₁ changes nothing; multiplying by <i class="v">d</i> multiplies the variance by <i class="v">d</i>². Variance of 0, …, 10 is (11² − 1)/12 = 10, so 10<i class="v">d</i>² = 90 and <i class="v">d</i> = 3.</div></div>
+
+<div class="ans"><span class="n">4</span> <span class="key">(B) −7</span><div class="why">Variance of 1, …, 17 is (17² − 1)/12 = 24 and its mean is 9. For <i class="v">ax</i> + <i class="v">b</i>: 24<i class="v">a</i>² = 216, so <i class="v">a</i> = 3; 9<i class="v">a</i> + <i class="v">b</i> = 17, so <i class="v">b</i> = −10. <i class="v">a</i> + <i class="v">b</i> = −7.</div></div>
+
+<div class="ans"><span class="n">5</span> <span class="key">(A) 425</span><div class="why">The original mean is 0 and the SD is |<i class="v">a</i>|. Adding <i class="v">b</i> makes the mean <i class="v">b</i> = 5 and leaves the SD at |<i class="v">a</i>| = 20. <i class="v">a</i>² + <i class="v">b</i>² = 400 + 25 = 425.</div></div>
+
+<div class="ans"><span class="n">6</span> <span class="key">(C) 10/√3</span><div class="why">Six-test total = 6 × 48 = 288, so the sixth mark is 288 − 240 = 48. Deviations from 48: −3, 6, −7, 9, −5, 0; squares add to 200. Variance = 200/6 = 100/3, so SD = 10/√3.</div></div>
+
+<div class="ans"><span class="n">7</span> <span class="key">(C) √3.96</span><div class="why">Σ<i class="v">x</i> = 200 and Σ<i class="v">x</i>² = 20 × (4 + 100) = 2080. Correcting 8 to 12: Σ<i class="v">x</i> = 204, Σ<i class="v">x</i>² = 2080 − 64 + 144 = 2160. Variance = 2160/20 − (10.2)² = 108 − 104.04 = 3.96.</div></div>
+
+<div class="ans"><span class="n">8</span> <span class="key">6344</span><div class="why">Mean 56 gives α + β = 560 − 448 = 112. The known eight values have Σ<i class="v">x</i>² = 25678, and (α² + β² + 25678)/10 − 56² = 66.2 gives α² + β² = 6344 (α = 62, β = 50).</div></div>
+
+<div class="ans"><span class="n">9</span> <span class="key">29</span><div class="why">Σ<i class="v">f</i> = 22, Σ<i class="v">fx</i> = 176, so the mean is 8. Σ<i class="v">fx</i>² = 2048. Variance = 2048/22 − 64 = 320/11 ≈ 29.09, so [<i class="v">k</i>] = 29.</div></div>
+
+<div class="ans"><span class="n">10</span> <span class="key">(A) 2</span><div class="why">Σ<i class="v">x</i> = 10 × 6/5 = 12, so 12 − 10α = 2 and α = 1. Variance is unchanged by shifting, so 84/25 = 40/10 − (6/5 − β)², giving (6/5 − β)² = 16/25 and β = 2 (β = 2/5 isn't an integer). β/α = 2.</div></div>
+
+<div class="cta">Questions 1, 4 and 5 use the same idea as our reel: <span>adding a constant never changes the spread.</span> More JEE maths on Instagram: @tutorda_</div>
+<p class="foot">Questions from JEE Main papers (NTA), sessions as marked; compiled from cracku.in and SATHEE (IIT Kanpur). Every answer checked by TutorDA in Python, 16 Nov 2026.</p>
+</div>
+</body></html>
