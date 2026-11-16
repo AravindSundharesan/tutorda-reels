@@ -1970,7 +1970,7 @@ class SdShift(ShortReel2):
             base = m.get_center().copy()
             m.add_updater(lambda mob, b=base, ph=i * 1.1: mob.move_to(b + UP * px(5) * math.sin(2 * math.pi * (self.renderer.time - t0) / 1.4 + ph)))
         self.until(C[-1] - 0.02)
-        ft = VGroup(H("Send this to", 44, WHITE_), H("a +10 guesser", 44, WHITE_)).arrange(DOWN, buff=px(6))
+        ft = VGroup(H("Follow TutorDA", 44, WHITE_), H("Comment PDF", 44, WHITE_)).arrange(DOWN, buff=px(6))   # Aro, 16 Nov: follow + PDF ask
         fw = VGroup(RoundedRectangle(width=ft.width + px(80), height=ft.height + px(40), corner_radius=0.2, fill_color=OR, fill_opacity=1, stroke_width=0)); fw.add(ft.move_to(fw[0]))
         self.c2(fw, 1560); fw.set_z_index(22); self.ev("tick"); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.4, rate_func=EXPO)
         self.until(K.DUR)
