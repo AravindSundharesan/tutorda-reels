@@ -1,0 +1,10 @@
+Share this with the friend who said plus 10.
+JEE Main maths, statistics: your teacher gives everyone 10 bonus marks. What happens to the standard deviation?
+
+Nothing. Say the marks are 40, 55, 60, 70, 85, so σ is about 15. Add 10 and you get 50, 65, 70, 80, 95. Every mark moves the same amount, which means the gaps between them don't change, and that's all the spread is. It's still 15.
+
+Multiplying isn't the same. Double every mark and σ doubles too, to about 30.
+
+The rule you'll want: x + c leaves σ alone, and kx multiplies σ by |k|.
+
+#JEEMain #JEEMaths #Statistics #TutorDA

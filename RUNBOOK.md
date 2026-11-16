@@ -115,3 +115,7 @@ Rope reel (14 Nov): 1,843 views in 23 h, 57.1% past 3 s, 9.5 s of 16.4 s watched
 frame 0 = one everyday question anyone can guess, already moving; 3 options with the intuitive wrong one; say the key assumption out loud;
 say the middle step, not only show it; end on a rule worth saving; send line echoes the hook; 16-20 s.
 Letters in formulas: speak them from IPA (tˈuː ˈeɪ bˈiː), or Kokoro reads "a" as "uh".
+
+## Lessons from the average-speed reel (16 Nov 2026)
+1,408 views, 48.7% past 3 s, 8.0 s of 20.4 s watched, 3 shares, 1 save. The rule card came at ~15.5 s, after most viewers had left, so it earned no saves.
+From now on: 16-17 s, the rule appears together with the answer, prefer surprises that aren't classic trick questions, and keep footer subtitle lines short (right edge <= 850).

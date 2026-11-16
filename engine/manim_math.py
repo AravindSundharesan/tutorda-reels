@@ -1880,3 +1880,98 @@ class AvgSpeed(ShortReel2):
         self.c2(fw, 1560); fw.set_z_index(22); self.ev("tick"); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.4, rate_func=EXPO)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class SdShift(ShortReel2):
+    """Statistics (16 Nov): add 10 to every mark, the standard deviation does not change; double every mark and it doubles.
+    Checked in Python: marks 40, 55, 60, 70, 85 -> sigma 15.03; +10 -> 15.03; x2 -> 30.07 (population SD).
+    Fixes from the avg-speed review: 16-17 s, the rule card arrives with the answer (not at the end), one moving picture,
+    a less familiar surprise than the classic trick question."""
+    EVENTS = "sdshift"; SERIES = "JEE Main · Statistics"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        q1 = self.c2(H("+10 to every mark.", 66, INK), 418)
+        q2 = self.c2(H("Standard deviation?", 56, OR), 490)
+        sig = tag("σ = 15", 36, WHITE_, INK).move_to(P(490, 575))
+        marks = [40, 55, 60, 70, 85]
+        mx = lambda m: 130 + (m - 30) * 10
+        def axis(y, alpha=1.0):
+            ln = Line(P(120, y), P(840, y), color=INK, stroke_width=4)
+            tk = VGroup(*[Line(P(mx(v), y - 8), P(mx(v), y + 8), color=INK, stroke_width=3) for v in range(30, 101, 10)])
+            tl = VGroup(*[B(str(v), 26, GREY_P, SEMIBOLD).move_to(P(mx(v), y + 32)) for v in range(30, 101, 10)])
+            return VGroup(ln, tk, tl).set_opacity(alpha)
+        ya, yb = 730, 960
+        ax1 = axis(ya); t0 = self.renderer.time
+        def row(vals, y, col):
+            g = VGroup()
+            for i, v in enumerate(vals):
+                d = Dot(P(mx(v), y - 36), radius=px(20), color=col); t = B(str(v), 30, INK, SEMIBOLD).move_to(P(mx(v), y - 80))
+                g.add(VGroup(d, t))
+            return g
+        r1 = row(marks, ya, BLUE)
+        # frame 0 already moving: the marks bob gently
+        for i, m in enumerate(r1):
+            base = m.get_center().copy()
+            m.add_updater(lambda mob, b=base, ph=i * 1.1: mob.move_to(b + UP * px(5) * math.sin(2 * math.pi * (self.renderer.time - t0) / 1.4 + ph)))
+        self.add(ax1, r1, q1, q2, sig)
+        # ===== B. options; +10 crossed on "Nope" =====
+        def pill(s):
+            r = RoundedRectangle(width=px(200), height=px(74), corner_radius=0.14, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+            return VGroup(r, H(s, 42, INK).move_to(r))
+        ops = [pill("+10"), pill("Same"), pill("−10")]
+        for o, x in zip(ops, (270, 490, 710)): o.move_to(P(x, 1100))
+        self.until(C[1] - 0.05); self.ev("tick")
+        self.play(LaggedStart(*[FadeIn(o, shift=UP * 0.08) for o in ops], lag_ratio=0.12), run_time=0.4, rate_func=EXPO)
+        self.until(wt(1, 4, 0.08)); self.play(Indicate(ops[0], color=OR, scale_factor=1.1), run_time=0.4)
+        x10 = Line(ops[0][0].get_corner(DL) + UR * px(10), ops[0][0].get_corner(UR) + DL * px(10), color=RD, stroke_width=8)
+        self.until(wt(1, 6, 0.06)); self.ev("stamp"); self.play(Create(x10), ops[0][1].animate.set_color(GREY_P), run_time=0.25)
+        # ===== C. every mark moves 10 right: copy slides to a second line; same gaps on both =====
+        ax2 = axis(yb); r2 = row([m + 10 for m in marks], yb, OR)
+        lbA = B("before", 28, GREY_P, SEMIBOLD).move_to(P(130, ya - 128)).align_to(ax1[0], LEFT)
+        lbB = B("after +10", 28, OR, SEMIBOLD).move_to(P(130, yb - 128)).align_to(ax1[0], LEFT)
+        self.until(wt(2, 2, 0.1)); self.ev("wipe")
+        for m in r1: m.clear_updaters()
+        ghost = r1.copy()
+        self.add(ghost)
+        self.play(FadeIn(ax2), FadeIn(lbA), FadeIn(lbB), Transform(ghost, r2), run_time=0.9, rate_func=rate_functions.ease_in_out_cubic)
+        def gaps(r, y):
+            g = VGroup()
+            for a, b in zip(r[:-1], r[1:]):
+                xa, xb = a[0].get_center()[0], b[0].get_center()[0]
+                ar = DoubleArrow([xa, Y(y), 0], [xb, Y(y), 0], buff=px(20), color=TEAL, stroke_width=4, tip_length=0.09, max_tip_length_to_length_ratio=0.35)
+                g.add(ar)
+            return g
+        gA, gB = gaps(r1, ya - 36), gaps(ghost, yb - 36)
+        self.until(wt(2, 9, 0.1)); self.ev("tick")
+        self.play(LaggedStart(*[GrowFromCenter(a) for a in gA], lag_ratio=0.1), LaggedStart(*[GrowFromCenter(a) for a in gB], lag_ratio=0.1), run_time=0.7)
+        # ===== D. still 15 (the one spring moment) + first rule line =====
+        ans = ops[1]
+        tick = VGroup(Circle(radius=px(18), fill_color=WHITE_, fill_opacity=1, stroke_width=0), B("✓", 24, OR, SEMIBOLD)); tick[1].move_to(tick[0])
+        tick.move_to(ans[0].get_left() + RIGHT * px(32))
+        sig2 = tag("σ = 15", 34, WHITE_, OR).move_to(P(730, yb - 128))
+        rr1 = M(r"x + c:\ \ \sigma\ \text{same}", 56, INK)
+        rr2 = M(r"k\,x:\ \ \sigma \times |k|", 56, INK)
+        rule = VGroup(rr1, rr2).arrange(DOWN, buff=px(18), aligned_edge=LEFT)
+        rbox = RoundedRectangle(width=rule.width + px(100), height=rule.height + px(52), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=5)
+        card = VGroup(rbox, rule.move_to(rbox)); self.c2(card, 1285)
+        self.until(wt(3, 1, 0.12)); self.ev("stamp")
+        self.play(ans[0].animate.set_fill(OR, 1).set_stroke(OR, 6), ans[1].animate.set_color(WHITE_).shift(RIGHT * px(16)), FadeIn(tick, scale=1.4),
+                  ops[2].animate.set_opacity(0.4), FadeIn(sig2, scale=1.3), FadeIn(rbox), FadeIn(rr1, shift=UP * 0.06),
+                  run_time=0.45, rate_func=rate_functions.ease_out_back)
+        # ===== E. double every mark: sigma doubles =====
+        self.until(wt(4, 0, 0.08)); self.ev("tick"); self.play(FadeIn(rr2, shift=UP * 0.06), run_time=0.35, rate_func=EXPO)
+        self.until(wt(4, 6, 0.08)); self.play(Indicate(rr2, color=OR, scale_factor=1.08), run_time=0.5)
+        # ===== F. send line in the footer, held to the last frame; marks bob again =====
+        for i, m in enumerate(ghost):
+            base = m.get_center().copy()
+            m.add_updater(lambda mob, b=base, ph=i * 1.1: mob.move_to(b + UP * px(5) * math.sin(2 * math.pi * (self.renderer.time - t0) / 1.4 + ph)))
+        self.until(C[-1] - 0.02)
+        ft = VGroup(H("Send this to", 44, WHITE_), H("a +10 guesser", 44, WHITE_)).arrange(DOWN, buff=px(6))
+        fw = VGroup(RoundedRectangle(width=ft.width + px(80), height=ft.height + px(40), corner_radius=0.2, fill_color=OR, fill_opacity=1, stroke_width=0)); fw.add(ft.move_to(fw[0]))
+        self.c2(fw, 1560); fw.set_z_index(22); self.ev("tick"); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.4, rate_func=EXPO)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
