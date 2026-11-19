@@ -1,0 +1,8 @@
+Follow @tutorda_ so you don't guess this one wrong in the exam.
+JEE Main physics, projectile motion: from the top of a 20 m cliff, you drop one ball and throw another sideways at the same moment. Which lands first?
+
+Same time. Ignore air, and gravity pulls both down the same way, so they're level the whole way down. The sideways speed only decides where the thrown ball lands. It doesn't change when.
+
+Both falls take t = √(2h/g) = √(2 × 20/10) = 2 s. Throw the second ball at 15 m/s and it lands 30 m out, still at 2 s.
+
+#JEEMain #JEEPhysics #ProjectileMotion #TutorDA

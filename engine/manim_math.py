@@ -1975,3 +1975,83 @@ class SdShift(ShortReel2):
         self.c2(fw, 1560); fw.set_z_index(22); self.ev("tick"); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.4, rate_func=EXPO)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class PhyFall(ShortReel2):
+    """JEE physics (19 Nov): drop one ball, throw one sideways from the same height; both land together.
+    Checked in Python: h = 20 m, g = 10 m/s^2 -> t = sqrt(2h/g) = 2 s for both; thrown at 15 m/s lands 30 m out.
+    Rope format: everyday guess on frame 0, 3 options, assumption said aloud ("ignore air"), rule card with the answer.
+    Ending per Aro (19 Nov): Follow TutorDA only."""
+    EVENTS = "phyfall"; SERIES = "JEE Main · Physics"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        q1 = self.c2(H("Which lands first?", 66, INK), 400)
+        top, gy, x0 = 600, 1130, 300
+        PXM_Y, PXM_X, v = 26.5, 14.0, 15.0
+        cliff = Rectangle(width=px(160), height=px(gy - top), fill_color="#D9D3C7", fill_opacity=1, stroke_width=0).move_to(P(200, (top + gy) / 2))
+        h20 = B("20 m", 34, INK, SEMIBOLD).rotate(PI / 2).move_to(P(200, (top + gy) / 2))
+        ground = Line(P(110, gy), P(835, gy), color=INK, stroke_width=5)
+        tau = ValueTracker(0.0)
+        def pos(which, t):
+            y = top - 22 + PXM_Y * 5 * t * t
+            x = x0 + 22 if which == 0 else x0 + 76 + PXM_X * v * t
+            return P(x, y)
+        ballA = Dot(pos(0, 0), radius=px(22), color=BLUE).set_z_index(6)
+        ballB = Dot(pos(1, 0), radius=px(22), color=OR).set_z_index(6)
+        t0 = self.renderer.time
+        ballA.add_updater(lambda m: m.move_to(pos(0, tau.get_value())))
+        ballB.add_updater(lambda m: m.move_to(pos(1, tau.get_value())))
+        la = B("dropped", 30, BLUE, SEMIBOLD).move_to(P(x0 - 20, top - 72))
+        lbb = B("thrown", 30, OR, SEMIBOLD).move_to(P(x0 + 167, top - 72))
+        arr = Arrow(P(x0 + 112, top - 22), P(x0 + 222, top - 22), buff=0, color=OR, stroke_width=6, max_tip_length_to_length_ratio=0.3)
+        arr.add_updater(lambda m: m.set_opacity(0 if tau.get_value() > 0.02 else 0.55 + 0.45 * math.sin(2 * math.pi * (self.renderer.time - t0) / 0.9)))
+        self.add(cliff, h20, ground, ballA, ballB, la, lbb, arr, q1)
+        # ===== B. options =====
+        def pill(s):
+            r = RoundedRectangle(width=px(230), height=px(74), corner_radius=0.14, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+            return VGroup(r, H(s, 34, INK).move_to(r))
+        ops = [pill("Dropped"), pill("Thrown"), pill("Same time")]
+        for o, x in zip(ops, (240, 478, 716)): o.move_to(P(x, 1240))
+        self.until(C[1] - 0.05); self.ev("tick")
+        self.play(LaggedStart(*[FadeIn(o, shift=UP * 0.08) for o in ops], lag_ratio=0.12), run_time=0.4, rate_func=EXPO)
+        self.until(wt(1, 8, 0.08)); self.play(Indicate(ops[0], color=OR, scale_factor=1.1), run_time=0.45)
+        # ===== C. the fall: ghost pairs and level lines every 0.5 s =====
+        self.until(wt(2, 2, 0.05)); self.ev("wipe")
+        self.play(FadeOut(la), FadeOut(lbb), run_time=0.2)
+        T_end = wt(3, 0, 0.06); seg = max(0.3, (T_end - self.renderer.time) / 4)
+        for k in range(1, 5):
+            self.play(tau.animate.set_value(0.5 * k), run_time=seg, rate_func=rate_functions.linear)
+            if k < 4:
+                ga, gb = Dot(pos(0, 0.5 * k), radius=px(14), color=BLUE).set_opacity(0.35), Dot(pos(1, 0.5 * k), radius=px(14), color=OR).set_opacity(0.35)
+                ln = DashedLine(pos(0, 0.5 * k), pos(1, 0.5 * k), color=TEAL, stroke_width=4, dash_length=0.08)
+                self.add(ln, ga, gb)
+        # ===== D. same time (the one spring moment) =====
+        ans = ops[2]
+        tick = VGroup(Circle(radius=px(18), fill_color=WHITE_, fill_opacity=1, stroke_width=0), B("✓", 24, OR, SEMIBOLD)); tick[1].move_to(tick[0])
+        tick.move_to(ans[0].get_left() + RIGHT * px(26))
+        ta = tag("2 s", 30, WHITE_, BLUE).move_to(P(x0 + 22, gy + 42)); tb = tag("2 s", 30, WHITE_, OR).move_to(P(x0 + 76 + PXM_X * v * 2, gy + 42))
+        self.ev("stamp")
+        self.play(ans[0].animate.set_fill(OR, 1).set_stroke(OR, 6), ans[1].animate.set_color(WHITE_).shift(RIGHT * px(22)), FadeIn(tick, scale=1.4),
+                  ops[0].animate.set_opacity(0.4), ops[1].animate.set_opacity(0.4), FadeIn(ta, scale=1.3), FadeIn(tb, scale=1.3),
+                  run_time=0.45, rate_func=rate_functions.ease_out_back)
+        # ===== E. rule card =====
+        rf = M(r"t = \sqrt{2h/g} = \sqrt{2\cdot 20/10} = 2\ \text{s}", 38, INK)
+        rt = B("Sideways speed doesn't change the fall", 28, GREY_P, SEMIBOLD)
+        rule = VGroup(rf, rt).arrange(DOWN, buff=px(12))
+        rbox = RoundedRectangle(width=rule.width + px(70), height=rule.height + px(40), corner_radius=0.2, fill_color=WHITE_, fill_opacity=1, stroke_color=OR, stroke_width=5)
+        card = VGroup(rbox, rule.move_to(rbox)); self.c2(card, 1358)
+        self.until(C[4] - 0.05); self.ev("tick"); self.play(FadeIn(rbox), FadeIn(rf, shift=UP * 0.06), run_time=0.4, rate_func=EXPO)
+        self.until(wt(4, 5, 0.08)); self.play(FadeIn(rt, shift=UP * 0.06), run_time=0.35, rate_func=EXPO)
+        # ===== F. follow card in the footer; the 'same time' pill keeps breathing =====
+        base_s = ans.get_center().copy()
+        ans[0].add_updater(lambda m: m.set_stroke(OR, 6 + 4 * (0.5 + 0.5 * math.sin(2 * math.pi * (self.renderer.time - t0) / 1.1))))
+        self.until(C[-1] - 0.02)
+        ft = VGroup(H("Follow TutorDA", 44, WHITE_), H("for JEE physics", 40, WHITE_)).arrange(DOWN, buff=px(6))
+        fw = VGroup(RoundedRectangle(width=ft.width + px(80), height=ft.height + px(40), corner_radius=0.2, fill_color=OR, fill_opacity=1, stroke_width=0)); fw.add(ft.move_to(fw[0]))
+        self.c2(fw, 1560); fw.set_z_index(22); self.ev("tick"); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.4, rate_func=EXPO)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))

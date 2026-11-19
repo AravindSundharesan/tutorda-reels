@@ -1,0 +1,126 @@
+[
+ {
+  "words": [
+   "Which",
+   "lands",
+   "first?",
+   "You'll",
+   "guess",
+   "wrong."
+  ],
+  "starts": [
+   0.05,
+   0.21,
+   0.61,
+   0.93,
+   1.21,
+   1.53
+  ],
+  "match": 1.0,
+  "clip_start": 0.05
+ },
+ {
+  "words": [
+   "One",
+   "dropped,",
+   "one",
+   "thrown",
+   "sideways.",
+   "You'd",
+   "say",
+   "the",
+   "dropped",
+   "one."
+  ],
+  "starts": [
+   2.073,
+   2.233,
+   2.673,
+   2.873,
+   3.273,
+   3.833,
+   4.153,
+   4.273,
+   4.433,
+   4.873
+  ],
+  "match": 1.0,
+  "clip_start": 2.073
+ },
+ {
+  "words": [
+   "Ignore",
+   "air.",
+   "Gravity",
+   "pulls",
+   "both",
+   "down",
+   "the",
+   "same,",
+   "so",
+   "they",
+   "stay",
+   "level",
+   "all",
+   "the",
+   "way."
+  ],
+  "starts": [
+   5.289,
+   5.729,
+   6.009,
+   6.489,
+   6.809,
+   7.129,
+   7.289,
+   7.409,
+   7.689,
+   7.849,
+   8.049,
+   8.289,
+   8.689,
+   8.849,
+   9.009
+  ],
+  "match": 1.0,
+  "clip_start": 5.289
+ },
+ {
+  "words": [
+   "Same",
+   "time."
+  ],
+  "starts": [
+   9.549,
+   9.909
+  ],
+  "match": 1.0,
+  "clip_start": 9.469
+ },
+ {
+  "words": [
+   "From",
+   "20",
+   "metres,",
+   "2",
+   "seconds,",
+   "however",
+   "hard",
+   "you",
+   "throw."
+  ],
+  "starts": [
+   10.469,
+   10.589,
+   10.869,
+   11.429,
+   11.629,
+   12.189,
+   12.549,
+   12.829,
+   13.029
+  ],
+  "match": 1.0,
+  "clip_start": 10.469
+ }
+]
