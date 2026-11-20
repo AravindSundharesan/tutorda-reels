@@ -2166,3 +2166,181 @@ class PromoA(ShortReel2):
         fw.add_updater(lambda m: m.move_to(cbase + UP * px(4) * math.sin(2 * math.pi * (self.renderer.time - t0) / 1.2)))
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+def promo_scorecard(P, title, total, subs, lags, fix_tex, fix_txt, cy=860, cw=700, ch=800):
+    """SAMPLE scorecard used in the JEE course promos (20 Nov). Returns (group, parts)."""
+    card = RoundedRectangle(width=px(cw), height=px(ch), corner_radius=0.22, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3).move_to(P(490, cy))
+    top = cy - ch / 2
+    ttl = H(title, 42, INK).move_to(P(490, top + 52)).align_to(card, LEFT).shift(RIGHT * px(36))
+    smp = tag("SAMPLE", 22, WHITE_, GREY_P).move_to(P(490 + cw / 2 - 72, top + 96))
+    sub = B("Mock test 7 · JEE Main pattern", 28, GREY_P, SEMIBOLD).next_to(ttl, DOWN, buff=px(8)).align_to(ttl, LEFT)
+    r1y = top + 205
+    mlab = B("Marks", 30, GREY_P, SEMIBOLD).move_to(P(160, r1y - 40)).align_to(ttl, LEFT)
+    score = H(f"{total} / 300", 60, INK).move_to(P(250, r1y + 12)).align_to(ttl, LEFT)
+    bars = VGroup()
+    for i, (nm, v, col) in enumerate(subs):
+        yy = r1y - 42 + i * 46
+        nmt = B(nm, 26, INK, SEMIBOLD).move_to(P(560, yy)).align_to(P(462, yy), LEFT)
+        bg = Rectangle(width=px(110), height=px(18), fill_color="#ECE7DE", fill_opacity=1, stroke_width=0).move_to(P(695, yy))
+        fg = Rectangle(width=px(110 * v / 100), height=px(18), fill_color=col, fill_opacity=1, stroke_width=0).set_z_index(3).move_to(bg.get_left() + RIGHT * px(110 * v / 200))
+        val = B(str(v), 26, INK, SEMIBOLD).next_to(bg, RIGHT, buff=px(8))
+        bars.add(VGroup(nmt, bg, fg, val))
+    r2y = top + 400
+    llab = B("Lagging in", 30, GREY_P, SEMIBOLD).move_to(P(160, r2y - 40)).align_to(ttl, LEFT)
+    cols = ["#E5484D", OR]
+    lagv = VGroup(*[VGroup(Dot(radius=px(9), color=cols[i % 2]), B(t, 34, INK, SEMIBOLD)).arrange(RIGHT, buff=px(12)) for i, t in enumerate(lags)])
+    lagv.arrange(DOWN, buff=px(12), aligned_edge=LEFT).move_to(P(490, r2y + 16)).align_to(ttl, LEFT)
+    r3y = top + 610
+    flab = B("Fix next", 30, GREY_P, SEMIBOLD).move_to(P(160, r3y - 40)).align_to(ttl, LEFT)
+    fixt = VGroup(M(fix_tex, 46, TEAL), B(fix_txt, 34, INK, SEMIBOLD)).arrange(RIGHT, buff=px(16)).move_to(P(490, r3y + 10)).align_to(ttl, LEFT)
+    seps = VGroup(*[Line(P(490 - cw / 2 + 30, top + yy), P(490 + cw / 2 - 30, top + yy), color=RULE, stroke_width=2) for yy in (118, 312, 525)])
+    parts = dict(card=card, seps=seps, ttl=ttl, smp=smp, sub=sub, mlab=mlab, score=score, bars=bars, llab=llab, lags=lagv, flab=flab, fixt=fixt)
+    return VGroup(card, seps, ttl, smp, sub, mlab, score, bars, llab, lagv, flab, fixt), parts
+
+
+def promo_card_in(scene, p, extra=()):
+    scene.play(FadeIn(p["card"], shift=UP * 0.2), FadeIn(p["seps"]), FadeIn(p["ttl"]), FadeIn(p["smp"]), FadeIn(p["sub"]), FadeIn(p["mlab"]), FadeIn(p["score"]),
+               LaggedStart(*[GrowFromEdge(b[2], LEFT) for b in p["bars"]], lag_ratio=0.15), *[FadeIn(VGroup(b[0], b[1], b[3])) for b in p["bars"]],
+               FadeIn(p["llab"]), FadeIn(p["lags"]), FadeIn(p["flab"]), FadeIn(p["fixt"]), *extra, run_time=0.7, rate_func=EXPO)
+
+
+def promo_aim(scene, P, start, wt_from, wt_to, y=860):
+    aim = H("Aim for", 64, INK).move_to(P(490, y - 140))
+    nv = ValueTracker(start)
+    cnt = always_redraw(lambda: VGroup(H(f"{int(round(nv.get_value()))}", 150, OR), H("/ 300", 110, INK)).arrange(RIGHT, buff=px(20), aligned_edge=DOWN).move_to(P(490, y)))
+    return aim, nv, cnt
+
+
+def promo_cta(scene, P, t0):
+    bub = RoundedRectangle(width=px(64), height=px(46), corner_radius=0.12, fill_color=WHITE_, fill_opacity=1, stroke_width=0)
+    tail = Triangle(fill_color=WHITE_, fill_opacity=1, stroke_width=0).scale(px(12)).rotate(PI).next_to(bub, DOWN, buff=-px(4)).shift(LEFT * px(14))
+    ct = VGroup(VGroup(bub, tail), VGroup(H("Comment LINK", 50, WHITE_), B("we'll DM you the link", 28, WHITE_, SEMIBOLD)).arrange(DOWN, buff=px(4))).arrange(RIGHT, buff=px(22))
+    fw = VGroup(RoundedRectangle(width=ct.width + px(80), height=ct.height + px(44), corner_radius=0.2, fill_color=OR, fill_opacity=1, stroke_width=0)); fw.add(ct.move_to(fw[0]))
+    scene.c2(fw, 1560); fw.set_z_index(22)
+    scene.ev("tick"); scene.play(FadeIn(fw, shift=UP * 0.15), run_time=0.4, rate_func=EXPO)
+    base = fw.get_center().copy()
+    fw.add_updater(lambda m: m.move_to(base + UP * px(4) * math.sin(2 * math.pi * (scene.renderer.time - t0) / 1.2)))
+    return fw
+
+
+class PromoB(ShortReel2):
+    """JEE course promo, script B '2 months left' (20 Nov). SAMPLE scorecard 186 = 58 + 61 + 67."""
+    EVENTS = "promob"; SERIES = "JEE Main 2027"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        t0 = self.renderer.time
+        # ===== A. 2 months: 9 week boxes ticking towards 20 Jan =====
+        big = H("2 months", 140, OR).move_to(P(490, 540)); left = H("left", 60, INK).next_to(big, DOWN, buff=px(34))
+        weeks = VGroup(*[RoundedRectangle(width=px(62), height=px(62), corner_radius=0.08, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3) for _ in range(9)]).arrange(RIGHT, buff=px(14)).move_to(P(490, 860))
+        wl = B("9 weeks to 20 Jan", 30, GREY_P, SEMIBOLD).next_to(weeks, DOWN, buff=px(16))
+        def tickw(m):
+            k = int(((self.renderer.time - t0) / 0.35) % 12)
+            for i, b in enumerate(m): b.set_fill(OR if i < min(k, 9) else WHITE_, 1)
+        weeks.add_updater(tickw)
+        self.add(big, left, weeks, wl)
+        # ===== B. JEE Main 20 Jan; mock tests, not new chapters =====
+        jt = tag("JEE Main · 20 Jan 2027", 36, WHITE_, INK).move_to(P(490, 1010))
+        nc = tag("New chapters", 38, WHITE_, GREY_P); mt = tag("Mock tests", 38, WHITE_, TEAL)
+        pr = VGroup(nc, mt).arrange(RIGHT, buff=px(40)).move_to(P(490, 1120))
+        xs = Line(nc.get_left() + LEFT * px(6), nc.get_right() + RIGHT * px(6), color=RD, stroke_width=8)
+        self.until(C[1] - 0.05); self.ev("tick"); self.play(FadeIn(jt, shift=UP * 0.08), run_time=0.35, rate_func=EXPO)
+        self.until(wt(1, 5, 0.1)); self.play(FadeIn(mt, shift=UP * 0.08), FadeIn(nc, shift=UP * 0.08), run_time=0.3, rate_func=EXPO)
+        self.until(wt(1, 8, 0.08)); self.ev("stamp"); self.play(Create(xs), Indicate(mt, scale_factor=1.08, color=TEAL), run_time=0.4)
+        part1 = VGroup(big, left, weeks, wl, jt, pr, xs)
+        # ===== C. a bare score: now what? =====
+        bare = H("186 / 300", 120, INK).move_to(P(490, 700)); nw = H("Now what?", 60, GREY_P).move_to(P(490, 840))
+        self.until(C[2] - 0.05); self.ev("wipe"); weeks.clear_updaters()
+        self.play(FadeOut(part1, shift=UP * 0.3), FadeIn(bare, scale=0.9), run_time=0.45, rate_func=EXPO)
+        self.until(wt(2, 6, 0.08)); self.play(FadeIn(nw, shift=UP * 0.08), run_time=0.3, rate_func=EXPO)
+        # ===== D. the scorecard builds around the score =====
+        sc, p = promo_scorecard(P, "Your TutorDA scorecard", 186, [("Maths", 58, BLUE), ("Physics", 61, TEAL), ("Chemistry", 67, OR)],
+                                ["Calculus: limits  (−12 marks)", "Electrostatics"], r"\tfrac{\sin x}{x}\to 1", "revise limits")
+        self.until(wt(3, 7, 0.1)); self.ev("wipe")
+        self.play(FadeOut(nw), ReplacementTransform(bare, p["score"].copy().set_opacity(0)), run_time=0.3)
+        promo_card_in(self, p)
+        # ===== E. marks / lagging / improve light up =====
+        hl = lambda mob: SurroundingRectangle(mob, buff=px(14), corner_radius=0.12, color=OR, stroke_width=5)
+        h1, h2, h3 = hl(VGroup(p["mlab"], p["score"], p["bars"])), hl(VGroup(p["llab"], p["lags"])), hl(VGroup(p["flab"], p["fixt"]))
+        self.until(wt(4, 1, 0.08)); self.play(Create(h1), run_time=0.3)
+        self.until(wt(4, 5, 0.08)); self.play(ReplacementTransform(h1, h2), run_time=0.3)
+        self.until(wt(4, 11, 0.08)); self.play(ReplacementTransform(h2, h3), run_time=0.3)
+        # ===== F. personalised, not one plan for everybody =====
+        ps = tag("Your plan. Not everybody's.", 38, WHITE_, INK).move_to(P(490, 395))
+        self.until(C[5] - 0.05); self.ev("tick"); self.play(FadeIn(ps, shift=DOWN * 0.08), Indicate(p["fixt"], color=TEAL, scale_factor=1.06), run_time=0.5)
+        # ===== G. aim for 300 =====
+        aim, nv, cnt = promo_aim(self, P, 186, 0, 0)
+        self.until(C[6] - 0.05); self.ev("wipe")
+        self.play(FadeOut(sc), FadeOut(h3), FadeOut(ps), FadeIn(aim, shift=UP * 0.1), FadeIn(cnt, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(wt(6, 6, 0.1)); self.ev("stamp")
+        self.play(nv.animate.set_value(300), run_time=max(0.5, wt(6, 9, 0.0) - self.renderer.time), rate_func=rate_functions.ease_out_cubic)
+        # ===== H. price + Comment LINK =====
+        price = VGroup(H("Free trial", 56, INK), H("→", 56, GREY_P), H("₹99/month", 64, OR)).arrange(RIGHT, buff=px(20)); fitw(price, 720); price.move_to(P(490, 1090))
+        self.until(C[-1] - 0.02); self.ev("tick"); self.play(FadeIn(price, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(C[-1] + 2.8); promo_cta(self, P, t0)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class PromoC(ShortReel2):
+    """JEE course promo, script C 'Where did the marks go?' for parents (20 Nov). SAMPLE scorecard 260 = 84 + 86 + 90 (40 lost)."""
+    EVENTS = "promoc"; SERIES = "JEE Main 2027"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        t0 = self.renderer.time
+        # ===== A. -40 marks. Where? =====
+        sc0 = H("260 / 300", 110, INK).move_to(P(490, 560))
+        lost = H("−40 marks", 96, RD).move_to(P(490, 720))
+        lost.add_updater(lambda m: m.set_opacity(0.55 + 0.45 * (0.5 + 0.5 * math.sin(2 * math.pi * (self.renderer.time - t0) / 1.0))))
+        wh = H("Where?", 72, INK).move_to(P(490, 860))
+        self.add(sc0, lost, wh)
+        # ===== B. a rank tells where, not why =====
+        rk = tag("Rank: where they stand", 38, WHITE_, INK); why = tag("Why: ?", 38, WHITE_, RD)
+        rr = VGroup(rk, why).arrange(DOWN, buff=px(22)).move_to(P(490, 1080))
+        tk = B("✓", 40, TEAL, SEMIBOLD).next_to(rk, RIGHT, buff=px(16)); xx = B("✗", 40, RD, SEMIBOLD).next_to(why, RIGHT, buff=px(16))
+        self.until(C[1] - 0.05); self.ev("tick"); self.play(FadeIn(rk, shift=UP * 0.08), FadeIn(tk), run_time=0.35, rate_func=EXPO)
+        self.until(wt(1, 7, 0.08)); self.ev("stamp"); self.play(FadeIn(why, shift=UP * 0.08), FadeIn(xx), run_time=0.3, rate_func=EXPO)
+        # ===== C. the parent sees the scorecard =====
+        sc, p = promo_scorecard(P, "Your child's scorecard", 260, [("Maths", 84, BLUE), ("Physics", 86, TEAL), ("Chemistry", 90, OR)],
+                                ["Coordinate geometry  (−16)", "Thermodynamics"], r"y=mx+c", "revise lines")
+        self.until(C[2] - 0.05); self.ev("wipe"); lost.clear_updaters()
+        self.play(FadeOut(VGroup(sc0, lost, wh, rr, tk, xx), shift=UP * 0.3), run_time=0.35)
+        promo_card_in(self, p)
+        hl = lambda mob: SurroundingRectangle(mob, buff=px(14), corner_radius=0.12, color=OR, stroke_width=5)
+        h1, h2, h3 = hl(VGroup(p["mlab"], p["score"], p["bars"])), hl(VGroup(p["llab"], p["lags"])), hl(VGroup(p["flab"], p["fixt"]))
+        self.until(wt(3, 6, 0.08)); self.play(Create(h1), run_time=0.3)
+        self.until(wt(3, 10, 0.08)); self.play(ReplacementTransform(h1, h2), run_time=0.3)
+        self.until(wt(3, 15, 0.08)); self.play(ReplacementTransform(h2, h3), run_time=0.3)
+        # ===== D. regular updates to 20 Jan: a timeline =====
+        self.until(C[4] - 0.05); self.ev("wipe")
+        self.play(FadeOut(sc), FadeOut(h3), run_time=0.35)
+        ln = Line(P(150, 760), P(830, 760), color=INK, stroke_width=5)
+        dots = VGroup(*[Dot(P(150 + i * 85, 760), radius=px(14), color=TEAL) for i in range(8)])
+        dl = B("an update after every test", 32, GREY_P, SEMIBOLD).move_to(P(490, 690))
+        goal = tag("JEE Main · 20 Jan", 34, WHITE_, OR).move_to(P(650, 850))
+        flag = Dot(P(830, 760), radius=px(18), color=OR)
+        self.play(Create(ln), FadeIn(dl), run_time=0.35)
+        self.play(LaggedStart(*[GrowFromCenter(d) for d in dots], lag_ratio=0.18), run_time=max(0.6, wt(4, 6, 0.1) - self.renderer.time - 0.05))
+        self.ev("tick"); self.play(FadeIn(flag, scale=1.4), FadeIn(goal, shift=UP * 0.08), run_time=0.35, rate_func=EXPO)
+        # ===== E. not like other institutes; aim for 300 =====
+        nl = tag("Not like other institutes", 40, WHITE_, INK).move_to(P(490, 560))
+        aim, nv, cnt = promo_aim(self, P, 260, 0, 0)
+        self.until(C[5] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(ln, dots, dl, goal, flag)), FadeIn(nl, shift=UP * 0.08), run_time=0.4, rate_func=EXPO)
+        self.until(wt(5, 6, 0.1)); self.play(FadeIn(aim, shift=UP * 0.1), FadeIn(cnt, shift=UP * 0.1), run_time=0.35, rate_func=EXPO)
+        self.until(wt(5, 12, 0.1)); self.ev("stamp")
+        self.play(nv.animate.set_value(300), run_time=max(0.5, wt(5, 15, 0.0) - self.renderer.time), rate_func=rate_functions.ease_out_cubic)
+        # ===== F. price; G. Comment LINK =====
+        price = VGroup(H("Free trial", 56, INK), H("→", 56, GREY_P), H("₹99/month", 64, OR)).arrange(RIGHT, buff=px(20)); fitw(price, 720); price.move_to(P(490, 1090))
+        self.until(C[6] - 0.05); self.ev("tick"); self.play(FadeIn(price, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(C[-1] + 1.1); promo_cta(self, P, t0)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
