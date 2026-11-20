@@ -2055,3 +2055,114 @@ class PhyFall(ShortReel2):
         self.c2(fw, 1560); fw.set_z_index(22); self.ev("tick"); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.4, rate_func=EXPO)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class PromoA(ShortReel2):
+    """JEE course promo, script A '5-mark trap' (20 Nov). Value first (the sqrt(x^2) = |x| trap, +4/-1 marking),
+    then the personalised scorecard, the 300/300 challenge, free trial -> Rs 99/month, 'Comment LINK'.
+    The scorecard is a SAMPLE illustration (223 = 68 + 74 + 81), labelled as such on screen."""
+    EVENTS = "promoa"; SERIES = "JEE Main 2027"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        t0 = self.renderer.time
+        q1 = self.c2(H("Spot the mistake.", 60, INK), 430)
+        eq = M(r"\sqrt{x^2} = x", 130, INK).move_to(P(490, 640))
+        mk = tag("JEE Main:  +4 right,  −1 wrong", 30, WHITE_, INK).move_to(P(490, 820))
+        eq.add_updater(lambda m: m.set_opacity(1).scale_to_fit_height(m.height))  # keep reference
+        pulse = always_redraw(lambda: SurroundingRectangle(eq, buff=px(26), corner_radius=0.18, color=OR,
+                              stroke_width=4 + 3 * (0.5 + 0.5 * math.sin(2 * math.pi * (self.renderer.time - t0) / 1.0))))
+        self.add(q1, eq, mk, pulse)
+        # ===== B. not x, it's |x| =====
+        rx = eq[0][-1]
+        strike = Line(rx.get_corner(DL) + DL * px(8), rx.get_corner(UR) + UR * px(8), color=RD, stroke_width=10)
+        self.until(wt(1, 4, 0.06)); self.ev("stamp"); self.play(Create(strike), run_time=0.25)
+        eq2 = M(r"\sqrt{x^2} = |x|", 120, INK).move_to(P(490, 640)); eq2[0][-3:].set_color(TEAL)
+        self.until(wt(1, 7, 0.08)); self.ev("tick"); eq.clear_updaters()
+        self.play(FadeOut(strike), TransformMatchingShapes(eq, eq2), run_time=0.5, rate_func=EXPO); eq = eq2
+        # ===== C. x = -3 check =====
+        c1 = M(r"x = -3:", 64, INK); c2 = M(r"\sqrt{9} = 3", 64, INK); c3 = M(r"\neq -3", 64, RD)
+        row = VGroup(c1, c2, c3).arrange(RIGHT, buff=px(26)); fitw(row, 700); row.move_to(P(490, 950))
+        self.until(C[2] - 0.05); self.play(FadeIn(c1, shift=UP * 0.08), run_time=0.3, rate_func=EXPO)
+        self.until(wt(2, 3, 0.08)); self.play(FadeIn(c2, shift=UP * 0.08), run_time=0.3, rate_func=EXPO)
+        self.until(wt(2, 7, 0.08)); self.ev("tick"); self.play(FadeIn(c3, scale=1.2), run_time=0.3, rate_func=EXPO)
+        # ===== D. +4 missed, -1 taken: 5 marks =====
+        p4 = tag("+4  missed", 40, WHITE_, GREY_P); m1 = tag("−1  taken", 40, WHITE_, RD); tot = H("= 5 marks gone", 52, RD)
+        drow = VGroup(p4, m1).arrange(RIGHT, buff=px(30)).move_to(P(490, 1080)); tot.move_to(P(490, 1185))
+        self.until(C[3] - 0.05); self.play(FadeIn(p4, shift=UP * 0.08), run_time=0.3, rate_func=EXPO)
+        self.until(wt(3, 3, 0.08)); self.play(FadeIn(m1, shift=UP * 0.08), run_time=0.3, rate_func=EXPO)
+        self.until(wt(3, 6, 0.0)); self.ev("stamp"); self.play(FadeIn(tot, scale=1.15), run_time=0.35, rate_func=rate_functions.ease_out_back)
+        part1 = VGroup(q1, eq, mk, row, drow, tot)
+        # ===== E. the scorecard (sample) =====
+        cw, ch, cy = 700, 800, 860
+        card = RoundedRectangle(width=px(cw), height=px(ch), corner_radius=0.22, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3).move_to(P(490, cy))
+        top = cy - ch / 2
+        ttl = H("Your TutorDA scorecard", 42, INK).move_to(P(490, top + 52)).align_to(card, LEFT).shift(RIGHT * px(36))
+        smp = tag("SAMPLE", 22, WHITE_, GREY_P).move_to(P(490 + cw / 2 - 72, top + 96))
+        sub = B("Mock test 7 · JEE Main pattern", 28, GREY_P, SEMIBOLD).next_to(ttl, DOWN, buff=px(8)).align_to(ttl, LEFT)
+        # row 1: marks + subject bars
+        r1y = top + 205
+        mlab = B("Marks", 30, GREY_P, SEMIBOLD).move_to(P(160, r1y - 40)).align_to(ttl, LEFT)
+        score = H("223 / 300", 60, INK).move_to(P(250, r1y + 12)).align_to(ttl, LEFT)
+        subs = [("Maths", 68, BLUE), ("Physics", 74, TEAL), ("Chemistry", 81, OR)]
+        bars = VGroup()
+        for i, (nm, v, col) in enumerate(subs):
+            yy = r1y - 42 + i * 46
+            nmt = B(nm, 26, INK, SEMIBOLD).move_to(P(560, yy)).align_to(P(462, yy), LEFT)
+            bg = Rectangle(width=px(110), height=px(18), fill_color="#ECE7DE", fill_opacity=1, stroke_width=0).move_to(P(695, yy))
+            fg = Rectangle(width=px(110 * v / 100), height=px(18), fill_color=col, fill_opacity=1, stroke_width=0).set_z_index(3).move_to(bg.get_left() + RIGHT * px(110 * v / 200))
+            val = B(str(v), 26, INK, SEMIBOLD).next_to(bg, RIGHT, buff=px(8))
+            bars.add(VGroup(nmt, bg, fg, val))
+        # row 2: lagging in
+        r2y = top + 400
+        llab = B("Lagging in", 30, GREY_P, SEMIBOLD).move_to(P(160, r2y - 40)).align_to(ttl, LEFT)
+        lag1 = VGroup(Dot(radius=px(9), color=RD), B("Algebra: modulus  (−5 marks)", 34, INK, SEMIBOLD)).arrange(RIGHT, buff=px(12))
+        lag2 = VGroup(Dot(radius=px(9), color=OR), B("Rotational motion", 34, INK, SEMIBOLD)).arrange(RIGHT, buff=px(12))
+        lags = VGroup(lag1, lag2).arrange(DOWN, buff=px(12), aligned_edge=LEFT).move_to(P(490, r2y + 16)).align_to(ttl, LEFT)
+        # row 3: fix next
+        r3y = top + 610
+        flab = B("Fix next", 30, GREY_P, SEMIBOLD).move_to(P(160, r3y - 40)).align_to(ttl, LEFT)
+        fixt = VGroup(M(r"\sqrt{x^2} = |x|", 46, TEAL), B("revise modulus rules", 34, INK, SEMIBOLD)).arrange(RIGHT, buff=px(16)).move_to(P(490, r3y + 10)).align_to(ttl, LEFT)
+        seps = VGroup(*[Line(P(490 - cw / 2 + 30, top + yy), P(490 + cw / 2 - 30, top + yy), color=RULE, stroke_width=2) for yy in (118, 312, 525)])
+        sc = VGroup(card, seps, ttl, smp, sub, mlab, score, bars, llab, lags, flab, fixt)
+        self.until(C[4] - 0.05); self.ev("wipe")
+        self.play(FadeOut(part1, shift=UP * 0.3), FadeOut(pulse), run_time=0.35)
+        self.play(FadeIn(card, shift=UP * 0.2), FadeIn(seps), FadeIn(ttl), FadeIn(smp), FadeIn(sub), FadeIn(mlab), FadeIn(score),
+                  LaggedStart(*[GrowFromEdge(b[2], LEFT) for b in bars], lag_ratio=0.15), *[FadeIn(VGroup(b[0], b[1], b[3])) for b in bars],
+                  FadeIn(llab), FadeIn(lags), FadeIn(flab), FadeIn(fixt), run_time=0.7, rate_func=EXPO)
+        self.until(wt(4, 4, 0.08)); self.ev("tick"); self.play(Indicate(lag1, color=RD, scale_factor=1.06), run_time=0.5)
+        # ===== F. marks / lagging / fix next light up in turn =====
+        def hl(mob):
+            return SurroundingRectangle(mob, buff=px(14), corner_radius=0.12, color=OR, stroke_width=5)
+        h1 = hl(VGroup(mlab, score, bars)); h2 = hl(VGroup(llab, lags)); h3 = hl(VGroup(flab, fixt))
+        self.until(wt(5, 4, 0.08)); self.play(Create(h1), run_time=0.3)
+        self.until(wt(5, 7, 0.08)); self.play(ReplacementTransform(h1, h2), run_time=0.3)
+        self.until(wt(5, 11, 0.08)); self.play(ReplacementTransform(h2, h3), run_time=0.3)
+        # ===== G. not like other institutes: aim for 300/300 (the one spring moment) =====
+        nl = tag("Not like other institutes", 40, WHITE_, INK).move_to(P(490, 560))
+        aim = H("Aim for", 64, INK).move_to(P(490, 720))
+        nv = ValueTracker(223)
+        cnt = always_redraw(lambda: VGroup(H(f"{int(round(nv.get_value()))}", 150, OR), H("/ 300", 110, INK)).arrange(RIGHT, buff=px(20), aligned_edge=DOWN).move_to(P(490, 860)))
+        self.until(C[6] - 0.05); self.ev("wipe")
+        self.play(FadeOut(sc), FadeOut(h3), FadeIn(nl, shift=UP * 0.08), run_time=0.4, rate_func=EXPO)
+        self.until(wt(6, 5, 0.1)); self.play(FadeIn(aim, shift=UP * 0.1), FadeIn(cnt, shift=UP * 0.1), run_time=0.35, rate_func=EXPO)
+        self.until(wt(6, 10, 0.1)); self.ev("stamp")
+        self.play(nv.animate.set_value(300), run_time=max(0.5, wt(6, 13, 0.0) - self.renderer.time), rate_func=rate_functions.ease_out_cubic)
+        # ===== H. price + Comment LINK =====
+        price = VGroup(H("Free trial", 56, INK), H("→", 56, GREY_P), H("₹99/month", 64, OR)).arrange(RIGHT, buff=px(20)).move_to(P(490, 1090)); fitw(price, 720); price.move_to(P(490, 1090))
+        self.until(C[-1] - 0.02); self.ev("tick"); self.play(FadeIn(price, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        bub = RoundedRectangle(width=px(64), height=px(46), corner_radius=0.12, fill_color=WHITE_, fill_opacity=1, stroke_width=0)
+        tail = Triangle(fill_color=WHITE_, fill_opacity=1, stroke_width=0).scale(px(12)).rotate(PI).next_to(bub, DOWN, buff=-px(4)).shift(LEFT * px(14))
+        icon = VGroup(bub, tail)
+        ct = VGroup(icon, VGroup(H("Comment LINK", 50, WHITE_), B("we'll DM you the link", 28, WHITE_, SEMIBOLD)).arrange(DOWN, buff=px(4))).arrange(RIGHT, buff=px(22))
+        fw = VGroup(RoundedRectangle(width=ct.width + px(80), height=ct.height + px(44), corner_radius=0.2, fill_color=OR, fill_opacity=1, stroke_width=0)); fw.add(ct.move_to(fw[0]))
+        self.c2(fw, 1560); fw.set_z_index(22)
+        self.until(C[-1] + 2.45); self.ev("tick"); self.play(FadeIn(fw, shift=UP * 0.15), run_time=0.4, rate_func=EXPO)
+        fw.add_updater(lambda m: m.set_opacity(1))
+        cbase = fw.get_center().copy()
+        fw.add_updater(lambda m: m.move_to(cbase + UP * px(4) * math.sin(2 * math.pi * (self.renderer.time - t0) / 1.2)))
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
