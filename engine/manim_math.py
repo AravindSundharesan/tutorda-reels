@@ -2368,3 +2368,105 @@ class PromoC(ShortReel2):
         self.until(C[-1] + 1.1); promo_cta(self, P, t0)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class PromoC2(ShortReel2):
+    """JEE course promo C v2 for parents (21 Nov): guessable hook 'which subject cost the most?', answer held to ~4.3 s,
+    then the scorecard by ~10 s. SAMPLE: 260 = 84 + 86 + 90, lost 16 + 14 + 10 = 40."""
+    EVENTS = "promoc2"; SERIES = "JEE Main 2027"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        t0 = self.renderer.time
+        # ===== A. hook on frame 0: lost 40 marks, which subject? (3 guessable options, draining guess bar) =====
+        l1 = H("Your child lost", 56, INK).move_to(P(490, 410))
+        big = H("40 marks", 130, RD).move_to(P(490, 520))
+        l2 = B("in a mock test", 38, GREY_P, SEMIBOLD).move_to(P(490, 612))
+        qq = H("Which subject cost the most?", 54, INK); fitw(qq, 700); qq.move_to(P(490, 705))
+        def card(nm, col):
+            body = RoundedRectangle(width=px(206), height=px(280), corner_radius=0.18, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+            band = RoundedRectangle(width=px(206), height=px(62), corner_radius=0.18, fill_color=col, fill_opacity=1, stroke_width=0).align_to(body, UP)
+            name = B(nm, 30, WHITE_, SEMIBOLD).move_to(band)
+            q = H("?", 110, INK).move_to(body.get_center() + DOWN * px(8))
+            lab = B("marks lost", 24, GREY_P, SEMIBOLD).move_to(body.get_bottom() + UP * px(34))
+            return VGroup(body, band, name, q, lab)
+        cards = VGroup(card("Maths", BLUE), card("Physics", TEAL), card("Chemistry", OR)).arrange(RIGHT, buff=px(20)).move_to(P(480, 920))
+        glab = B("Guess before the answer", 30, GREY_P, SEMIBOLD).move_to(P(490, 1112))
+        gbg = RoundedRectangle(width=px(600), height=px(16), corner_radius=0.05, fill_color="#ECE7DE", fill_opacity=1, stroke_width=0).move_to(P(490, 1160))
+        T1 = C[1] - 0.05
+        gbar = always_redraw(lambda: RoundedRectangle(width=max(0.001, px(600) * max(0.0, 1 - (self.renderer.time - t0) / (T1 - t0))), height=px(16),
+                                                      corner_radius=0.05, fill_color=OR, fill_opacity=1, stroke_width=0).align_to(gbg, LEFT).set_y(gbg.get_y()))
+        big.add_updater(lambda m: m.set_opacity(0.7 + 0.3 * (0.5 + 0.5 * math.sin(2 * math.pi * (self.renderer.time - t0) / 0.9))))
+        self.add(l1, big, l2, qq, cards, glab, gbg, gbar)
+        self.until(wt(0, 9, 0.1)); self.ev("tick")
+        self.play(LaggedStart(*[Indicate(c, color=c[1].get_fill_color(), scale_factor=1.07) for c in cards], lag_ratio=0.25), run_time=1.0)
+        # ===== B. Maths: 16 marks, all from one chapter =====
+        self.until(T1); self.ev("stamp"); big.clear_updaters(); big.set_opacity(1)
+        vals = [H("−16", 84, RD), H("−14", 84, INK), H("−10", 84, INK)]
+        for v, c in zip(vals, cards): v.move_to(c[3])
+        self.remove(gbar)
+        self.play(*[ReplacementTransform(c[3], v) for c, v in zip(cards, vals)], cards[0][0].animate.set_stroke(RD, width=7),
+                  cards[1].animate.set_opacity(0.4), cards[2].animate.set_opacity(0.4), vals[1].animate.set_opacity(0.4), vals[2].animate.set_opacity(0.4),
+                  FadeOut(glab), FadeOut(gbg), run_time=0.4, rate_func=EXPO)
+        self.play(VGroup(cards[0], vals[0]).animate.scale(1.08), run_time=0.25, rate_func=rate_functions.ease_out_back)
+        chap = tag("All 16: Coordinate geometry", 38, WHITE_, RD); fitw(chap, 720); chap.move_to(P(490, 1150))
+        self.until(wt(1, 5, 0.1)); self.ev("tick"); self.play(FadeIn(chap, shift=UP * 0.1), run_time=0.35, rate_func=EXPO)
+        part1 = VGroup(l1, big, l2, qq, cards, *vals, chap)
+        # ===== C. a rank won't tell you that; not like other institutes =====
+        rk = VGroup(tag("Rank", 44, WHITE_, INK), B("tells you where they stand", 34, INK, SEMIBOLD)).arrange(DOWN, buff=px(14)).move_to(P(490, 560))
+        nt = VGroup(tag("Why they lost marks?", 44, WHITE_, RD), B("a rank won't tell you", 34, RD, SEMIBOLD)).arrange(DOWN, buff=px(14)).move_to(P(490, 820))
+        nl = tag("We're not like other institutes", 40, WHITE_, TEAL); fitw(nl, 720); nl.move_to(P(490, 1100))
+        self.until(C[2] - 0.05); self.ev("wipe")
+        self.play(FadeOut(part1, shift=UP * 0.3), FadeIn(rk, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(wt(2, 2, 0.1)); self.ev("stamp"); self.play(FadeIn(nt, scale=1.15), run_time=0.3, rate_func=EXPO)
+        self.until(wt(2, 6, 0.1)); self.ev("tick"); self.play(FadeIn(nl, shift=UP * 0.1), run_time=0.35, rate_func=EXPO)
+        # ===== D. the scorecard =====
+        sc, p = promo_scorecard(P, "Your child's scorecard", 260, [("Maths", 84, BLUE), ("Physics", 86, TEAL), ("Chemistry", 90, OR)],
+                                ["Coordinate geometry  (−16)", "Thermodynamics"], r"y=mx+c", "revise lines")
+        self.until(C[3] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(rk, nt, nl), shift=UP * 0.3), run_time=0.3)
+        promo_card_in(self, p)
+        self.until(wt(3, 6, 0.1)); self.play(Indicate(p["ttl"], color=OR, scale_factor=1.05), run_time=0.5)
+        # ===== E. marks / lagging / fix next light up =====
+        hl = lambda mob: SurroundingRectangle(mob, buff=px(14), corner_radius=0.12, color=OR, stroke_width=5)
+        h1, h2, h3 = hl(VGroup(p["mlab"], p["score"], p["bars"])), hl(VGroup(p["llab"], p["lags"])), hl(VGroup(p["flab"], p["fixt"]))
+        self.until(wt(4, 1, 0.08)); self.play(Create(h1), run_time=0.3)
+        self.until(wt(4, 3, 0.08)); self.play(ReplacementTransform(h1, h2), run_time=0.3)
+        self.until(wt(4, 9, 0.08)); self.play(ReplacementTransform(h2, h3), run_time=0.3)
+        # ===== F. updated after every test, to JEE Main on 20 Jan =====
+        self.until(C[5] - 0.05); self.ev("wipe")
+        self.play(FadeOut(sc), FadeOut(h3), run_time=0.3)
+        hd = H("Updated after every test", 54, INK); fitw(hd, 740); hd.move_to(P(490, 600))
+        ln = Line(P(150, 800), P(830, 800), color=INK, stroke_width=5)
+        dots = VGroup(*[Dot(P(150 + i * 85, 800), radius=px(14), color=TEAL) for i in range(8)])
+        goal = tag("JEE Main · 20 Jan", 40, WHITE_, OR).move_to(P(640, 905))
+        flag = Dot(P(830, 800), radius=px(20), color=OR)
+        self.play(FadeIn(hd, shift=UP * 0.08), Create(ln), run_time=0.35, rate_func=EXPO)
+        self.play(LaggedStart(*[GrowFromCenter(d) for d in dots], lag_ratio=0.18), run_time=max(0.6, wt(5, 8, 0.1) - self.renderer.time - 0.05))
+        self.ev("stamp"); self.play(FadeIn(flag, scale=1.5), FadeIn(goal, shift=UP * 0.08), run_time=0.35, rate_func=EXPO)
+        # ===== G. aim for 300 =====
+        aim, nv, cnt = promo_aim(self, P, 260, 0, 0)
+        self.until(C[6] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(hd, ln, dots, goal, flag)), FadeIn(aim, shift=UP * 0.1), FadeIn(cnt, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(wt(6, 7, 0.1)); self.ev("stamp")
+        self.play(nv.animate.set_value(300), run_time=max(0.5, wt(6, 10, 0.0) - self.renderer.time), rate_func=rate_functions.ease_out_cubic)
+        # ===== H. all these features, just Rs 99/month + Comment LINK =====
+        feats = ["Full JEE Main mock tests", "Scorecard after every test", "Chapters they're lagging in", "What to fix next", "Doubt support"]
+        def frow(t):
+            ck = VGroup(Circle(radius=px(20), fill_color=TEAL, fill_opacity=1, stroke_width=0), B("✓", 24, WHITE_, SEMIBOLD))
+            ck[1].move_to(ck[0]); return VGroup(ck, B(t, 34, INK, SEMIBOLD)).arrange(RIGHT, buff=px(18))
+        rows = VGroup(*[frow(t) for t in feats]).arrange(DOWN, buff=px(22), aligned_edge=LEFT)
+        fbox = RoundedRectangle(width=px(700), height=rows.height + px(70), corner_radius=0.22, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3).move_to(P(490, 760))
+        rows.move_to(fbox).align_to(fbox, LEFT).shift(RIGHT * px(44))
+        fhd = H("All these features", 46, INK).next_to(fbox, UP, buff=px(22))
+        price = VGroup(H("Just", 60, INK), H("₹99", 110, OR), H("/month", 60, INK)).arrange(RIGHT, buff=px(16), aligned_edge=DOWN).move_to(P(490, 1130))
+        self.until(C[-1] - 0.05); self.ev("wipe")
+        self.play(FadeOut(aim), FadeOut(cnt), FadeIn(fhd, shift=DOWN * 0.08), FadeIn(fbox), run_time=0.35, rate_func=EXPO)
+        self.play(LaggedStart(*[FadeIn(r, shift=RIGHT * 0.15) for r in rows], lag_ratio=0.18), run_time=0.7, rate_func=EXPO)
+        self.until(C[-1] + 1.05); self.ev("stamp"); self.play(FadeIn(price, scale=1.25), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        self.until(C[-1] + 2.6); promo_cta(self, P, t0)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
