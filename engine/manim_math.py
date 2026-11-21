@@ -2234,27 +2234,40 @@ class PromoB(ShortReel2):
         self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
         self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
         t0 = self.renderer.time
-        # ===== A. 2 months: 9 week boxes ticking towards 20 Jan =====
-        big = H("2 months", 140, OR).move_to(P(490, 540)); left = H("left", 60, INK).next_to(big, DOWN, buff=px(34))
-        weeks = VGroup(*[RoundedRectangle(width=px(62), height=px(62), corner_radius=0.08, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3) for _ in range(9)]).arrange(RIGHT, buff=px(14)).move_to(P(490, 860))
-        wl = B("9 weeks to 20 Jan", 30, GREY_P, SEMIBOLD).next_to(weeks, DOWN, buff=px(16))
-        def tickw(m):
-            k = int(((self.renderer.time - t0) / 0.35) % 12)
-            for i, b in enumerate(m): b.set_fill(OR if i < min(k, 9) else WHITE_, 1)
-        weeks.add_updater(tickw)
-        self.add(big, left, weeks, wl)
-        # ===== B. JEE Main 20 Jan; mock tests, not new chapters =====
-        jt = tag("JEE Main · 20 Jan 2027", 36, WHITE_, INK).move_to(P(490, 1010))
-        nc = tag("New chapters", 38, WHITE_, GREY_P); mt = tag("Mock tests", 38, WHITE_, TEAL)
-        pr = VGroup(nc, mt).arrange(RIGHT, buff=px(40)).move_to(P(490, 1120))
-        xs = Line(nc.get_left() + LEFT * px(6), nc.get_right() + RIGHT * px(6), color=RD, stroke_width=8)
-        self.until(C[1] - 0.05); self.ev("tick"); self.play(FadeIn(jt, shift=UP * 0.08), run_time=0.35, rate_func=EXPO)
-        self.until(wt(1, 5, 0.1)); self.play(FadeIn(mt, shift=UP * 0.08), FadeIn(nc, shift=UP * 0.08), run_time=0.3, rate_func=EXPO)
-        self.until(wt(1, 8, 0.08)); self.ev("stamp"); self.play(Create(xs), Indicate(mt, scale_factor=1.08, color=TEAL), run_time=0.4)
-        part1 = VGroup(big, left, weeks, wl, jt, pr, xs)
+        # ===== A. 9 Sundays: calendar pages flip in from frame 0, then the JEE Main stamp lands =====
+        head = H("9 Sundays", 132, OR).move_to(P(490, 455))
+        subh = H("left before JEE Main", 50, INK).move_to(P(490, 565))
+        days = [("22", "NOV"), ("29", "NOV"), ("6", "DEC"), ("13", "DEC"), ("20", "DEC"), ("27", "DEC"), ("3", "JAN"), ("10", "JAN"), ("17", "JAN")]
+        def page(dn, mo):
+            body = RoundedRectangle(width=px(180), height=px(150), corner_radius=0.12, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+            band = Rectangle(width=px(180), height=px(40), fill_color=RD, fill_opacity=1, stroke_width=0).align_to(body, UP)
+            band = RoundedRectangle(width=px(180), height=px(44), corner_radius=0.12, fill_color=RD, fill_opacity=1, stroke_width=0).align_to(body, UP)
+            sun = B("SUN", 24, WHITE_, SEMIBOLD).move_to(band)
+            num = H(dn, 60, INK).move_to(body.get_center() + DOWN * px(14))
+            mon = B(mo, 22, GREY_P, SEMIBOLD).next_to(num, RIGHT, buff=px(8)).align_to(num, DOWN)
+            return VGroup(body, band, sun, num, mon)
+        pages = VGroup(*[page(d, m) for d, m in days]).arrange_in_grid(3, 3, buff=(px(24), px(22))).move_to(P(490, 880))
+        stamp = tag("JEE MAIN · 20 JAN", 40, WHITE_, RD).rotate(-0.06).move_to(P(490, 1192))
+        for pg in pages: pg.set_opacity(0.18)
+        self.add(head, subh, pages)
+        self.play(LaggedStart(*[pg.animate(rate_func=EXPO).set_opacity(1).scale(1.0) for pg in pages], lag_ratio=0.2), run_time=1.5)
+        self.until(wt(0, 6, 0.1)); self.ev("stamp")
+        self.play(FadeIn(stamp, scale=1.6), run_time=0.3, rate_func=rate_functions.ease_out_back)
+        sbase = stamp.get_center().copy()
+        stamp.add_updater(lambda m: m.set_opacity(1))
+        head.add_updater(lambda m: m.set_opacity(0.8 + 0.2 * (0.5 + 0.5 * math.sin(2 * math.pi * (self.renderer.time - t0) / 0.9))))
+        # ===== B. each Sunday becomes a full mock, not a new chapter =====
+        def mock(pg):
+            c = Circle(radius=px(30), fill_color=TEAL, fill_opacity=1, stroke_width=0).move_to(pg[0].get_corner(DR) + UL * px(8))
+            return VGroup(c, B("MOCK", 18, WHITE_, SEMIBOLD).move_to(c)).rotate(-0.2)
+        mocks = VGroup(*[mock(pg) for pg in pages])
+        q75 = tag("75 Qs · 3 hours each", 30, WHITE_, TEAL).move_to(P(490, 1275))
+        self.until(wt(1, 4, 0.1)); self.ev("tick")
+        self.play(LaggedStart(*[FadeIn(m, scale=1.8) for m in mocks], lag_ratio=0.12), FadeIn(q75, shift=UP * 0.08), run_time=1.0, rate_func=EXPO)
+        part1 = VGroup(head, subh, pages, stamp, mocks, q75)
         # ===== C. a bare score: now what? =====
         bare = H("186 / 300", 120, INK).move_to(P(490, 700)); nw = H("Now what?", 60, GREY_P).move_to(P(490, 840))
-        self.until(C[2] - 0.05); self.ev("wipe"); weeks.clear_updaters()
+        self.until(C[2] - 0.05); self.ev("wipe"); head.clear_updaters(); stamp.clear_updaters()
         self.play(FadeOut(part1, shift=UP * 0.3), FadeIn(bare, scale=0.9), run_time=0.45, rate_func=EXPO)
         self.until(wt(2, 6, 0.08)); self.play(FadeIn(nw, shift=UP * 0.08), run_time=0.3, rate_func=EXPO)
         # ===== D. the scorecard builds around the score =====
@@ -2281,7 +2294,7 @@ class PromoB(ShortReel2):
         # ===== H. price + Comment LINK =====
         price = VGroup(H("Free trial", 56, INK), H("→", 56, GREY_P), H("₹99/month", 64, OR)).arrange(RIGHT, buff=px(20)); fitw(price, 720); price.move_to(P(490, 1090))
         self.until(C[-1] - 0.02); self.ev("tick"); self.play(FadeIn(price, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
-        self.until(C[-1] + 2.8); promo_cta(self, P, t0)
+        self.until(C[-1] + 3.05); promo_cta(self, P, t0)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
 
