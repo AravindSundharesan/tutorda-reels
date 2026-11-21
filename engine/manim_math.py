@@ -2291,10 +2291,21 @@ class PromoB(ShortReel2):
         self.play(FadeOut(sc), FadeOut(h3), FadeOut(ps), FadeIn(aim, shift=UP * 0.1), FadeIn(cnt, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
         self.until(wt(6, 6, 0.1)); self.ev("stamp")
         self.play(nv.animate.set_value(300), run_time=max(0.5, wt(6, 9, 0.0) - self.renderer.time), rate_func=rate_functions.ease_out_cubic)
-        # ===== H. price + Comment LINK =====
-        price = VGroup(H("Free trial", 56, INK), H("→", 56, GREY_P), H("₹99/month", 64, OR)).arrange(RIGHT, buff=px(20)); fitw(price, 720); price.move_to(P(490, 1090))
-        self.until(C[-1] - 0.02); self.ev("tick"); self.play(FadeIn(price, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
-        self.until(C[-1] + 3.05); promo_cta(self, P, t0)
+        # ===== H. all these features, just Rs 99/month + Comment LINK =====
+        feats = ["Full JEE Main mock tests", "Scorecard after every test", "Chapters you're lagging in", "What to fix next", "Doubt support"]
+        def frow(t):
+            ck = VGroup(Circle(radius=px(20), fill_color=TEAL, fill_opacity=1, stroke_width=0), B("✓", 24, WHITE_, SEMIBOLD))
+            ck[1].move_to(ck[0]); return VGroup(ck, B(t, 34, INK, SEMIBOLD)).arrange(RIGHT, buff=px(18))
+        rows = VGroup(*[frow(t) for t in feats]).arrange(DOWN, buff=px(22), aligned_edge=LEFT)
+        fbox = RoundedRectangle(width=px(700), height=rows.height + px(70), corner_radius=0.22, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3).move_to(P(490, 760))
+        rows.move_to(fbox).align_to(fbox, LEFT).shift(RIGHT * px(44))
+        fhd = H("All these features", 46, INK).next_to(fbox, UP, buff=px(22))
+        price = VGroup(H("Just", 60, INK), H("₹99", 110, OR), H("/month", 60, INK)).arrange(RIGHT, buff=px(16), aligned_edge=DOWN).move_to(P(490, 1130))
+        self.until(C[-1] - 0.05); self.ev("wipe")
+        self.play(FadeOut(aim), FadeOut(cnt), FadeIn(fhd, shift=DOWN * 0.08), FadeIn(fbox), run_time=0.35, rate_func=EXPO)
+        self.play(LaggedStart(*[FadeIn(r, shift=RIGHT * 0.15) for r in rows], lag_ratio=0.18), run_time=0.8, rate_func=EXPO)
+        self.until(C[-1] + 0.95); self.ev("stamp"); self.play(FadeIn(price, scale=1.25), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        self.until(C[-1] + 2.75); promo_cta(self, P, t0)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
 
