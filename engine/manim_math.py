@@ -2370,6 +2370,70 @@ class PromoC(ShortReel2):
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
 
 
+def promo_scorecard2(P, cy=850):
+    """Richer SAMPLE scorecard (21 Nov, Aro: 'looks simple'). 260/300: Maths 21c 0w 4s = 84, Physics 22c 2w 1s = 86,
+    Chemistry 23c 2w 0s = 90 -> 66 correct, 4 wrong, 5 skipped. Returns (group, parts, score tracker)."""
+    RD = "#E5484D"; NAVY = "#0E142A"; cw, ch = 700, 840; top = cy - ch / 2; L = 490 - cw / 2 + 40
+    shadow = RoundedRectangle(width=px(cw), height=px(ch), corner_radius=0.26, fill_color=NAVY, fill_opacity=0.10, stroke_width=0).move_to(P(490, cy + 12))
+    card = RoundedRectangle(width=px(cw), height=px(ch), corner_radius=0.26, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3).move_to(P(490, cy))
+    hb = RoundedRectangle(width=px(cw), height=px(128), corner_radius=0.26, fill_color=NAVY, fill_opacity=1, stroke_width=0).move_to(P(490, top + 64))
+    hsq = Rectangle(width=px(cw), height=px(40), fill_color=NAVY, fill_opacity=1, stroke_width=0).move_to(P(490, top + 108))
+    ttl = H("Your child's scorecard", 40, WHITE_).move_to(P(490, top + 46)); ttl.align_to(P(L, 0), LEFT)
+    sub = B("Mock test 7 · JEE Main pattern", 26, "#AEB8CC", SEMIBOLD).next_to(ttl, DOWN, buff=px(8)).align_to(ttl, LEFT)
+    smp = tag("SAMPLE", 22, NAVY, "#FFC83D").move_to(P(490 + cw / 2 - 80, top + 46))
+    head = VGroup(hb, hsq, ttl, sub, smp)
+    # score ring
+    rc = P(255, top + 255); R = px(84)
+    ring_bg = Circle(radius=R, stroke_color="#ECE7DE", stroke_width=20).move_to(rc)
+    st = ValueTracker(0)
+    arc = always_redraw(lambda: Arc(radius=R, start_angle=PI / 2, angle=-TAU * max(0.001, st.get_value()) / 300, stroke_color=OR, stroke_width=20).move_arc_center_to(rc))
+    num = always_redraw(lambda: H(str(int(round(st.get_value()))), 58, INK).move_to(rc + UP * px(10)))
+    of = B("of 300", 24, GREY_P, SEMIBOLD).move_to(rc + DOWN * px(36))
+    # subject bars with marks lost
+    subs = [("Maths", 84, 16, BLUE), ("Physics", 86, 14, TEAL), ("Chemistry", 90, 10, OR)]
+    bars = VGroup()
+    for i, (nm, v, lost, col) in enumerate(subs):
+        yy = top + 192 + i * 62
+        nmt = B(nm, 26, INK, SEMIBOLD).move_to(P(450, yy)).align_to(P(392, yy), LEFT)
+        bg = RoundedRectangle(width=px(150), height=px(16), corner_radius=0.04, fill_color="#ECE7DE", fill_opacity=1, stroke_width=0).move_to(P(632, yy))
+        fg = RoundedRectangle(width=px(150 * v / 100), height=px(16), corner_radius=0.04, fill_color=col, fill_opacity=1, stroke_width=0).set_z_index(3)
+        fg.move_to(bg.get_left() + RIGHT * px(150 * v / 200))
+        val = B(str(v), 26, INK, SEMIBOLD).next_to(bg, RIGHT, buff=px(10))
+        dl = B(f"−{lost}", 24, RD, SEMIBOLD).move_to(P(800, yy))
+        bars.add(VGroup(nmt, bg, fg, val, dl))
+    stats = VGroup(tag("66 correct", 28, WHITE_, TEAL), tag("4 wrong", 28, WHITE_, RD), tag("5 skipped", 28, WHITE_, GREY_P)).arrange(RIGHT, buff=px(14)).move_to(P(490, top + 395))
+    sep = Line(P(L, top + 450), P(490 + cw / 2 - 40, top + 450), color=RULE, stroke_width=2)
+    # lagging in
+    llab = B("Lagging in", 28, GREY_P, SEMIBOLD).move_to(P(300, top + 488)).align_to(P(L, 0), LEFT)
+    def lrow(t, why, d, y):
+        row = VGroup(Dot(radius=px(9), color=RD), B(t, 32, INK, SEMIBOLD), B(why, 24, GREY_P, SEMIBOLD)).arrange(RIGHT, buff=px(12))
+        row.move_to(P(400, y)).align_to(P(L, 0), LEFT); ch_ = tag(d, 26, WHITE_, RD).move_to(P(490 + cw / 2 - 70, y))
+        return VGroup(row, ch_)
+    lags = VGroup(lrow("Coordinate geometry", "4 skipped", "−16", top + 540), lrow("Thermodynamics", "2 wrong", "−10", top + 596))
+    # fix next
+    fb = RoundedRectangle(width=px(cw - 60), height=px(150), corner_radius=0.18, fill_color="#E3F4F1", fill_opacity=1, stroke_width=0).move_to(P(490, top + 725))
+    flab = B("Fix next", 28, TEAL, SEMIBOLD).move_to(fb.get_corner(UL) + RIGHT * px(90) + DOWN * px(34)).align_to(fb, LEFT).shift(RIGHT * px(26))
+    fixt = VGroup(B("Revise straight lines", 34, INK, SEMIBOLD), M(r"y=mx+c", 38, TEAL)).arrange(RIGHT, buff=px(16))
+    fixt.next_to(flab, DOWN, buff=px(12)).align_to(flab, LEFT)
+    fsub = B("before mock test 8", 24, GREY_P, SEMIBOLD).next_to(fixt, DOWN, buff=px(8)).align_to(flab, LEFT)
+    parts = dict(shadow=shadow, card=card, head=head, ring_bg=ring_bg, arc=arc, num=num, of=of, bars=bars, stats=stats, sep=sep,
+                 llab=llab, lags=lags, fb=fb, flab=flab, fixt=fixt, fsub=fsub,
+                 scorebox=VGroup(ring_bg, of, bars, stats), lagbox=VGroup(llab, lags), fixbox=fb)
+    grp = VGroup(shadow, card, head, ring_bg, arc, num, of, bars, stats, sep, llab, lags, fb, flab, fixt, fsub)
+    return grp, parts, st
+
+
+def promo_card2_in(scene, p, st, total=260):
+    scene.play(FadeIn(VGroup(p["shadow"], p["card"]), shift=UP * 0.2), FadeIn(p["head"], shift=UP * 0.2), run_time=0.4, rate_func=EXPO)
+    scene.add(p["ring_bg"], p["arc"], p["num"])
+    scene.play(FadeIn(p["ring_bg"]), FadeIn(p["of"]), st.animate.set_value(total),
+               LaggedStart(*[GrowFromEdge(b[2], LEFT) for b in p["bars"]], lag_ratio=0.15), *[FadeIn(VGroup(b[0], b[1], b[3], b[4])) for b in p["bars"]],
+               run_time=0.9, rate_func=rate_functions.ease_out_cubic)
+    scene.play(LaggedStart(*[FadeIn(c, scale=1.2) for c in p["stats"]], lag_ratio=0.2), FadeIn(p["sep"]), FadeIn(p["llab"]),
+               LaggedStart(*[FadeIn(r, shift=RIGHT * 0.1) for r in p["lags"]], lag_ratio=0.25),
+               FadeIn(p["fb"]), FadeIn(p["flab"]), FadeIn(p["fixt"]), FadeIn(p["fsub"]), run_time=0.7, rate_func=EXPO)
+
+
 class PromoC2(ShortReel2):
     """JEE course promo C v2 for parents (21 Nov): guessable hook 'which subject cost the most?', answer held to ~4.3 s,
     then the scorecard by ~10 s. SAMPLE: 260 = 84 + 86 + 90, lost 16 + 14 + 10 = 40."""
@@ -2424,20 +2488,19 @@ class PromoC2(ShortReel2):
         self.until(wt(2, 2, 0.1)); self.ev("stamp"); self.play(FadeIn(nt, scale=1.15), run_time=0.3, rate_func=EXPO)
         self.until(wt(2, 6, 0.1)); self.ev("tick"); self.play(FadeIn(nl, shift=UP * 0.1), run_time=0.35, rate_func=EXPO)
         # ===== D. the scorecard =====
-        sc, p = promo_scorecard(P, "Your child's scorecard", 260, [("Maths", 84, BLUE), ("Physics", 86, TEAL), ("Chemistry", 90, OR)],
-                                ["Coordinate geometry  (−16)", "Thermodynamics"], r"y=mx+c", "revise lines")
+        sc, p, st = promo_scorecard2(P)
         self.until(C[3] - 0.05); self.ev("wipe")
         self.play(FadeOut(VGroup(rk, nt, nl), shift=UP * 0.3), run_time=0.3)
-        promo_card_in(self, p)
-        self.until(wt(3, 6, 0.1)); self.play(Indicate(p["ttl"], color=OR, scale_factor=1.05), run_time=0.5)
+        promo_card2_in(self, p, st)
         # ===== E. marks / lagging / fix next light up =====
-        hl = lambda mob: SurroundingRectangle(mob, buff=px(14), corner_radius=0.12, color=OR, stroke_width=5)
-        h1, h2, h3 = hl(VGroup(p["mlab"], p["score"], p["bars"])), hl(VGroup(p["llab"], p["lags"])), hl(VGroup(p["flab"], p["fixt"]))
+        hl = lambda mob: SurroundingRectangle(mob, buff=px(12), corner_radius=0.14, color=OR, stroke_width=5)
+        h1 = hl(VGroup(p["ring_bg"], p["bars"], p["stats"])); h2 = hl(p["lagbox"]); h3 = hl(p["fb"])
         self.until(wt(4, 1, 0.08)); self.play(Create(h1), run_time=0.3)
-        self.until(wt(4, 3, 0.08)); self.play(ReplacementTransform(h1, h2), run_time=0.3)
+        self.until(wt(4, 3, 0.08)); self.play(ReplacementTransform(h1, h2), Indicate(p["lags"][0][1], color=RD, scale_factor=1.12), run_time=0.35)
         self.until(wt(4, 9, 0.08)); self.play(ReplacementTransform(h2, h3), run_time=0.3)
         # ===== F. updated after every test, to JEE Main on 20 Jan =====
         self.until(C[5] - 0.05); self.ev("wipe")
+        p["arc"].clear_updaters(); p["num"].clear_updaters()
         self.play(FadeOut(sc), FadeOut(h3), run_time=0.3)
         hd = H("Updated after every test", 54, INK); fitw(hd, 740); hd.move_to(P(490, 600))
         ln = Line(P(150, 800), P(830, 800), color=INK, stroke_width=5)
