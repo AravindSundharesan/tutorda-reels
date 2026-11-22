@@ -1,0 +1,10 @@
+[
+ [["Three hundred...", 1.0, 0.1], ["two ninety-five...", 1.06, 0.08], ["two ninety-one...", 1.08, 0.16], ["Watch your JEE score fall.", 1.03, 0]],
+ [["40 marks, gone.", 0.98, 0.32], ["And you only got 4 wrong.", 1.02, 0]],
+ [["Here's the catch.", 1.0, 0.22], ["Every wrong answer costs 5: the 4 you missed, plus 1 negative. That's 20.", 1.05, 0]],
+ [["The other 20?", 1.0, 0.2], ["The 5 questions you skipped. 4 marks each.", 1.05, 0]],
+ [["Your score says 260.", 1.02, 0.26], ["It won't tell you which chapters cost you those 40.", 1.06, 0]],
+ [["TutorDA's scorecard does.", 0.97, 0]],
+ [["After every mock: your marks, where you're lagging, and what to fix next.", 1.05, 0]],
+ [["All of this for 99 rupees a month.", 1.02, 0.3], ["Comment LINK, and I'll send it to you.", 1.03, 0]]
+]

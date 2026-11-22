@@ -2842,3 +2842,109 @@ class PromoD3(ShortReel2):
         self.until(C[-1] + 2.25); promo_cta(self, P, t0)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class PromoD4(ShortReel2):
+    """Promo D v4 (22 Nov, Aro: answer-sheet intro 'boring'). Live countdown hook: 300 drops hit by hit
+    (-5 wrong x4, -4 skip x5, synced to 'two ninety-five / two ninety-one') to 260; twist 'only 4 wrong'."""
+    EVENTS = "promod4"; SERIES = "JEE Main 2027"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        O = json.load(open(os.path.join(KIT, "topics/jee_promo_d4/vo/offsets.json")))
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        t0 = self.renderer.time
+        # ===== A. live countdown: 300 -> 260, a chip per hit =====
+        HITS = [-5, -4, -4, -5, -4, -5, -4, -4, -5]
+        sch = tag("Your JEE Main mock score", 30, WHITE_, INK).move_to(P(490, 470))
+        q = H("Watch it fall.", 60, INK).move_to(P(490, 560))
+        val = ValueTracker(300)
+        def numcol():
+            f = (300 - val.get_value()) / 40.0
+            return interpolate_color(ManimColor(INK), ManimColor(RD), max(0, min(1, f)))
+        num = always_redraw(lambda: H(str(int(round(val.get_value()))), 250, numcol()).move_to(P(490, 740)))
+        of = B("out of 300", 40, GREY_P, SEMIBOLD).move_to(P(490, 880))
+        slots = [P(200 + (j % 5) * 145, 1010 + (j // 5) * 74) for j in range(9)]
+        chips = VGroup()
+        def chip(h):
+            return tag("✗ −5" if h == -5 else "skip −4", 23, WHITE_, RD if h == -5 else OR)
+        self.add(sch, q, num, of)
+        times = [C[0] + O[0][1], C[0] + O[0][2]]
+        a, b = C[0] + O[0][3], C[1] - 0.2
+        times += [a + (b - a) * j / 6 for j in range(7)]
+        for j, (h, tt) in enumerate(zip(HITS, times)):
+            self.until(tt - 0.02); self.ev("tick")
+            c = chip(h).move_to(P(490, 740)).scale(0.6); chips.add(c)
+            rt = 0.3 if j < 2 else 0.18
+            self.play(val.animate.increment_value(h), c.animate.scale(1 / 0.6).move_to(slots[j]), run_time=rt, rate_func=EXPO)
+        num.clear_updaters(); num.become(H("260", 250, RD).move_to(P(490, 740)))
+        # ===== B. 40 marks gone, and only 4 wrong =====
+        gone = H("40 marks, gone.", 64, RD).move_to(P(490, 560))
+        self.until(C[1] - 0.05); self.ev("stamp")
+        self.play(FadeOut(q, shift=UP * 0.1), FadeIn(gone, scale=1.15), Indicate(num, color=RD, scale_factor=1.04), run_time=0.4, rate_func=EXPO)
+        wr = [c for c, h in zip(chips, HITS) if h == -5]; sk = [c for c, h in zip(chips, HITS) if h == -4]
+        lw = B("4 wrong", 30, RD, SEMIBOLD).move_to(P(490, 975)); ls = B("5 skipped", 30, OR, SEMIBOLD).move_to(P(490, 1100))
+        self.until(wt(1, 7, 0.1)); self.ev("tick")
+        self.play(*[c.animate.move_to(P(490 + (k - 1.5) * 150, 1025)) for k, c in enumerate(wr)],
+                  *[c.animate.move_to(P(490 + (k - 2) * 145, 1150)) for k, c in enumerate(sk)], FadeIn(lw), FadeIn(ls), run_time=0.45, rate_func=EXPO)
+        self.play(*[c.animate(rate_func=there_and_back).scale(1.12) for c in wr], run_time=0.4)
+        # ===== C. the catch: a wrong answer costs 5 =====
+        r2 = VGroup(tag("Wrong", 34, WHITE_, RD), M(r"4 \times 5 = 20", 66, INK)).arrange(RIGHT, buff=px(26))
+        r1 = VGroup(tag("Skip", 34, WHITE_, OR), M(r"5 \times 4 = 20", 66, INK)).arrange(RIGHT, buff=px(26))
+        board = VGroup(r2, r1).arrange(DOWN, buff=px(70), aligned_edge=LEFT).move_to(P(490, 640))
+        why = B("4 missed  +  1 negative", 30, GREY_P, SEMIBOLD).next_to(r2, DOWN, buff=px(12)).align_to(r2[1], LEFT)
+        tl = Line(P(250, 0), P(730, 0), color=INK, stroke_width=4).set_y(Y(830))
+        tot = VGroup(B("Marks lost", 40, INK, SEMIBOLD), H("40", 96, RD)).arrange(RIGHT, buff=px(24)).move_to(P(490, 905))
+        rule = VGroup(B("Rule", 26, OR, SEMIBOLD), H("Wrong answer = −5", 46, WHITE_), B("A skip costs 4", 30, "#D5DCE8", SEMIBOLD)).arrange(DOWN, buff=px(8))
+        rbox = RoundedRectangle(width=px(640), height=rule.height + px(56), corner_radius=0.22, fill_color=INK, fill_opacity=1, stroke_width=0).move_to(P(490, 1130))
+        rule.move_to(rbox)
+        catch = H("Here's the catch.", 64, INK).move_to(P(490, 640))
+        self.until(C[2] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(sch, gone, num, of, chips, lw, ls), shift=UP * 0.3), FadeIn(catch, scale=1.1), run_time=0.35, rate_func=EXPO)
+        self.until(wt(2, 3, 0.1)); self.ev("tick")
+        self.play(FadeOut(catch, shift=UP * 0.2), FadeIn(r2, shift=UP * 0.1), run_time=0.35, rate_func=EXPO)
+        self.until(wt(2, 11, 0.1)); self.play(FadeIn(why, shift=UP * 0.06), run_time=0.3)
+        # ===== D. the other 20: skips =====
+        self.until(wt(3, 4, 0.1)); self.ev("tick"); self.play(FadeIn(r1, shift=UP * 0.1), run_time=0.35, rate_func=EXPO)
+        self.until(wt(3, 8, 0.1)); self.ev("stamp")
+        self.play(Create(tl), FadeIn(tot, scale=1.15), FadeIn(rbox, shift=UP * 0.1), FadeIn(rule, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        # ===== E. 300 - 40 = 260, where did the 40 go? =====
+        eq = VGroup(H("300", 96, INK), H("−", 96, INK), H("40", 96, RD), H("=", 96, INK), H("260", 96, OR)).arrange(RIGHT, buff=px(18)).move_to(P(490, 560))
+        wq = H("Which chapters?", 64, INK); fitw(wq, 700); wq.move_to(P(490, 730))
+        qs = VGroup(*[VGroup(tag(n, 32, WHITE_, c), H("?", 80, c)).arrange(DOWN, buff=px(10)) for n, c in [("Maths", BLUE), ("Physics", TEAL), ("Chemistry", OR)]]).arrange(RIGHT, buff=px(44)).move_to(P(490, 920))
+        self.until(C[4] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(board, why, tl, tot, rbox, rule), shift=UP * 0.3), FadeIn(eq, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(wt(4, 8, 0.1)); self.ev("tick")
+        self.play(FadeIn(wq, shift=UP * 0.08), LaggedStart(*[FadeIn(x, scale=1.2) for x in qs], lag_ratio=0.2), run_time=0.6, rate_func=EXPO)
+        self.play(LaggedStart(*[Wiggle(x[1], scale_value=1.15) for x in qs], lag_ratio=0.15), run_time=0.8)
+        # ===== E. the scorecard =====
+        sc, p, st = promo_scorecard2(P, title="Your scorecard")
+        self.until(C[5] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(eq, wq, qs), shift=UP * 0.3), run_time=0.3)
+        promo_card2_in(self, p, st)
+        # ===== F. marks / lagging / fix next =====
+        hl = lambda mob: SurroundingRectangle(mob, buff=px(12), corner_radius=0.14, color=OR, stroke_width=5)
+        h1 = hl(VGroup(p["ring_bg"], p["bars"], p["stats"])); h2 = hl(p["lagbox"]); h3 = hl(p["fb"])
+        self.until(wt(6, 3, 0.08)); self.play(Create(h1), run_time=0.3)
+        self.until(wt(6, 5, 0.08)); self.play(ReplacementTransform(h1, h2), Indicate(p["lags"][0][1], color=RD, scale_factor=1.12), run_time=0.35)
+        self.until(wt(6, 9, 0.08)); self.play(ReplacementTransform(h2, h3), run_time=0.3)
+        p["arc"].clear_updaters(); p["num"].clear_updaters()
+        # ===== H. all these features, Rs 99/month, Comment LINK =====
+        feats = ["Full JEE Main mock tests", "Scorecard after every test", "Chapters you're lagging in", "What to fix next", "Doubt support"]
+        def frow(t):
+            ck = VGroup(Circle(radius=px(20), fill_color=TEAL, fill_opacity=1, stroke_width=0), B("✓", 24, WHITE_, SEMIBOLD))
+            ck[1].move_to(ck[0]); return VGroup(ck, B(t, 34, INK, SEMIBOLD)).arrange(RIGHT, buff=px(18))
+        rows = VGroup(*[frow(t) for t in feats]).arrange(DOWN, buff=px(22), aligned_edge=LEFT)
+        fbox = RoundedRectangle(width=px(700), height=rows.height + px(70), corner_radius=0.22, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3).move_to(P(490, 760))
+        rows.move_to(fbox).align_to(fbox, LEFT).shift(RIGHT * px(44))
+        fhd = H("All of this", 50, INK).next_to(fbox, UP, buff=px(22))
+        price = VGroup(H("Just", 60, INK), H("₹99", 110, OR), H("/month", 60, INK)).arrange(RIGHT, buff=px(16), aligned_edge=DOWN).move_to(P(490, 1150))
+        self.until(C[-1] - 0.05); self.ev("wipe")
+        self.play(FadeOut(sc), FadeOut(h3), FadeIn(fhd, shift=DOWN * 0.08), FadeIn(fbox), run_time=0.35, rate_func=EXPO)
+        self.play(LaggedStart(*[FadeIn(r, shift=RIGHT * 0.15) for r in rows], lag_ratio=0.18), run_time=0.7, rate_func=EXPO)
+        self.until(C[-1] + 0.6); self.ev("stamp"); self.play(FadeIn(price, scale=1.25), run_time=0.4, rate_func=rate_functions.ease_out_back)
+        self.until(C[-1] + 2.25); promo_cta(self, P, t0)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
