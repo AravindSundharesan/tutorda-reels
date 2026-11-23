@@ -1,0 +1,12 @@
+Send this to the friend who's still solving 3 equations for partial fractions.
+Method Killer, part 1 of the JEE Main 2027 series: (2x² − 7x + 3) / ((x − 1)(x + 1)(x − 2)).
+
+The school way means comparing coefficients. You write A + B + C = 2, −A − 3B = −7 and −2A + 2B − C = 3, then solve all three.
+
+You don't need any of that. Want A? Cover (x − 1) and put x = 1. The top's −2, the bottom's −2, so A = 1. Cover (x + 1) and put x = −1, and you get 12/6, so B = 2. C is your turn: cover (x − 2), put x = 2, and it's −3/3 = −1.
+
+Every linear factor works the same way: cover it, put its root in. It'll save you a minute on every partial fractions integration question.
+
+Part 2 tomorrow is the tricky one: repeated factors.
+
+#JEE #JEEMain2027 #JEEMaths #IITJEE #Integration

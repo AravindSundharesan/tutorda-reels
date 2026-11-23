@@ -2948,3 +2948,96 @@ class PromoD4(ShortReel2):
         self.until(C[-1] + 2.25); promo_cta(self, P, t0)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class MethodKiller1(ShortReel2):
+    """Method Killer #1 (23 Nov): partial fractions by cover-up vs comparing coefficients.
+    (2x^2-7x+3)/((x-1)(x+1)(x-2)) = 1/(x-1) + 2/(x+1) - 1/(x-2). Viewer tries C in a 3-2-1 countdown; answer last."""
+    EVENTS = "mk1"; SERIES = "Method Killer #1"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        # ---------- frame 0: title + the fraction + the school method ----------
+        t1 = H("STOP COMPARING", 82, INK); t2 = H("COEFFICIENTS", 82, RD)
+        title = VGroup(t1, t2).arrange(DOWN, buff=px(4)); fitw(title, 700); title.move_to(P(490, 445))
+        num = M(r"2x^2-7x+3", 74)
+        f1, f2, f3 = M(r"(x-1)", 74), M(r"(x+1)", 74), M(r"(x-2)", 74)
+        den = VGroup(f1, f2, f3).arrange(RIGHT, buff=px(4))
+        bar = Line(LEFT, RIGHT, color=INK, stroke_width=4).set_width(den.width + px(10))
+        frac = VGroup(num, bar, den).arrange(DOWN, buff=px(12)); fitw(frac, 640); frac.move_to(P(490, 660))
+        fa, fb, fc = M(r"\frac{A}{x-1}", 66), M(r"\frac{B}{x+1}", 66), M(r"\frac{C}{x-2}", 66)
+        rhs = VGroup(M(r"=", 66), fa, M(r"+", 66), fb, M(r"+", 66), fc).arrange(RIGHT, buff=px(14)); fitw(rhs, 630); rhs.next_to(frac, DOWN, buff=px(40)).set_x(X(490))
+        st = tag("School method", 28, WHITE_, GREY_P).next_to(rhs, DOWN, buff=px(44)).set_x(X(490))
+        eqs = VGroup(M(r"A+B+C=2", 50), M(r"-A-3B=-7", 50), M(r"-2A+2B-C=3", 50)).arrange(DOWN, buff=px(18)).next_to(st, DOWN, buff=px(22)).set_x(X(490))
+        note = B("3 equations · 3 unknowns", 30, GREY_P, SEMIBOLD).next_to(eqs, DOWN, buff=px(20))
+        self.add(title, frac, rhs, st, eqs[0])
+        self.play(LaggedStart(FadeIn(eqs[1], shift=DOWN * 0.08), FadeIn(eqs[2], shift=DOWN * 0.08), lag_ratio=0.5), run_time=0.9)
+        self.play(FadeIn(note), run_time=0.3)
+        school = VGroup(st, eqs, note)
+        x1 = Line(school.get_corner(UL) + LEFT * px(20), school.get_corner(DR) + RIGHT * px(20), color=RD, stroke_width=10)
+        x2 = Line(school.get_corner(DL) + LEFT * px(20), school.get_corner(UR) + RIGHT * px(20), color=RD, stroke_width=10)
+        self.until(wt(0, 6, 0.1)); self.ev("stamp")
+        self.play(Create(x1), Create(x2), school.animate.set_opacity(0.35), run_time=0.45, rate_func=EXPO)
+        # ---------- cover-up for A ----------
+        SH = px(150); ct = tag("Cover-up trick", 34, WHITE_, TEAL).move_to([X(490), rhs.get_bottom()[1] + SH - px(48), 0])
+        def cover(f):
+            return RoundedRectangle(width=f.width + px(14), height=f.height + px(14), corner_radius=0.08, fill_color=OR, fill_opacity=0.92, stroke_width=0).move_to(f).set_z_index(5)
+        self.until(C[1] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(school, x1, x2), shift=DOWN * 0.2), FadeOut(title, shift=UP * 0.2), VGroup(frac, rhs).animate.shift(UP * SH), FadeIn(ct, scale=1.1), run_time=0.45, rate_func=EXPO)
+        cv = cover(f1)
+        xv = tag("x = 1", 38, WHITE_, OR).move_to(ct.get_center() + DOWN * px(78))
+        self.until(wt(1, 6, 0.08)); self.ev("tick"); self.play(FadeIn(cv, scale=1.2), run_time=0.3, rate_func=EXPO)
+        self.until(wt(1, 10, 0.08)); self.play(FadeIn(xv, shift=UP * 0.08), run_time=0.3)
+        EY = Y(1110); evA = M(r"\frac{2-7+3}{(1+1)(1-2)}", 66).move_to([X(490), EY, 0])
+        self.play(Write(evA), run_time=0.6)
+        # ---------- A = 1 ----------
+        evA2 = M(r"=\frac{-2}{-2}=1", 62, TEAL).next_to(evA, RIGHT, buff=px(14))
+        g = VGroup(evA.copy(), evA2); fitw(g, 700); g.move_to([X(490), EY, 0]); evA2.move_to(g[1])
+        self.until(C[2] - 0.05)
+        self.play(evA.animate.move_to(g[0]), FadeIn(evA2, shift=LEFT * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(wt(2, 8, 0.05)); self.ev("stamp")
+        na = M(r"\frac{1}{x-1}", 66, TEAL).match_height(fa).move_to(fa)
+        self.play(Transform(fa, na), Indicate(evA2, color=TEAL, scale_factor=1.06), run_time=0.4)
+        # ---------- B = 2 ----------
+        xvb = tag("x = −1", 38, WHITE_, OR).move_to(xv)
+        evB = M(r"\frac{2+7+3}{(-1-1)(-1-2)}=\frac{12}{6}=2", 58).move_to(P(490, 1080))
+        fitw(evB, 700); evB.move_to([X(490), EY, 0])
+        self.until(C[3] - 0.05); self.ev("tick")
+        self.play(cv.animate.move_to(f2), FadeOut(evA), FadeOut(evA2), Transform(xv, xvb), run_time=0.35, rate_func=EXPO)
+        self.until(wt(3, 11, 0.08)); self.play(Write(evB), run_time=0.7)
+        self.until(wt(3, 16, 0.05)); self.ev("stamp")
+        nb = M(r"\frac{2}{x+1}", 66, TEAL).match_height(fb).move_to(fb)
+        self.play(Transform(fb, nb), run_time=0.35)
+        # ---------- your turn: C, 3-2-1 ----------
+        xvc = tag("x = 2", 38, WHITE_, OR).move_to(xv)
+        yt = H("Your turn", 60, INK).move_to([X(490), EY, 0])
+        self.until(C[4] - 0.05); self.ev("wipe")
+        self.play(cv.animate.move_to(f3), FadeOut(evB), Transform(xv, xvc), FadeIn(yt, scale=1.1), Indicate(fc, color=OR, scale_factor=1.15), run_time=0.4, rate_func=EXPO)
+        T0 = wt(4, 11, 0.0) + 0.35; T1 = C[5] - 0.1
+        ring_bg = Circle(radius=px(78), stroke_color="#ECE7DE", stroke_width=14).move_to(P(490, 1270))
+        ring = always_redraw(lambda: Arc(radius=px(78), start_angle=PI / 2, angle=-TAU * max(0.001, min(1, (self.renderer.time - T0) / (T1 - T0))), stroke_color=OR, stroke_width=14).move_arc_center_to(ring_bg.get_center()))
+        cnt = always_redraw(lambda: H(str(max(1, 3 - int((self.renderer.time - T0) / ((T1 - T0) / 3)))), 80, INK).move_to(ring_bg))
+        self.until(T0); self.ev("tick"); self.add(ring_bg, ring, cnt)
+        # ---------- reveal C = -1 (answer last) ----------
+        evC = M(r"\frac{8-14+3}{(2-1)(2+1)}=\frac{-3}{3}=-1", 58); fitw(evC, 700); evC.move_to([X(490), EY, 0])
+        self.until(T1); self.ev("stamp"); ring.clear_updaters(); cnt.clear_updaters()
+        self.play(FadeOut(VGroup(ring_bg, ring, cnt, yt)), Write(evC), run_time=0.6)
+        self.until(wt(5, 7, 0.05))
+        nc = M(r"\frac{-1}{x-2}", 66, RD).match_height(fc).move_to(fc)
+        self.play(Transform(fc, nc), FadeOut(cv), run_time=0.35)
+        box = SurroundingRectangle(rhs, buff=px(16), corner_radius=0.14, color=TEAL, stroke_width=6)
+        rule = VGroup(B("Rule", 26, OR, SEMIBOLD), H("Linear factor? Cover it,", 40, WHITE_), H("put its root in.", 40, WHITE_)).arrange(DOWN, buff=px(6))
+        rbox = RoundedRectangle(width=px(640), height=rule.height + px(50), corner_radius=0.22, fill_color=INK, fill_opacity=1, stroke_width=0).move_to(P(490, 1300))
+        rule.move_to(rbox)
+        zero = tag("0 equations", 34, WHITE_, TEAL).move_to(xv)
+        self.until(wt(5, 9, 0.05)); self.ev("stamp")
+        self.play(Create(box), FadeOut(ct), Transform(xv, zero), FadeIn(rbox, shift=UP * 0.1), FadeIn(rule, shift=UP * 0.1), run_time=0.45, rate_func=EXPO)
+        # ---------- tomorrow: #2 ----------
+        nxt = VGroup(tag("Method Killer #2 · tomorrow", 32, WHITE_, OR), B("Repeated factors", 40, INK, SEMIBOLD)).arrange(DOWN, buff=px(12))
+        self.until(C[6] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(evC, rbox, rule), shift=DOWN * 0.1), FadeIn(nxt.move_to(P(490, 1200)), shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
