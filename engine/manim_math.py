@@ -3061,7 +3061,7 @@ class MethodKiller2(ShortReel2):
         self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
         self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
         # ---------- frame 0 ----------
-        t1 = H("REPEATED FACTOR?", 80, INK); t2 = H("STILL NO EQUATIONS", 80, RD)
+        t1 = H("STOP SOLVING", 84, INK); t2 = H("3 EQUATIONS", 84, RD)
         title = VGroup(t1, t2).arrange(DOWN, buff=px(4)); fitw(title, 700); title.move_to(P(490, 445))
         num = M(r"5x+1", 74)
         f1, f2 = M(r"(x-1)^2", 74), M(r"(x+2)", 74)
@@ -3080,14 +3080,16 @@ class MethodKiller2(ShortReel2):
         school = VGroup(st, eqs, note)
         x1 = Line(school.get_corner(UL) + LEFT * px(20), school.get_corner(DR) + RIGHT * px(20), color=RD, stroke_width=10)
         x2 = Line(school.get_corner(DL) + LEFT * px(20), school.get_corner(UR) + RIGHT * px(20), color=RD, stroke_width=10)
-        self.until(wt(0, 8, 0.1)); self.ev("stamp")
+        self.until(wt(0, 3, 0.1)); self.ev("stamp")
         self.play(Create(x1), Create(x2), school.animate.set_opacity(0.35), run_time=0.45, rate_func=EXPO)
+        rf = tag("Even with a repeated factor", 30, WHITE_, OR).move_to(st)
+        self.until(wt(0, 6, 0.08)); self.play(FadeIn(rf, scale=1.1), run_time=0.3)
         # ---------- B: cover the whole square ----------
         SH = px(150); ct = tag("Cover-up trick", 34, WHITE_, TEAL).move_to([X(490), rhs.get_bottom()[1] + SH - px(48), 0])
         def cover(f):
             return RoundedRectangle(width=f.width + px(14), height=f.height + px(14), corner_radius=0.08, fill_color=OR, fill_opacity=0.92, stroke_width=0).move_to(f).set_z_index(5)
         self.until(C[1] - 0.05); self.ev("wipe")
-        self.play(FadeOut(VGroup(school, x1, x2), shift=DOWN * 0.2), FadeOut(title, shift=UP * 0.2), VGroup(frac, rhs).animate.shift(UP * SH), FadeIn(ct, scale=1.1), run_time=0.45, rate_func=EXPO)
+        self.play(FadeOut(VGroup(school, x1, x2, rf), shift=DOWN * 0.2), FadeOut(title, shift=UP * 0.2), VGroup(frac, rhs).animate.shift(UP * SH), FadeIn(ct, scale=1.1), run_time=0.45, rate_func=EXPO)
         cv = cover(f1); self.play(FadeIn(cv, scale=1.2), Indicate(fb, color=OR, scale_factor=1.1), run_time=0.35, rate_func=EXPO)
         xv = tag("x = 1", 38, WHITE_, OR).move_to(ct.get_center() + DOWN * px(78))
         EY = Y(1110)
@@ -3138,10 +3140,45 @@ class MethodKiller2(ShortReel2):
         nxt = VGroup(tag("Method Killer #3 · tomorrow", 32, WHITE_, OR), B("Integration by parts, no pain", 40, INK, SEMIBOLD)).arrange(DOWN, buff=px(12))
         fitw(nxt, 680)
         self.until(C[6] - 0.05); self.ev("wipe")
-        self.play(FadeOut(VGroup(ac, aq, rbox, rule), shift=DOWN * 0.1), FadeIn(nxt.move_to(P(490, 1130)), shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
-        fol = VGroup(tag("+ Follow", 38, WHITE_, BLUE), H("TutorDA", 46, INK)).arrange(RIGHT, buff=px(16)); fitw(fol, 640); fol.move_to(P(490, 1290))
-        self.until(C[6] + OFF[6][1] - 0.05); self.ev("tick")
-        self.play(FadeIn(fol, shift=UP * 0.1), run_time=0.35, rate_func=EXPO)
-        self.play(Indicate(fol[0], color=BLUE, scale_factor=1.12), run_time=0.5)
+        self.play(FadeOut(VGroup(ac, aq, rbox, rule), shift=DOWN * 0.1), FadeIn(nxt.move_to(P(490, 1080)), shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(C[6] + OFF[6][1] - 0.1); self.ev("tick")
+        follow_card(self, P, 1280)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+def follow_card(scene, P, y, handle="tutorda_", sub="One JEE method killer a day"):
+    """Animated 'Follow TutorDA' end beat (23 Nov, Aro: plain chip looked simple). Profile card slides up,
+    Follow button glows, a tap ripple, the button flips to 'Following ✓' with a shine sweep. No confetti."""
+    NAVY = "#0E142A"; BL = "#2563EB"
+    card = RoundedRectangle(width=px(660), height=px(150), corner_radius=0.3, fill_color=WHITE_, fill_opacity=1, stroke_color=RULE, stroke_width=3)
+    shadow = card.copy().set_fill(NAVY, 0.10).set_stroke(width=0).shift(DOWN * px(8))
+    av = Circle(radius=px(48), fill_color=NAVY, fill_opacity=1, stroke_color=OR, stroke_width=6)
+    mono = VGroup(H("T", 40, WHITE_), H("DA", 40, OR)).arrange(RIGHT, buff=px(2)).move_to(av)
+    name = VGroup(H("Tutor", 40, BL), H("DA", 40, OR)).arrange(RIGHT, buff=px(2))
+    hand = B("@" + handle, 26, GREY_P, SEMIBOLD); subl = B(sub, 24, GREY_P, SEMIBOLD)
+    txt = VGroup(name, hand, subl).arrange(DOWN, buff=px(4), aligned_edge=LEFT)
+    btn = RoundedRectangle(width=px(190), height=px(70), corner_radius=0.18, fill_color=BL, fill_opacity=1, stroke_width=0)
+    bt = H("Follow", 34, WHITE_).move_to(btn); button = VGroup(btn, bt)
+    row = VGroup(VGroup(av, mono), txt).arrange(RIGHT, buff=px(20))
+    grp = VGroup(row, button).arrange(RIGHT, buff=px(30)); fitw(grp, 620)
+    card.move_to(P(490, y)); shadow.move_to(card.get_center() + DOWN * px(8)); grp.move_to(card)
+    scene.play(FadeIn(shadow, shift=UP * 0.25), FadeIn(card, shift=UP * 0.25), FadeIn(grp, shift=UP * 0.25), run_time=0.45, rate_func=EXPO)
+    # glow pulse on the button (two soft rings)
+    for k in range(2):
+        ring = RoundedRectangle(width=btn.width, height=btn.height, corner_radius=0.18, stroke_color=BL, stroke_width=6, fill_opacity=0).move_to(btn)
+        scene.play(ring.animate.scale(1.35).set_stroke(opacity=0), button.animate(rate_func=there_and_back).scale(1.06), run_time=0.45)
+        scene.remove(ring)
+    # tap: ripple + flip to Following
+    rip = Circle(radius=px(10), fill_color=WHITE_, fill_opacity=0.55, stroke_width=0).move_to(btn.get_center() + RIGHT * px(30) + DOWN * px(8)).set_z_index(6)
+    btn2 = RoundedRectangle(width=btn.width, height=btn.height, corner_radius=0.18, fill_color="#E8EDF5", fill_opacity=1, stroke_width=0).move_to(btn)
+    bt2 = H("Following ✓", 28, NAVY).move_to(btn2); fitw(bt2, btn.width - px(20)); bt2.move_to(btn2)
+    scene.add(rip)
+    scene.play(rip.animate.scale(9).set_fill(opacity=0), button.animate.scale(0.94), run_time=0.3)
+    scene.remove(rip)
+    scene.play(Transform(btn, btn2), Transform(bt, bt2), button.animate.scale(1 / 0.94), run_time=0.3, rate_func=EXPO)
+    # shine sweep across the card
+    sh = Polygon([0, 0, 0], [px(40), 0, 0], [px(10), -px(150), 0], [-px(30), -px(150), 0], fill_color=WHITE_, fill_opacity=0.55, stroke_width=0)
+    sh.move_to(card.get_left() + RIGHT * px(20)).set_z_index(7)
+    scene.add(sh); scene.play(sh.animate.move_to(card.get_right() + LEFT * px(20)), run_time=0.5, rate_func=rate_functions.ease_in_out_sine); scene.remove(sh)
+    return VGroup(shadow, card, grp)

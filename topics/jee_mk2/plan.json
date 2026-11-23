@@ -1,13 +1,13 @@
 [
  [
   [
-   "Repeated factor?",
+   "Stop solving 3 equations.",
    0.97,
-   0.2
+   0.22
   ],
   [
-   "Every JEE student goes back to 3 equations.",
-   1.08,
+   "Even a repeated factor doesn't need them.",
+   1.05,
    0
   ]
  ],
