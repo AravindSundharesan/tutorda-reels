@@ -4,7 +4,7 @@ import sys, json, re, os, subprocess, tempfile, numpy as np, soundfile as sf
 from kokoro_onnx import Kokoro
 T = sys.argv[1]; V = sys.argv[2] if len(sys.argv) > 2 else "af_sarah"
 k = Kokoro("models/kokoro-v1.0.onnx", "models/voices-v1.0.bin"); P = lambda t: k.tokenizer.phonemize(t, "en-us")
-SPECIAL = {"TutorDA's": "tjˈuːtəɹ dˈɑːz", "TutorDA": "tjˈuːtəɹ dˈɑː", "JEE": "dʒˈeɪ ˈiː ˈiː", "A": "ˈeɪ", "B": "bˈiː", "C": "sˈiː"}
+SPECIAL = {"TutorDA's": "tjˈuːtəɹ dˈɑːz", "TutorDA": "tjˈuːtəɹ dˈɑː", "JEE": "dʒˌeɪ ˌiː ˈiː", "A": "ˈeɪ", "B": "bˈiː", "C": "sˈiː"}
 def ph(line):
     return " ".join(SPECIAL[p] if p in SPECIAL else P(p.strip()) for p in re.split(r"(TutorDA's|TutorDA|JEE|\b[ABC]\b)", line) if p.strip())
 def trim(a, sr):
