@@ -1,0 +1,12 @@
+Send this to the friend who still solves 3 equations when a factor repeats.
+Method Killer, part 2 of the JEE Main 2027 series: (5x + 1) / ((x − 1)²(x + 2)) = A/(x − 1) + B/(x − 1)² + C/(x + 2).
+
+The school way is comparing coefficients again: A + C = 0, A + B − 2C = 5 and −2A + 2B + C = 1, three equations to solve.
+
+Here's the shortcut. Cover the whole (x − 1)² and put x = 1: 6/3, so B = 2. Cover (x + 2) and put x = −2: −9/9, so C = −1. Cover-up can't reach A, but the top has no x² term, so A + C has to be 0. That makes A = 1.
+
+The partial fractions rule: with a repeated factor, cover the full power for its top coefficient, then match the x² terms for the one that's left.
+
+Part 3 tomorrow: integration by parts without the pain.
+
+#JEE #JEEMain2027 #JEEMaths #IITJEE #Integration

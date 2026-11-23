@@ -1,0 +1,81 @@
+[
+ [
+  [
+   "Repeated factor?",
+   0.97,
+   0.2
+  ],
+  [
+   "Every JEE student goes back to 3 equations.",
+   1.08,
+   0
+  ]
+ ],
+ [
+  [
+   "Cover the whole x minus 1 squared, put x equals 1.",
+   1.1,
+   0.15
+  ],
+  [
+   "6 over 3. B is 2.",
+   1.06,
+   0
+  ]
+ ],
+ [
+  [
+   "Cover x plus 2, put x equals minus 2.",
+   1.1,
+   0.15
+  ],
+  [
+   "Minus 9 over 9. C is minus 1.",
+   1.06,
+   0
+  ]
+ ],
+ [
+  [
+   "Now A, the one cover-up can't reach.",
+   1.08,
+   0.2
+  ],
+  [
+   "The top has no x squared, so A plus C has to be 0.",
+   1.08,
+   0
+  ]
+ ],
+ [
+  [
+   "So A is...?",
+   0.95,
+   1.7
+  ]
+ ],
+ [
+  [
+   "1.",
+   0.95,
+   0.25
+  ],
+  [
+   "One tiny step, no system of equations.",
+   1.02,
+   0
+  ]
+ ],
+ [
+  [
+   "Tomorrow: integration by parts without the pain.",
+   1.06,
+   0.25
+  ],
+  [
+   "Follow TutorDA so you don't miss it.",
+   1.02,
+   0
+  ]
+ ]
+]
