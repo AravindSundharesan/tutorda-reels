@@ -2994,10 +2994,11 @@ class MethodKiller1(ShortReel2):
         EY = Y(1110); evA = M(r"\frac{2-7+3}{(1+1)(1-2)}", 66).move_to([X(490), EY, 0])
         self.play(Write(evA), run_time=0.6)
         # ---------- A = 1 ----------
-        evA2 = M(r"=\frac{-2}{-2}=1", 62, TEAL).next_to(evA, RIGHT, buff=px(14))
-        g = VGroup(evA.copy(), evA2); fitw(g, 700); g.move_to([X(490), EY, 0]); evA2.move_to(g[1])
+        full = MathTex(r"\frac{2-7+3}{(1+1)(1-2)}", r"=\frac{-2}{-2}=1", font_size=66, color=INK); full[1].set_color(TEAL)
+        fitw(full, 700); full.move_to([X(490), EY, 0]); evA2 = full[1]
         self.until(C[2] - 0.05)
-        self.play(evA.animate.move_to(g[0]), FadeIn(evA2, shift=LEFT * 0.1), run_time=0.4, rate_func=EXPO)
+        self.play(ReplacementTransform(evA, full[0]), FadeIn(evA2, shift=LEFT * 0.1), run_time=0.45, rate_func=EXPO)
+        evA = full[0]
         self.until(wt(2, 8, 0.05)); self.ev("stamp")
         na = M(r"\frac{1}{x-1}", 66, TEAL).match_height(fa).move_to(fa)
         self.play(Transform(fa, na), Indicate(evA2, color=TEAL, scale_factor=1.06), run_time=0.4)
@@ -3038,6 +3039,11 @@ class MethodKiller1(ShortReel2):
         # ---------- tomorrow: #2 ----------
         nxt = VGroup(tag("Method Killer #2 · tomorrow", 32, WHITE_, OR), B("Repeated factors", 40, INK, SEMIBOLD)).arrange(DOWN, buff=px(12))
         self.until(C[6] - 0.05); self.ev("wipe")
-        self.play(FadeOut(VGroup(evC, rbox, rule), shift=DOWN * 0.1), FadeIn(nxt.move_to(P(490, 1200)), shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        self.play(FadeOut(VGroup(evC, rbox, rule), shift=DOWN * 0.1), FadeIn(nxt.move_to(P(490, 1130)), shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        OF = json.load(open(os.path.join(KIT, "topics/jee_mk1/vo/offsets.json")))[6][1]
+        fol = VGroup(tag("+ Follow", 38, WHITE_, BLUE), H("TutorDA", 46, INK)).arrange(RIGHT, buff=px(16)); fitw(fol, 640); fol.move_to(P(490, 1290))
+        self.until(C[6] + OF - 0.05); self.ev("tick")
+        self.play(FadeIn(fol, shift=UP * 0.1), run_time=0.35, rate_func=EXPO)
+        self.play(Indicate(fol[0], color=BLUE, scale_factor=1.12), run_time=0.5)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))

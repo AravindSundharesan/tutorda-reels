@@ -1,9 +1,37 @@
 [
-["A", "SA", "Stop comparing coefficients. | Every JEE student wastes | a minute on this."],
-["B", "SA", "Use the cover-up trick. | Want A? Cover x minus 1, | put x equals 1."],
-["C", "SA", "Top: minus 2. Bottom: minus 2. | A is 1."],
-["D", "SA", "Want B? Cover x plus 1, | put x equals minus 1. | 12 over 6. B is 2."],
-["E", "SA", "Now you try C. | Cover x minus 2, | put x equals 2."],
-["F", "SA", "Minus 3 over 3. C is minus 1. | No equations at all."],
-["G", "SA", "Tomorrow: what to do when a factor repeats."]
+ [
+  "A",
+  "SA",
+  "Stop comparing coefficients. | Every JEE student wastes | a minute on this."
+ ],
+ [
+  "B",
+  "SA",
+  "Use the cover-up trick. | Want A? Cover x minus 1, | put x equals 1."
+ ],
+ [
+  "C",
+  "SA",
+  "Top: minus 2. Bottom: minus 2. | A is 1."
+ ],
+ [
+  "D",
+  "SA",
+  "Want B? Cover x plus 1, | put x equals minus 1. | 12 over 6. B is 2."
+ ],
+ [
+  "E",
+  "SA",
+  "Now you try C. | Cover x minus 2, | put x equals 2."
+ ],
+ [
+  "F",
+  "SA",
+  "Minus 3 over 3. C is minus 1. | No equations at all."
+ ],
+ [
+  "G",
+  "SA",
+  "Tomorrow: what to do when a factor repeats. Follow TutorDA so you don't miss it."
+ ]
 ]
