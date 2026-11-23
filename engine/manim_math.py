@@ -3082,8 +3082,8 @@ class MethodKiller2(ShortReel2):
         x2 = Line(school.get_corner(DL) + LEFT * px(20), school.get_corner(UR) + RIGHT * px(20), color=RD, stroke_width=10)
         self.until(wt(0, 3, 0.1)); self.ev("stamp")
         self.play(Create(x1), Create(x2), school.animate.set_opacity(0.35), run_time=0.45, rate_func=EXPO)
-        rf = tag("Even with a repeated factor", 30, WHITE_, OR).move_to(st)
-        self.until(wt(0, 6, 0.08)); self.play(FadeIn(rf, scale=1.1), run_time=0.3)
+        rf = tag("Every JEE student does this", 30, WHITE_, OR).move_to(st)
+        self.until(wt(0, 4, 0.08)); self.play(FadeIn(rf, scale=1.1), run_time=0.3)
         # ---------- B: cover the whole square ----------
         SH = px(150); ct = tag("Cover-up trick", 34, WHITE_, TEAL).move_to([X(490), rhs.get_bottom()[1] + SH - px(48), 0])
         def cover(f):
