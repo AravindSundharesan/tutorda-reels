@@ -1,0 +1,11 @@
+Send this to the friend who still does integration by parts twice for x²eˣ.
+
+∫ x²eˣ dx is the classic integration by parts question in JEE Main maths. The school way is two rounds: u = x², then u = 2x, with signs to track each time.
+
+Here's the shortcut. Keep eˣ outside and write the polynomial. Subtract its derivative, add the next one, and stop when you hit 0: x² − 2x + 2. So ∫ x²eˣ dx = eˣ(x² − 2x + 2) + C.
+
+The rule: for any polynomial P times eˣ, the answer is eˣ(P − P′ + P″ − …) + C. Differentiate it and you land back on x²eˣ.
+
+Method Killer series, part 3, for JEE Main 2027. Part 4 tomorrow: definite integrals with King's rule.
+
+#JEE #JEEMain2027 #JEEMaths #Integration #IntegrationByParts

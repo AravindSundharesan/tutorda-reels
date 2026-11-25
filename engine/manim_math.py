@@ -3187,3 +3187,115 @@ def follow_card(scene, P, y, handle="tutorda_", sub="One JEE method killer a day
     sh.move_to(card.get_left() + RIGHT * px(20)).set_z_index(7)
     scene.add(sh); scene.play(sh.animate.move_to(card.get_right() + LEFT * px(20)), run_time=0.5, rate_func=rate_functions.ease_in_out_sine); scene.remove(sh)
     return VGroup(shadow, card, grp)
+
+
+class MethodKiller3(ShortReel2):
+    """Method Killer #3 (25 Nov): integration by parts twice vs the P - P' + P'' rule.
+    int x^2 e^x dx = e^x (x^2 - 2x + 2) + C. Frame 0 shows the school method AND the one-line template with blanks
+    (Aro's audit 25 Nov: the opening must show the surprise at once). Viewer fills the last blank in a 3-2-1; answer last."""
+    EVENTS = "mk3"; SERIES = "Method Killer #3"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        OFF = json.load(open(os.path.join(KIT, "topics/jee_mk3/vo/offsets.json")))
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        # ---------- frame 0: title, the integral, school method, one-line template ----------
+        t1 = H("STOP DOING", 80, INK); t2 = H("BY PARTS TWICE", 80, RD)
+        title = VGroup(t1, t2).arrange(DOWN, buff=px(4)); fitw(title, 700); title.move_to(P(490, 430))
+        integ = M(r"\int x^2 e^x\,dx", 84); integ.next_to(title, DOWN, buff=px(30)).set_x(X(490))
+        st = tag("School method", 28, WHITE_, GREY_P).next_to(integ, DOWN, buff=px(28)).set_x(X(490))
+        eqs = VGroup(M(r"u=x^2,\ \ dv=e^x\,dx", 46), M(r"=x^2e^x-\int 2x\,e^x\,dx", 46), M(r"u=2x,\ \ dv=e^x\,dx\ \ \text{again}", 46))
+        eqs.arrange(DOWN, buff=px(14)); fitw(eqs, 640); eqs.next_to(st, DOWN, buff=px(18)).set_x(X(490))
+        note = B("2 rounds of parts", 30, GREY_P, SEMIBOLD).next_to(eqs, DOWN, buff=px(14))
+        line = MathTex(r"e^x", r"\Big(", r"x^2", r"-", r"2x", r"+", r"2", r"\Big)", r"+C", font_size=76, color=INK)
+        fitw(line, 600)
+        card = RoundedRectangle(width=px(700), height=line.height + px(130), corner_radius=0.28, fill_color=WHITE_, fill_opacity=1, stroke_color=TEAL, stroke_width=4)
+        ctag = tag("TutorDA way · one line", 30, WHITE_, TEAL)
+        card.next_to(note, DOWN, buff=px(40)).set_x(X(490))
+        ctag.move_to(card.get_top()); line.move_to(card.get_center() + DOWN * px(14))
+        def blank(m):
+            r = RoundedRectangle(width=max(m.width + px(16), px(46)), height=line[2].height + px(22), corner_radius=0.08,
+                                 fill_color="#FFF1E0", fill_opacity=1, stroke_width=0).move_to(m).set_y(line[2].get_y() - px(6))
+            return VGroup(r, DashedVMobject(r.copy().set_fill(opacity=0).set_stroke(OR, 4), num_dashes=18))
+        for k in (4, 6): line[k].set_opacity(0)
+        b1, b2 = blank(line[4]), blank(line[6])
+        self.add(title, integ, st, eqs, note, card, ctag, line, b1, b2)      # whole contrast visible on frame 0
+        self.play(Indicate(VGroup(b1, b2), color=OR, scale_factor=1.12), run_time=0.8)
+        school = VGroup(st, eqs, note)
+        x1 = Line(school.get_corner(UL) + LEFT * px(20), school.get_corner(DR) + RIGHT * px(20), color=RD, stroke_width=10)
+        x2 = Line(school.get_corner(DL) + LEFT * px(20), school.get_corner(UR) + RIGHT * px(20), color=RD, stroke_width=10)
+        self.until(wt(0, 5, 0.1)); self.ev("stamp")
+        self.play(Create(x1), Create(x2), school.animate.set_opacity(0.35), run_time=0.45, rate_func=EXPO)
+        rf = tag("Every JEE student does this", 30, WHITE_, OR).move_to(st)
+        self.until(wt(0, 6, 0.08)); self.play(FadeIn(rf, scale=1.1), run_time=0.3)
+        # ---------- clip 1: keep e^x outside, P then -P' ----------
+        top = VGroup(card, ctag, line, b1, b2)
+        self.until(C[1] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(school, x1, x2, rf), shift=DOWN * 0.2), FadeOut(title, shift=UP * 0.2),
+                  integ.animate.scale(0.8).move_to(P(490, 455)), top.animate.move_to(P(490, 690)), run_time=0.45, rate_func=EXPO)
+        out = tag("stays outside", 28, WHITE_, INK).next_to(card, DOWN, buff=px(18)).align_to(card, LEFT).shift(RIGHT * px(20))
+        self.until(wt(1, 1, 0.08)); self.ev("tick")
+        self.play(Circumscribe(line[0], color=OR, buff=px(8)), FadeIn(out, shift=UP * 0.08), run_time=0.6)
+        # derivative chain x^2 -> 2x -> 2 -> 0
+        CY = 930
+        terms = [M(r"x^2", 72), M(r"2x", 72), M(r"2", 72), M(r"0", 72, RD)]
+        arrows = [Arrow(LEFT, RIGHT, color=GREY_P, stroke_width=6, buff=0, max_tip_length_to_length_ratio=0.3).set_length(px(110)) for _ in range(3)]
+        chain = VGroup(terms[0], arrows[0], terms[1], arrows[1], terms[2], arrows[2], terms[3]).arrange(RIGHT, buff=px(22))
+        fitw(chain, 620); chain.move_to(P(475, CY))
+        dl = [B("d/dx", 24, GREY_P, SEMIBOLD).next_to(a, UP, buff=px(6)) for a in arrows]
+        sg = [M(r"+", 54, TEAL), M(r"-", 54, RD), M(r"+", 54, TEAL)]
+        for s_, t_ in zip(sg, terms): s_.next_to(t_, DOWN, buff=px(26))
+        self.until(wt(1, 6, 0.08)); self.ev("tick")
+        self.play(TransformFromCopy(line[2], terms[0]), FadeIn(sg[0], shift=UP * 0.08), FadeOut(out), run_time=0.45, rate_func=EXPO)
+        self.until(wt(1, 10, 0.08))
+        self.play(GrowArrow(arrows[0]), FadeIn(dl[0]), run_time=0.35)
+        self.until(wt(1, 13, 0.08)); self.ev("stamp")
+        self.play(FadeIn(terms[1], shift=LEFT * 0.1), FadeIn(sg[1], shift=UP * 0.08), run_time=0.3)
+        f1 = line[4].copy().set_opacity(1).set_color(RD)
+        self.play(FadeOut(b1, scale=0.9), TransformFromCopy(terms[1], f1), line[3].animate.set_color(RD), run_time=0.45, rate_func=EXPO)
+        # ---------- clip 2: + next derivative, your turn ----------
+        q = H("?", 72, OR).move_to(terms[2])
+        self.until(wt(2, 1, 0.08)); self.ev("tick")
+        self.play(GrowArrow(arrows[1]), FadeIn(dl[1]), FadeIn(q, scale=1.2), FadeIn(sg[2], shift=UP * 0.08),
+                  Indicate(b2, color=OR, scale_factor=1.15), line[5].animate.set_color(TEAL), run_time=0.45)
+        T0 = wt(2, 5, 0.0) + 0.5; T1 = C[3] - 0.1
+        ring_bg = Circle(radius=px(70), stroke_color="#ECE7DE", stroke_width=14).move_to(P(490, 1190))
+        ring = always_redraw(lambda: Arc(radius=px(70), start_angle=PI / 2, angle=-TAU * max(0.001, min(1, (self.renderer.time - T0) / (T1 - T0))), stroke_color=OR, stroke_width=14).move_arc_center_to(ring_bg.get_center()))
+        cnt = always_redraw(lambda: H(str(max(1, 3 - int((self.renderer.time - T0) / ((T1 - T0) / 3)))), 72, INK).move_to(ring_bg))
+        yt = B("Your turn", 34, INK, SEMIBOLD).next_to(ring_bg, UP, buff=px(18))
+        self.until(T0); self.add(ring_bg, ring, cnt); self.play(FadeIn(yt), run_time=0.25)
+        # ---------- clip 3: reveal 2 (answer last), stop at 0 ----------
+        self.until(T1); self.ev("stamp"); ring.clear_updaters(); cnt.clear_updaters()
+        f2 = line[6].copy().set_opacity(1).set_color(TEAL)
+        self.play(FadeOut(VGroup(ring_bg, ring, cnt, yt)), ReplacementTransform(q, terms[2]), FadeOut(b2, scale=0.9),
+                  TransformFromCopy(terms[2], f2), run_time=0.45, rate_func=EXPO)
+        stop = tag("stop", 30, WHITE_, RD).next_to(terms[3], DOWN, buff=px(26))
+        self.until(wt(3, 2, 0.08)); self.ev("tick")
+        self.play(GrowArrow(arrows[2]), FadeIn(dl[2]), FadeIn(terms[3], shift=LEFT * 0.1), run_time=0.4)
+        self.until(wt(3, 7, 0.08)); self.play(FadeIn(stop, scale=1.15), run_time=0.3)
+        self.until(wt(3, 8, 0.05)); self.ev("stamp")
+        box = SurroundingRectangle(line, buff=px(14), corner_radius=0.14, color=TEAL, stroke_width=6)
+        zero = tag("0 rounds of parts", 30, WHITE_, TEAL).move_to(ctag)
+        self.play(Create(box), Transform(ctag, zero), line[0:4].animate.set_color(INK), line[5:].animate.set_color(INK),
+                  f1.animate.set_color(INK), f2.animate.set_color(INK), run_time=0.45, rate_func=EXPO)
+        r1 = VGroup(H("Polynomial times", 40, WHITE_), M(r"e^x", 54, WHITE_)).arrange(RIGHT, buff=px(12), aligned_edge=DOWN)
+        r2 = M(r"P-P'+P''-\cdots", 54, WHITE_)
+        r3 = B("stop when you hit 0", 34, "#CBD5E1", SEMIBOLD)
+        rule = VGroup(B("RULE", 30, OR, SEMIBOLD), r1, r2, r3).arrange(DOWN, buff=px(10))
+        if rule.width > px(600): fitw(rule, 600)
+        rbox = RoundedRectangle(width=px(660), height=rule.height + px(50), corner_radius=0.22, fill_color=INK, fill_opacity=1, stroke_width=0).move_to(P(490, 1260))
+        rule.move_to(rbox)
+        self.until(wt(3, 13, 0.05)); self.ev("tick")
+        self.play(FadeIn(rbox, shift=UP * 0.1), FadeIn(rule, shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        # ---------- clip 4: tomorrow + follow ----------
+        nxt = VGroup(tag("Method Killer #4 · tomorrow", 32, WHITE_, OR), B("Definite integrals, King's rule", 40, INK, SEMIBOLD)).arrange(DOWN, buff=px(12))
+        fitw(nxt, 680)
+        self.until(C[4] - 0.05); self.ev("wipe")
+        chainall = VGroup(chain, *dl, *sg, stop)
+        self.play(FadeOut(VGroup(chainall, rbox, rule), shift=DOWN * 0.1), FadeIn(nxt.move_to(P(490, 960)), shift=UP * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(C[4] + OFF[4][1] - 0.1); self.ev("tick")
+        follow_card(self, P, 1170)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))

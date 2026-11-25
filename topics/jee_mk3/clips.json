@@ -1,0 +1,27 @@
+[
+ [
+  "A",
+  "SA",
+  "Stop doing integration by | parts twice. Every JEE student | does it for x squared, e to the x."
+ ],
+ [
+  "B",
+  "SA",
+  "Keep e to the x outside. | Write x squared, then minus | its derivative, two x."
+ ],
+ [
+  "C",
+  "SA",
+  "Then plus the next derivative. | That's...?"
+ ],
+ [
+  "D",
+  "SA",
+  "Two. The next one is zero, | so stop. e to the x, times | x squared minus two x plus two."
+ ],
+ [
+  "E",
+  "SA",
+  "Tomorrow: definite integrals with King's rule. Follow TutorDA so you don't miss it."
+ ]
+]

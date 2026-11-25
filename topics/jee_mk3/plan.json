@@ -1,0 +1,7 @@
+[
+ [["Stop doing integration by parts twice.", 0.97, 0.22], ["Every JEE student does it for x squared, e to the x.", 1.05, 0]],
+ [["Keep e to the x outside. Write x squared,", 1.06, 0.12], ["then minus its derivative, two x.", 1.06, 0]],
+ [["Then plus the next derivative. That's...?", 0.97, 1.7]],
+ [["Two.", 0.95, 0.25], ["The next one is zero, so stop.", 1.04, 0.15], ["e to the x, times x squared minus two x plus two.", 1.04, 0]],
+ [["Tomorrow: definite integrals with King's rule.", 1.06, 0.25], ["Follow TutorDA so you don't miss it.", 1.02, 0]]
+]
