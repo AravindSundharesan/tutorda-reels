@@ -3299,3 +3299,86 @@ class MethodKiller3(ShortReel2):
         follow_card(self, P, 1170)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class MethodKiller4(ShortReel2):
+    """Method Killer #4 (25 Nov): King's rule. I = int_0^{pi/2} sqrt(sin x)/(sqrt(sin x)+sqrt(cos x)) dx = pi/4.
+    Retention fixes from the MK1/MK2 watch graphs (25 Nov): the cross lands on 'Stop' (~0.3 s) so the first second moves;
+    one closing line and the follow card right after the answer (~22 s total). Viewer guesses I in a 3-2-1; answer last."""
+    EVENTS = "mk4"; SERIES = "Method Killer #4"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        OFF = json.load(open(os.path.join(KIT, "topics/jee_mk4/vo/offsets.json")))
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        # ---------- frame 0: title, the integral, the school attempt, the one-swap card ----------
+        title = VGroup(H("STOP", 84, INK), H("SUBSTITUTING", 84, RD)).arrange(RIGHT, buff=px(22)); fitw(title, 700); title.move_to(P(490, 385))
+        I1 = MathTex(r"I=\int_0^{\pi/2}", r"\frac{\sqrt{\sin x}}{\sqrt{\sin x}+\sqrt{\cos x}}", r"\,dx", font_size=64, color=INK)
+        fitw(I1, 700); I1.next_to(title, DOWN, buff=px(34)).set_x(X(490))
+        st = tag("School method", 28, WHITE_, GREY_P).next_to(I1, DOWN, buff=px(26)).set_x(X(490))
+        eqs = VGroup(M(r"t=\tan x:\ \ \int_0^{\infty}\frac{\sqrt t\,dt}{(\sqrt t+1)(1+t^2)}", 50))
+        fitw(eqs, 640); eqs.next_to(st, DOWN, buff=px(16)).set_x(X(490))
+        note = B("then partial fractions with √t…", 30, GREY_P, SEMIBOLD).next_to(eqs, DOWN, buff=px(12))
+        school = VGroup(st, eqs, note)
+        ans = MathTex(r"I=", r"\frac{\pi}{4}", font_size=76, color=INK); ans[1].set_opacity(0)
+        card = RoundedRectangle(width=px(520), height=ans.height + px(150), corner_radius=0.28, fill_color=WHITE_, fill_opacity=1, stroke_color=TEAL, stroke_width=4)
+        ctag = tag("TutorDA way · one swap", 30, WHITE_, TEAL)
+        card.next_to(note, DOWN, buff=px(44)).set_x(X(490)); ctag.move_to(card.get_top()); ans.move_to(card.get_center() + DOWN * px(8))
+        bl = RoundedRectangle(width=px(70), height=px(96), corner_radius=0.08, fill_color="#FFF1E0", fill_opacity=1, stroke_width=0).move_to(ans[1])
+        blank = VGroup(bl, DashedVMobject(bl.copy().set_fill(opacity=0).set_stroke(OR, 4), num_dashes=18))
+        cardg = VGroup(card, ctag, ans, blank)
+        self.add(title, I1, school, cardg)
+        x1 = Line(school.get_corner(UL) + LEFT * px(20), school.get_corner(DR) + RIGHT * px(20), color=RD, stroke_width=10)
+        x2 = Line(school.get_corner(DL) + LEFT * px(20), school.get_corner(UR) + RIGHT * px(20), color=RD, stroke_width=10)
+        self.until(wt(0, 0, -0.12)); self.ev("stamp")                          # lands on "Stop": motion inside the first second
+        self.play(Create(x1), Create(x2), school.animate.set_opacity(0.35), run_time=0.4, rate_func=EXPO)
+        self.play(Indicate(blank, color=OR, scale_factor=1.12), run_time=0.6)
+        rf = tag("Every JEE student tries this", 30, WHITE_, OR).move_to(st)
+        self.until(wt(0, 2, 0.08)); self.play(FadeIn(rf, scale=1.1), run_time=0.3)
+        # ---------- clip 1: King's rule swap ----------
+        # target stack (measured, no overlaps): I1, chip, I2, sum line, card, ring / follow card
+        I1t = I1.copy().move_to(P(490, 425))
+        chip = VGroup(tag("King's rule", 30, WHITE_, TEAL), M(r"x\ \to\ \tfrac{\pi}{2}-x", 50)).arrange(RIGHT, buff=px(18))
+        chip.next_to(I1t, DOWN, buff=px(16)).set_x(X(490))
+        I2 = MathTex(r"I=\int_0^{\pi/2}", r"\frac{\sqrt{\cos x}}{\sqrt{\cos x}+\sqrt{\sin x}}", r"\,dx", font_size=64, color=INK)
+        I2.match_height(I1).next_to(chip, DOWN, buff=px(16)).set_x(X(490))
+        sm = MathTex(r"2I=\int_0^{\pi/2}", r"\frac{\sqrt{\sin x}+\sqrt{\cos x}}{\sqrt{\sin x}+\sqrt{\cos x}}", r"\,dx", font_size=58, color=INK)
+        fitw(sm, 700); sm.next_to(I2, DOWN, buff=px(26)).set_x(X(490))
+        s2 = MathTex(r"2I=\int_0^{\pi/2}1\,dx=\frac{\pi}{2}", font_size=56, color=INK); s2.move_to(sm)
+        cy = min(sm.get_bottom()[1], s2.get_bottom()[1]) - px(54) - card.height / 2
+        self.until(C[1] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(school, x1, x2, rf), shift=DOWN * 0.2), FadeOut(title, shift=UP * 0.2),
+                  I1.animate.move_to(I1t), cardg.animate.move_to([X(490), cy, 0]), run_time=0.45, rate_func=EXPO)
+        self.until(wt(1, 0, 0.08)); self.ev("tick"); self.play(FadeIn(chip, shift=DOWN * 0.08), run_time=0.35)
+        self.until(wt(1, 7, 0.1))
+        self.play(TransformFromCopy(I1, I2), run_time=0.55, rate_func=EXPO)
+        self.until(wt(1, 8, 0.05)); self.ev("tick")
+        self.play(Indicate(I2[1], color=TEAL, scale_factor=1.08), run_time=0.7)
+        # ---------- clip 2: add both ----------
+        self.until(wt(2, 1, 0.08)); self.ev("tick")
+        self.play(TransformFromCopy(VGroup(I1, I2), sm), run_time=0.55, rate_func=EXPO)
+        self.until(wt(2, 3, 0.05))
+        self.play(Circumscribe(sm[1], color=OR, buff=px(6)), run_time=0.7)
+        self.until(wt(2, 7, 0.08)); self.ev("stamp")
+        self.play(ReplacementTransform(sm, s2), run_time=0.5, rate_func=EXPO)
+        # ---------- clip 3: your turn ----------
+        self.until(C[3] - 0.05); self.ev("tick")
+        self.play(Indicate(blank, color=OR, scale_factor=1.15), run_time=0.4)
+        T0 = C[3] + OFF[3][0] + 0.85; T1 = C[4] - 0.1
+        ring_bg = Circle(radius=px(66), stroke_color="#ECE7DE", stroke_width=14).next_to(card, DOWN, buff=px(30))
+        ring = always_redraw(lambda: Arc(radius=px(66), start_angle=PI / 2, angle=-TAU * max(0.001, min(1, (self.renderer.time - T0) / (T1 - T0))), stroke_color=OR, stroke_width=14).move_arc_center_to(ring_bg.get_center()))
+        cnt = always_redraw(lambda: H(str(max(1, 3 - int((self.renderer.time - T0) / ((T1 - T0) / 3)))), 70, INK).move_to(ring_bg))
+        self.until(T0); self.add(ring_bg, ring, cnt)
+        # ---------- clip 4: reveal pi/4 (answer last), follow straight after ----------
+        self.until(T1); self.ev("stamp"); ring.clear_updaters(); cnt.clear_updaters()
+        a2 = ans[1].copy().set_opacity(1).set_color(TEAL)
+        box = SurroundingRectangle(ans, buff=px(18), corner_radius=0.14, color=TEAL, stroke_width=6)
+        zero = tag("0 substitutions", 30, WHITE_, TEAL).move_to(ctag)
+        self.play(FadeOut(VGroup(ring_bg, ring, cnt)), FadeOut(blank, scale=0.9), FadeIn(a2, scale=1.25), Create(box), Transform(ctag, zero), run_time=0.45, rate_func=EXPO)
+        FY = next(y for y in range(900, 1500, 5) if Y(y) + px(85) < card.get_bottom()[1] - px(40))
+        self.until(C[4] + OFF[4][1] - 0.15); self.ev("tick")
+        follow_card(self, P, FY)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))

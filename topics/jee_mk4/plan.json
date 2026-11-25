@@ -1,0 +1,7 @@
+[
+ [["Stop substituting.", 0.97, 0.22], ["Every JEE student tries it on this integral.", 1.05, 0]],
+ [["Swap x for pi by 2 minus x.", 1.04, 0.15], ["Sine becomes cos, and cos becomes sine.", 1.06, 0]],
+ [["Now add both.", 1.04, 0.12], ["Top equals bottom, so two I is just pi by 2.", 1.06, 0]],
+ [["So I is...?", 0.95, 1.7]],
+ [["Pi by 4.", 0.95, 0.25], ["Follow TutorDA for tomorrow's method killer.", 1.04, 0]]
+]

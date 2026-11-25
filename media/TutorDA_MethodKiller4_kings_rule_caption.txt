@@ -1,0 +1,11 @@
+Send this to the friend who still tries t = tan x on this integral.
+
+∫₀^(π/2) √sin x / (√sin x + √cos x) dx gets ugly with substitution. t = tan x turns it into √t / ((√t + 1)(1 + t²)), and then you're doing partial fractions with √t.
+
+Here's the shortcut, King's rule for definite integrals. With limits 0 to a, swapping x for a − x doesn't change the value. Swap x for π/2 − x: sine becomes cos and cos becomes sine. Add the two versions and the top equals the bottom, so 2I = π/2 and I = π/4.
+
+The rule: ∫₀ᵃ f(x) dx = ∫₀ᵃ f(a − x) dx. When the swap gives you the integrand's partner, add them.
+
+Method Killer series, part 4, for JEE Main 2027. Part 5 is up tomorrow.
+
+#JEE #JEEMain2027 #JEEMaths #DefiniteIntegrals #Integration
