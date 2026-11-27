@@ -1,0 +1,11 @@
+Send this to the friend who still expands sin⁶x with cos 2x three times.
+
+∫₀^(π/2) sin⁶x dx the school way: write sin⁶x as ((1 − cos 2x)/2)³, expand it, then use the cos 2x formula again on cos²2x and cos³2x.
+
+Here's the shortcut for these definite integrals, Wallis' rule. On top, count down from 5 in steps of 2: 5 · 3 · 1. At the bottom, count down from 6: 6 · 4 · 2. The power is even, so multiply by π/2. That gives 15/48 × π/2 = 5π/32.
+
+The rule: ∫₀^(π/2) sinⁿx dx = [(n − 1)(n − 3)…] / [n(n − 2)…], times π/2 when n is even. cosⁿx gives the same value.
+
+Method Killer series, part 5, for JEE Main 2027. One method killer a day on @tutorda_.
+
+#JEE #JEEMain2027 #JEEMaths #DefiniteIntegrals #Integration

@@ -1,0 +1,52 @@
+[
+ [
+  [
+   "Stop expanding sine to the power 6.",
+   0.97,
+   0.22
+  ],
+  [
+   "Every JEE student uses cos two x three times here.",
+   1.06,
+   0
+  ]
+ ],
+ [
+  [
+   "Wallis rule. On top, the odd numbers below 6: five, three, one.",
+   1.04,
+   0
+  ]
+ ],
+ [
+  [
+   "At the bottom, the even ones: six, four, two.",
+   1.04,
+   0.12
+  ],
+  [
+   "Even power, so times pi by 2.",
+   1.04,
+   0
+  ]
+ ],
+ [
+  [
+   "So the answer is...?",
+   0.95,
+   1.7
+  ]
+ ],
+ [
+  [
+   "5 pi by 32.",
+   0.95,
+   0.25
+  ],
+  [
+   "Follow TutorDA for tomorrow's method killer.",
+   1.04,
+   0
+  ]
+ ]
+]

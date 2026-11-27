@@ -3382,3 +3382,93 @@ class MethodKiller4(ShortReel2):
         follow_card(self, P, FY)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class MethodKiller5(ShortReel2):
+    """Method Killer #5 (27 Nov): Wallis. int_0^{pi/2} sin^6 x dx = (5.3.1)/(6.4.2) * pi/2 = 5pi/32.
+    Same retention fixes as MK4: cross lands on 'Stop' (~0.3 s), follow card right after the answer, ~24 s."""
+    EVENTS = "mk5"; SERIES = "Method Killer #5"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        OFF = json.load(open(os.path.join(KIT, "topics/jee_mk5/vo/offsets.json")))
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        # ---------- frame 0 ----------
+        title = VGroup(H("STOP", 84, INK), H("EXPANDING", 84, RD)).arrange(RIGHT, buff=px(22)); fitw(title, 700); title.move_to(P(490, 385))
+        I1 = M(r"\int_0^{\pi/2}\sin^6 x\,dx", 84); I1.next_to(title, DOWN, buff=px(34)).set_x(X(490))
+        st = tag("School method", 28, WHITE_, GREY_P).next_to(I1, DOWN, buff=px(26)).set_x(X(490))
+        eqs = VGroup(M(r"\sin^6x=\left(\frac{1-\cos 2x}{2}\right)^3", 48),
+                     M(r"=\tfrac18\left(1-3\cos2x+3\cos^2 2x-\cos^3 2x\right)", 44)).arrange(DOWN, buff=px(12))
+        fitw(eqs, 660); eqs.next_to(st, DOWN, buff=px(16)).set_x(X(490))
+        note = B("then cos 2x twice more…", 30, GREY_P, SEMIBOLD).next_to(eqs, DOWN, buff=px(12))
+        school = VGroup(st, eqs, note)
+        ans = MathTex(r"=", r"\frac{5\pi}{32}", font_size=70, color=INK); ans[1].set_opacity(0)
+        card = RoundedRectangle(width=px(520), height=ans.height + px(110), corner_radius=0.28, fill_color=WHITE_, fill_opacity=1, stroke_color=TEAL, stroke_width=4)
+        ctag = tag("TutorDA way · one line", 30, WHITE_, TEAL)
+        card.next_to(note, DOWN, buff=px(44)).set_x(X(490)); ctag.move_to(card.get_top()); ans.move_to(card.get_center() + DOWN * px(8))
+        bl = RoundedRectangle(width=max(ans[1].width + px(20), px(120)), height=ans[1].height + px(16), corner_radius=0.08, fill_color="#FFF1E0", fill_opacity=1, stroke_width=0).move_to(ans[1])
+        blank = VGroup(bl, DashedVMobject(bl.copy().set_fill(opacity=0).set_stroke(OR, 4), num_dashes=22))
+        cardg = VGroup(card, ctag, ans, blank)
+        self.add(title, I1, school, cardg)
+        x1 = Line(school.get_corner(UL) + LEFT * px(20), school.get_corner(DR) + RIGHT * px(20), color=RD, stroke_width=10)
+        x2 = Line(school.get_corner(DL) + LEFT * px(20), school.get_corner(UR) + RIGHT * px(20), color=RD, stroke_width=10)
+        self.until(wt(0, 0, -0.12)); self.ev("stamp")
+        self.play(Create(x1), Create(x2), school.animate.set_opacity(0.35), run_time=0.4, rate_func=EXPO)
+        self.play(Indicate(blank, color=OR, scale_factor=1.1), run_time=0.6)
+        rf = tag("Every JEE student does this", 30, WHITE_, OR).move_to(st)
+        self.until(wt(0, 7, 0.08)); self.play(FadeIn(rf, scale=1.1), run_time=0.3)
+        # ---------- target layout after the wipe (measured) ----------
+        I1t = I1.copy().scale(0.72).move_to(P(490, 438))
+        chip = tag("Wallis rule", 32, WHITE_, TEAL).next_to(I1t, DOWN, buff=px(16)).set_x(X(490))
+        top = MathTex(r"5", r"\cdot", r"3", r"\cdot", r"1", font_size=82, color=INK)
+        bot = MathTex(r"6", r"\cdot", r"4", r"\cdot", r"2", font_size=82, color=INK)
+        bar = Line(LEFT, RIGHT, color=INK, stroke_width=5).set_width(max(top.width, bot.width) + px(30))
+        frac = VGroup(top, bar, bot).arrange(DOWN, buff=px(16))
+        times = MathTex(r"\times\ \frac{\pi}{2}", font_size=82, color=INK)
+        wal = VGroup(frac, times).arrange(RIGHT, buff=px(26))
+        todd = tag("odd numbers below 6", 28, WHITE_, TEAL); tev = tag("even numbers", 28, WHITE_, INK)
+        todd.next_to(chip, DOWN, buff=px(20)).set_x(X(490))
+        wal.next_to(todd, DOWN, buff=px(18)).set_x(X(490))
+        todd.set_x(frac.get_x()); tev.next_to(wal, DOWN, buff=px(18)).set_x(frac.get_x())
+        tpow = tag("even power", 28, WHITE_, OR).set_x(times.get_x()).set_y(tev.get_y())
+        cy = tev.get_bottom()[1] - px(46) - card.height / 2
+        print("MK5 layout: card bottom px", (8 - (cy - card.height / 2)) * 120)
+        # ---------- clip 1: wipe, top row ----------
+        self.until(C[1] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(school, x1, x2, rf), shift=DOWN * 0.2), FadeOut(title, shift=UP * 0.2),
+                  I1.animate.become(I1t), cardg.animate.move_to([X(490), cy, 0]), FadeIn(chip, shift=DOWN * 0.08), run_time=0.45, rate_func=EXPO)
+        self.until(wt(1, 5, 0.05)); self.play(FadeIn(todd, shift=DOWN * 0.06), Create(bar), run_time=0.35)
+        for k, (i, w_) in enumerate([(0, 9), (2, 10), (4, 11)]):
+            self.until(wt(1, w_, 0.05)); self.ev("tick")
+            grp = [FadeIn(top[i], shift=DOWN * 0.12, scale=1.2)] + ([FadeIn(top[i - 1])] if i else [])
+            self.play(*grp, run_time=0.25)
+        # ---------- clip 2: bottom row, x pi/2 ----------
+        self.until(wt(2, 4, 0.05)); self.play(FadeIn(tev, shift=UP * 0.06), run_time=0.3)
+        for i, w_ in [(0, 6), (2, 7), (4, 8)]:
+            self.until(wt(2, w_, 0.05)); self.ev("tick")
+            grp = [FadeIn(bot[i], shift=UP * 0.12, scale=1.2)] + ([FadeIn(bot[i - 1])] if i else [])
+            self.play(*grp, run_time=0.25)
+        self.until(wt(2, 9, 0.05)); self.play(FadeIn(tpow, scale=1.1), run_time=0.3)
+        self.until(wt(2, 12, 0.05)); self.ev("stamp")
+        self.play(FadeIn(times, shift=LEFT * 0.12), run_time=0.4, rate_func=EXPO)
+        # ---------- clip 3: your turn ----------
+        self.until(C[3] - 0.05); self.ev("tick")
+        self.play(Indicate(blank, color=OR, scale_factor=1.12), run_time=0.4)
+        T0 = C[3] + OFF[3][0] + 1.0; T1 = C[4] - 0.1
+        ring_bg = Circle(radius=px(66), stroke_color="#ECE7DE", stroke_width=14).next_to(card, DOWN, buff=px(30))
+        ring = always_redraw(lambda: Arc(radius=px(66), start_angle=PI / 2, angle=-TAU * max(0.001, min(1, (self.renderer.time - T0) / (T1 - T0))), stroke_color=OR, stroke_width=14).move_arc_center_to(ring_bg.get_center()))
+        cnt = always_redraw(lambda: H(str(max(1, 3 - int((self.renderer.time - T0) / ((T1 - T0) / 3)))), 70, INK).move_to(ring_bg))
+        self.until(T0); self.add(ring_bg, ring, cnt)
+        # ---------- clip 4: reveal, follow ----------
+        self.until(T1); self.ev("stamp"); ring.clear_updaters(); cnt.clear_updaters()
+        a2 = ans[1].copy().set_opacity(1).set_color(TEAL)
+        box = SurroundingRectangle(ans, buff=px(18), corner_radius=0.14, color=TEAL, stroke_width=6)
+        zero = tag("no expanding", 30, WHITE_, TEAL).move_to(ctag)
+        self.play(FadeOut(VGroup(ring_bg, ring, cnt)), FadeOut(blank, scale=0.9), FadeIn(a2, scale=1.25), Create(box), Transform(ctag, zero), run_time=0.45, rate_func=EXPO)
+        FY = next(y for y in range(900, 1530, 5) if Y(y) + px(85) < card.get_bottom()[1] - px(40))
+        self.until(C[4] + OFF[4][1] - 0.15); self.ev("tick")
+        follow_card(self, P, FY)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
