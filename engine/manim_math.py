@@ -3680,3 +3680,126 @@ class MethodKiller6PYQ(MethodKiller7):
     """The JEE Main 2026 PYQ reel posted as Method Killer #6 (Aro, 28 Nov): same audio and timing as MK7,
     header says #6, and the rule line shows its reason, e^x(f + f') = (e^x f)', since viewers haven't seen the rule reel."""
     SERIES = "Method Killer #6"; RL_WHY = True
+
+
+class MethodKiller6P(ShortReel2):
+    """Method Killer #7 (28 Nov): JEE Main 2026, 23 Jan Shift 1.
+    f(x) = int (2 - x^2) e^x / (sqrt(1+x)(1-x)^{3/2}) dx, f(0) = 0 -> f(1/2) = sqrt(3e) - 1 via e^x(f + f').
+    The aha beat: f + f' over one denominator has top (1 - x^2) + 1 = 2 - x^2. PYQ tag after the hook, not on frame 0."""
+    EVENTS = "mk6p"; SERIES = "Method Killer #6"
+    RL_WHY = True   # True: show the reason in the rule line, e^x(f + f') = (e^x f)', for viewers who haven't seen MK6
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        OFF = json.load(open(os.path.join(KIT, "topics/jee_mk6p/vo/offsets.json")))
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        DEN = r"\sqrt{1+x}\,(1-x)^{3/2}"
+        # ---------- frame 0 ----------
+        title = VGroup(H("STOP", 84, INK), H("PANICKING", 84, RD)).arrange(RIGHT, buff=px(22)); fitw(title, 700); title.move_to(P(490, 380))
+        pyq = tag("JEE Main 2026 · 23 Jan, Shift 1", 30, WHITE_, INK).next_to(title, DOWN, buff=px(16)).set_x(X(490))
+        prob = M(r"f(x)=\int\frac{(2-x^2)\,e^x}{" + DEN + r"}\,dx", 60); fitw(prob, 720)
+        prob.next_to(pyq, DOWN, buff=px(22)).set_x(X(490))
+        given = M(r"f(0)=0,\qquad f\!\left(\tfrac12\right)=\ ?", 48).next_to(prob, DOWN, buff=px(14))
+        st = tag("School method", 28, WHITE_, GREY_P).next_to(given, DOWN, buff=px(26)).set_x(X(490))
+        eqs = M(r"u=\frac{2-x^2}{" + DEN + r"},\quad dv=e^x\,dx", 44); fitw(eqs, 640); eqs.next_to(st, DOWN, buff=px(14)).set_x(X(490))
+        note = B("then u' is a monster…", 30, GREY_P, SEMIBOLD).next_to(eqs, DOWN, buff=px(10))
+        school = VGroup(st, eqs, note)
+        ans = MathTex(r"f\!\left(\tfrac12\right)=", r"\sqrt{3e}-1", font_size=64, color=INK); ans[1].set_opacity(0)
+        card = RoundedRectangle(width=px(600), height=ans.height + px(96), corner_radius=0.28, fill_color=WHITE_, fill_opacity=1, stroke_color=TEAL, stroke_width=4)
+        ctag = tag("TutorDA way · one line", 30, WHITE_, TEAL)
+        card.next_to(note, DOWN, buff=px(40)).set_x(X(490)); ctag.move_to(card.get_top()); ans.move_to(card.get_center() + DOWN * px(8))
+        bl = RoundedRectangle(width=ans[1].width + px(20), height=ans[1].height + px(18), corner_radius=0.08, fill_color="#FFF1E0", fill_opacity=1, stroke_width=0).move_to(ans[1])
+        blank = VGroup(bl, DashedVMobject(bl.copy().set_fill(opacity=0).set_stroke(OR, 4), num_dashes=24))
+        cardg = VGroup(card, ctag, ans, blank)
+        self.add(title, prob, given, school, cardg)
+        x1 = Line(school.get_corner(UL) + LEFT * px(20), school.get_corner(DR) + RIGHT * px(20), color=RD, stroke_width=10)
+        x2 = Line(school.get_corner(DL) + LEFT * px(20), school.get_corner(UR) + RIGHT * px(20), color=RD, stroke_width=10)
+        self.until(wt(0, 0, -0.12)); self.ev("stamp")
+        self.play(Create(x1), Create(x2), school.animate.set_opacity(0.35), run_time=0.4, rate_func=EXPO)
+        self.play(Indicate(blank, color=OR, scale_factor=1.08), run_time=0.6)
+        self.until(wt(0, 6, 0.05)); self.ev("tick"); self.play(FadeIn(pyq, scale=1.1), run_time=0.3)          # PYQ tag after the hook
+        rf = tag("Every JEE student does this", 30, WHITE_, OR).move_to(st)
+        self.until(wt(0, 10, 0.08)); self.play(FadeIn(rf, scale=1.1), run_time=0.3)
+        # ---------- target layout after the wipe ----------
+        probt = VGroup(prob.copy(), given.copy()); probt[0].scale(0.82); probt[1].scale(0.82)
+        probt.arrange(DOWN, buff=px(8)).move_to(P(490, 442))
+        pyqt = pyq.copy().scale(0.85).next_to(probt, UP, buff=px(10)).set_x(X(490))
+        if self.RL_WHY:
+            rl = MathTex(r"e^x\big(", r"f", r"+", r"f'", r"\big)", r"\;=\;", r"\big(e^x", r"f", r"\big)'", font_size=54, color=INK)
+        else:
+            rl = MathTex(r"e^x\big(", r"f", r"+", r"f'", r"\big)", r"\;\longrightarrow\;", r"e^x", r"f", font_size=54, color=INK)
+        rl[1].set_color(TEAL); rl[3].set_color(OR); rl[7].set_color(TEAL)
+        rl.next_to(probt, DOWN, buff=px(28)).set_x(X(490))
+        fl = MathTex(r"f=\sqrt{\frac{1+x}{1-x}}", font_size=52, color=TEAL)
+        fpl = MathTex(r"f'=\frac{1}{" + DEN + r"}", font_size=52, color=OR)
+        frow = VGroup(fl, fpl).arrange(RIGHT, buff=px(50)); fitw(frow, 700); frow.next_to(rl, DOWN, buff=px(28)).set_x(X(490))
+        sm1 = MathTex(r"f+f'=\frac{(1-x^2)+1}{" + DEN + r"}", font_size=54, color=INK)
+        sm2 = MathTex(r"f+f'=\frac{2-x^2}{" + DEN + r"}", font_size=54, color=INK)
+        fitw(sm1, 660); sm2.match_height(sm1); fitw(sm2, 660)
+        sm1.next_to(frow, DOWN, buff=px(30)).set_x(X(490)); sm2.move_to(sm1)
+        sm2t = sm2.copy().move_to(frow.get_center())
+        okt = tag("matches the question", 28, WHITE_, TEAL).next_to(sm2t, DOWN, buff=px(10)).set_x(X(490))
+        res = MathTex(r"f(x)=e^x\sqrt{\frac{1+x}{1-x}}", r"\;-\;1", font_size=54, color=INK)
+        res.next_to(okt, DOWN, buff=px(24)).set_x(X(490))
+        cy = res.get_bottom()[1] - px(44) - card.height / 2
+        PY = lambda m, e="c": (8 - (m.get_center() if e == "c" else m.get_bottom() if e == "b" else m.get_top())[1]) * 120
+        open(os.path.join(KIT, "out", "mk6p_layout.txt"), "w").write(f"probt {PY(probt,'t'):.0f}-{PY(probt,'b'):.0f} rl {PY(rl):.0f} frow {PY(frow,'t'):.0f}-{PY(frow,'b'):.0f} sm {PY(sm1,'t'):.0f}-{PY(sm1,'b'):.0f} okt {PY(okt,'b'):.0f} res {PY(res,'t'):.0f}-{PY(res,'b'):.0f} card_h {card.height*120:.0f} card_bottom {(8-(cy-card.height/2))*120:.0f}")
+        # ---------- clip 1 ----------
+        self.until(C[1] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(school, x1, x2, rf), shift=DOWN * 0.2), FadeOut(title, shift=UP * 0.2),
+                  prob.animate.become(probt[0]), given.animate.become(probt[1]), FadeOut(pyq),
+                  cardg.animate.move_to([X(490), cy, 0]), run_time=0.45, rate_func=EXPO)
+        cond = B("works only when the bracket is exactly f + f'", 30, INK, SEMIBOLD).move_to(frow); fitw(cond, 700)
+        clue = MathTex(r"\frac{d}{dx}", r"\,\frac{1}{\sqrt{1-x}}", r"=\frac{1}{2\,(1-x)^{3/2}}", font_size=52, color=INK)
+        clue[1].set_color(OR); fitw(clue, 640); clue.move_to(frow)
+        cluetag = tag("the clue", 28, WHITE_, OR).next_to(clue, DOWN, buff=px(12)).set_x(X(490))
+        self.until(wt(1, 1, 0.05)); self.ev("tick"); self.play(FadeIn(rl[0:5], shift=UP * 0.08), run_time=0.4)
+        self.until(wt(1, 6, 0.05)); self.play(Indicate(rl[1], color=TEAL), run_time=0.3)
+        self.until(wt(1, 8, 0.05)); self.play(Indicate(rl[3], color=OR), run_time=0.3)
+        self.until(wt(1, 11, 0.05)); self.ev("stamp"); self.play(FadeIn(rl[5:], shift=LEFT * 0.1), FadeIn(cond, shift=UP * 0.05), run_time=0.4)
+        # ---------- clip 2: the clue for guessing f ----------
+        self.until(wt(2, 1, 0.05)); self.ev("tick")
+        self.play(FadeOut(cond), FadeIn(clue, shift=UP * 0.06), FadeIn(cluetag), run_time=0.4)
+        self.play(Indicate(clue[2], color=OR, scale_factor=1.06), Indicate(prob, color=OR, scale_factor=1.03), run_time=0.7)
+        self.until(wt(2, 11, 0.05)); self.play(Indicate(clue[1], color=OR, scale_factor=1.12), run_time=0.6)
+        self.until(wt(2, 17, 0.05)); self.ev("tick"); self.play(FadeOut(VGroup(clue, cluetag), shift=UP * 0.06), FadeIn(fl, shift=DOWN * 0.08, scale=1.1), run_time=0.4)
+        # ---------- clip 2: the aha ----------
+        self.until(wt(3, 0, 0.05)); self.ev("tick"); self.play(FadeIn(fpl, shift=DOWN * 0.08, scale=1.1), run_time=0.4)
+        self.until(wt(3, 3, 0.05)); self.play(TransformFromCopy(VGroup(fl, fpl), sm1), run_time=0.55, rate_func=EXPO)
+        self.until(wt(3, 6, 0.05)); self.play(Circumscribe(sm1, color=OR, buff=px(6)), run_time=0.8)
+        self.until(wt(3, 13, 0.05)); self.ev("stamp")
+        self.play(ReplacementTransform(sm1, sm2), run_time=0.45, rate_func=EXPO)
+        self.play(FadeOut(frow, shift=UP * 0.1), sm2.animate.move_to(sm2t), run_time=0.4, rate_func=EXPO)
+        self.play(FadeIn(okt, scale=1.1), Indicate(prob, color=TEAL, scale_factor=1.04), run_time=0.4)
+        # ---------- clip 3: constant, then your turn ----------
+        self.until(wt(4, 0, 0.05)); self.ev("tick"); self.play(FadeIn(res[0], shift=UP * 0.08), run_time=0.4)
+        self.until(wt(4, 6, 0.05)); self.play(FadeIn(res[1], scale=1.2), run_time=0.3)
+        opts_tex = [r"\sqrt{2e}-1", r"\sqrt{3e}-1", r"\sqrt{3e}+1", r"\sqrt{2e}+1"]
+        chips = VGroup()
+        for t_ in opts_tex:
+            m = MathTex(t_, font_size=46, color=INK)
+            r = RoundedRectangle(width=m.width + px(44), height=m.height + px(26), corner_radius=0.16, fill_color=WHITE_, fill_opacity=1, stroke_color=GREY_P, stroke_width=3)
+            chips.add(VGroup(r, m.move_to(r)))
+        chips.arrange(RIGHT, buff=px(14)); fitw(chips, 700); chips.next_to(card, DOWN, buff=px(24)).set_x(X(490))
+        self.until(wt(4, 8, 0.05)); self.ev("tick")
+        self.play(Indicate(blank, color=OR, scale_factor=1.1), LaggedStart(*[FadeIn(c_, shift=UP * 0.06) for c_ in chips], lag_ratio=0.15), run_time=0.6)
+        T0 = C[4] + OFF[4][1] + 1.2; T1 = C[5] - 0.1
+        cnt = always_redraw(lambda: H(str(max(1, 3 - int((self.renderer.time - T0) / ((T1 - T0) / 3)))), 64, OR).move_to(bl))
+        self.until(T0); self.add(cnt)
+        # ---------- clip 4: reveal, follow ----------
+        self.until(T1); self.ev("stamp"); cnt.clear_updaters()
+        a2 = ans[1].copy().set_opacity(1).set_color(TEAL)
+        box = SurroundingRectangle(ans, buff=px(16), corner_radius=0.14, color=TEAL, stroke_width=6)
+        win = chips[1]
+        self.play(FadeOut(cnt), FadeOut(blank, scale=0.9), FadeIn(a2, scale=1.2), Create(box),
+                  win[0].animate.set_stroke(TEAL, 6).set_fill("#E6F7F5", 1), *[c_.animate.set_opacity(0.25) for i_, c_ in enumerate(chips) if i_ != 1],
+                  Transform(ctag, tag("0 rounds of by parts", 30, WHITE_, TEAL).move_to(ctag)), run_time=0.45, rate_func=EXPO)
+        FY = next((y for y in range(900, 1560, 5) if Y(y) + px(85) < card.get_bottom()[1] - px(40)), 1560)
+        self.until(C[5] + OFF[5][1] - 0.15); self.ev("tick")
+        self.play(FadeOut(chips), run_time=0.25)
+        follow_card(self, P, FY)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+

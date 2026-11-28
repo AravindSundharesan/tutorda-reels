@@ -1,0 +1,8 @@
+[
+ [["Stop panicking at this integral.", 0.97, 0.18], ["It's JEE Main twenty twenty-six.", 1.05, 0.1], ["Every JEE student reaches for by parts.", 1.06, 0]],
+ [["It's e to the x, times f plus f dash:", 1.08, 0.08], ["the product rule, backwards.", 1.04, 0]],
+ [["The three by two power is a clue: f is a root over one minus x.", 1.08, 0.1], ["Try root of one plus x, over one minus x.", 1.08, 0]],
+ [["Add f dash: the top becomes one minus x squared, plus one.", 1.08, 0.1], ["That's two minus x squared.", 1.04, 0]],
+ [["At zero that gives one, so subtract one.", 1.08, 0.1], ["So f of half is...?", 0.95, 1.7]],
+ [["Root three e, minus one.", 0.95, 0.25], ["Follow TutorDA for tomorrow's method killer.", 1.04, 0]]
+]

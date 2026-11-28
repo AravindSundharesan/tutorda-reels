@@ -133,3 +133,7 @@ mk7["f_half_numeric"] = abs(s.Integral(integrand, (X_, 0, s.Rational(1, 2))).eva
 others = [s.sqrt(2*s.E) - 1, s.sqrt(3*s.E) + 1, s.sqrt(2*s.E) + 1]
 mk7["other_options_wrong"] = all(abs((o - (s.sqrt(3*s.E) - 1)).evalf()) > 0.1 for o in others)
 print("MK7 checks:", "ALL OK" if all(mk7.values()) else [k for k, v in mk7.items() if not v], "| f(1/2) =", (s.sqrt(3*s.E)-1).evalf(6))
+
+# ---------- MK6 PYQ clue line (28 Nov) ----------
+clue_ok = s.simplify(s.diff(1/s.sqrt(1-X_), X_) - 1/(2*(1-X_)**s.Rational(3, 2))) == 0
+print("MK6 PYQ clue d/dx 1/sqrt(1-x) = 1/(2(1-x)^(3/2)):", clue_ok)
