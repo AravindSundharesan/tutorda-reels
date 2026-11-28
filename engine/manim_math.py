@@ -4017,7 +4017,7 @@ class PromoFlipbook3(ShortReel2):
         PG = os.path.join(KIT, "promo_flipbook", "pages")
         pages = [PImage.open(os.path.join(PG, f"pg-{i:02d}.jpg")).convert("RGB") for i in range(1, 11)]
         PW, PH = pages[0].size; AR = PW / PH
-        VW = 680; VH = int(round(VW / AR)); TOPY = 345
+        VW = 740; VH = int(round(VW / AR)); TOPY = 340
         self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
         self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
         FULLR = (0, 0, PW, PH)
@@ -4123,7 +4123,7 @@ class PromoFlipbook3(ShortReel2):
         turn(7); c7 = chips(["1 · Open Chapter 1", "2 · Try the lab", "3 · Pick a plan"], 36, [NV, NV, OR_])
         for i_, w_ in enumerate([4, 7, 10]): self.until(wt(7, w_, 0.0)); self.ev("tick"); show(c7[i_], 0.22)
         turn(8); site = chips(["tutorda.org"], 56, [OR_]); show(site)
-        FY = next((y for y in range(900, 1560, 5) if Y(y) + px(85) < site.get_bottom()[1] - px(24)), 1500)
+        FY = 1235                                   # follow card sits over the lower page (bigger page leaves no room below)
         self.until(C[8] + 1.15); self.ev("tick")
         follow_card(self, P, FY, sub="JEE Main maths, made clear")
         self.until(K.DUR)
