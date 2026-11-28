@@ -3147,7 +3147,7 @@ class MethodKiller2(ShortReel2):
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
 
 
-def follow_card(scene, P, y, handle="tutorda_", sub="One JEE method killer a day"):
+def follow_card(scene, P, y, handle="tutorda_", sub="One JEE method killer a day", cx=490):
     """Animated 'Follow TutorDA' end beat (23 Nov, Aro: plain chip looked simple). Profile card slides up,
     Follow button glows, a tap ripple, the button flips to 'Following ✓' with a shine sweep. No confetti."""
     NAVY = "#0E142A"; BL = "#2563EB"
@@ -3162,7 +3162,7 @@ def follow_card(scene, P, y, handle="tutorda_", sub="One JEE method killer a day
     bt = H("Follow", 38, WHITE_).move_to(btn); button = VGroup(btn, bt)
     row = VGroup(VGroup(av, mono), txt).arrange(RIGHT, buff=px(20))
     grp = VGroup(row, button).arrange(RIGHT, buff=px(30)); fitw(grp, 680)
-    card.move_to(P(490, y)); shadow.move_to(card.get_center() + DOWN * px(8)); grp.move_to(card)
+    card.move_to(P(cx, y)); shadow.move_to(card.get_center() + DOWN * px(8)); grp.move_to(card)
     scene.play(FadeIn(shadow, shift=UP * 0.25), FadeIn(card, shift=UP * 0.25), FadeIn(grp, shift=UP * 0.25), run_time=0.45, rate_func=EXPO)
     # glow pulse on the button (two soft rings)
     for k in range(2):
@@ -4019,7 +4019,8 @@ class PromoFlipbook3(ShortReel2):
         PW, PH = pages[0].size; AR = PW / PH
         VW = 800; VH = int(round(VW / AR)); TOPY = 335
         self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
-        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        self.hdr.shift(RIGHT * (X(140) - self.hdr.get_left()[0])); lb.shift(RIGHT * (X(940) - lb.get_right()[0]))   # header spans the centred page
+        self.add(Line(P(140, 318), P(940, 318), color=RULE, stroke_width=3))
         FULLR = (0, 0, PW, PH)
         # spotlight rectangles in page pixels (x0, y0, x1, y1), each fired on a spoken word
         SP = {
@@ -4111,8 +4112,8 @@ class PromoFlipbook3(ShortReel2):
                 return turn_frame(render(ppi, tf, max(ptf, 0), tf), render(pi, tf, tf, tn), (t - tf) / FL)
             return canvas(render(pi, t, max(tf, 0), tn))
         view = ImageMobject(frame_at(0.0)); view.width = px(VW)
-        view.move_to([X(470), Y(TOPY - MG) - view.height / 2, 0])
-        edge = Rectangle(width=px(VW), height=px(VH), stroke_width=0).move_to([X(470), Y(TOPY) - px(VH) / 2, 0])
+        view.move_to([X(540), Y(TOPY - MG) - view.height / 2, 0])
+        edge = Rectangle(width=px(VW), height=px(VH), stroke_width=0).move_to([X(540), Y(TOPY) - px(VH) / 2, 0])
         view.add_updater(lambda m: setattr(m, "pixel_array", frame_at(self.renderer.time))); self.add(view)
         cur_page = lambda: flips[max(i for i, b in enumerate(flips) if b[0] <= self.renderer.time)][1] + 1
         pagechip = always_redraw(lambda: tag(f"Page {cur_page()} of 10", 24, WHITE_, GREY_P).align_to(edge, UR).shift(LEFT * px(12) + DOWN * px(12)))
@@ -4125,9 +4126,9 @@ class PromoFlipbook3(ShortReel2):
                 on = (k_ + 1) == cp; done = (k_ + 1) < cp
                 g.add(RoundedRectangle(width=px(64 if on else 26), height=px(16), corner_radius=0.06, stroke_width=0,
                                        fill_color=OR if on else (INK if done else "#D6D3CC"), fill_opacity=1))
-            g.arrange(RIGHT, buff=px(10)).move_to(P(470, DOT_Y)); return g
+            g.arrange(RIGHT, buff=px(10)).move_to(P(540, DOT_Y)); return g
         self.add(always_redraw(dots))
-        foot = VGroup(B("Chapter 1 free", 36, INK, SEMIBOLD), B("·", 36, GREY_P, SEMIBOLD), B("tutorda.org", 36, OR, SEMIBOLD)).arrange(RIGHT, buff=px(14)).move_to(P(470, DOT_Y + 64))
+        foot = VGroup(B("Chapter 1 free", 36, INK, SEMIBOLD), B("·", 36, GREY_P, SEMIBOLD), B("tutorda.org", 36, OR, SEMIBOLD)).arrange(RIGHT, buff=px(14)).move_to(P(540, DOT_Y + 64))
         self.add(foot)
         live = []
         def chips(labels, size=36, colors=None, cols=None):
@@ -4136,7 +4137,7 @@ class PromoFlipbook3(ShortReel2):
                 fg, bg = (colors[i] if colors else (WHITE_, INK)); g.add(tag(t_, size, fg, bg))
             if cols: g.arrange_in_grid(cols=cols, buff=(px(14), px(12)))
             else: g.arrange(RIGHT, buff=px(14))
-            fitw(g, 800); g.next_to(edge, DOWN, buff=px(26)).set_x(X(470)); return g
+            fitw(g, 800); g.next_to(edge, DOWN, buff=px(26)).set_x(X(540)); return g
         def show(m, rt=0.28):
             self.play(FadeIn(m, shift=UP * 0.08, scale=1.08), run_time=rt); live.append(m)
         def clear():
@@ -4165,6 +4166,6 @@ class PromoFlipbook3(ShortReel2):
         turn(8); site = chips(["tutorda.org"], 64, [OR_]); show(site)
         FY = 1300                                   # follow card sits over the lower page (bigger page leaves no room below)
         self.until(C[8] + 1.15); self.ev("tick")
-        follow_card(self, P, FY, sub="JEE Main maths, made clear")
+        follow_card(self, P, FY, sub="JEE Main maths, made clear", cx=540)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
