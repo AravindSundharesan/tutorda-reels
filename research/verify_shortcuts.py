@@ -114,3 +114,22 @@ pyq["sec_2019_optB"] = s.simplify(s.diff(s.exp(s.sec(x))*g, x) - s.exp(s.sec(x))
 for lab, h in {"A": s.sec(x)-s.tan(x)-s.Rational(1,2), "C": x*s.sec(x)+s.tan(x)+s.Rational(1,2), "D": s.sec(x)+x*s.tan(x)-s.Rational(1,2)}.items():
     pyq[f"sec_2019_opt{lab}_wrong"] = s.simplify(s.diff(s.exp(s.sec(x))*h, x) - s.exp(s.sec(x))*(s.sec(x)*s.tan(x)*h + s.sec(x)*s.tan(x) + s.sec(x)**2)) != 0
 print("PYQ checks:", pyq, "ALL OK" if all(pyq.values()) else "FAIL")
+
+# ---------- MK7 (28 Nov): JEE Main 2026, 23 Jan Shift 1 ----------
+mk7 = {}
+X_ = s.symbols('x', real=True)
+integrand = (2 - X_**2)*s.exp(X_)/(s.sqrt(1+X_)*(1-X_)**s.Rational(3, 2))
+fh = s.sqrt((1+X_)/(1-X_))
+fp = 1/(s.sqrt(1+X_)*(1-X_)**s.Rational(3, 2))
+for xv in [s.Rational(-1, 2), 0, s.Rational(1, 3), s.Rational(1, 2), s.Rational(9, 10)]:   # domain -1 < x < 1
+    mk7[f"fprime_{xv}"] = abs((s.diff(fh, X_) - fp).subs(X_, xv).evalf(30)) < 1e-25
+    mk7[f"f_plus_fp_{xv}"] = abs((fh + fp - (2 - X_**2)/(s.sqrt(1+X_)*(1-X_)**s.Rational(3, 2))).subs(X_, xv).evalf(30)) < 1e-25
+    mk7[f"deriv_{xv}"] = abs((s.diff(s.exp(X_)*fh, X_) - integrand).subs(X_, xv).evalf(30)) < 1e-25
+mk7["numerator_1mx2_plus1"] = s.expand((1+X_)*(1-X_) + 1) == 2 - X_**2
+F = s.exp(X_)*fh - 1
+mk7["f0"] = F.subs(X_, 0) == 0
+mk7["f_half"] = s.simplify(F.subs(X_, s.Rational(1, 2)) - (s.sqrt(3*s.E) - 1)) == 0
+mk7["f_half_numeric"] = abs(s.Integral(integrand, (X_, 0, s.Rational(1, 2))).evalf(30) - (s.sqrt(3*s.E) - 1).evalf(30)) < 1e-20
+others = [s.sqrt(2*s.E) - 1, s.sqrt(3*s.E) + 1, s.sqrt(2*s.E) + 1]
+mk7["other_options_wrong"] = all(abs((o - (s.sqrt(3*s.E) - 1)).evalf()) > 0.1 for o in others)
+print("MK7 checks:", "ALL OK" if all(mk7.values()) else [k for k, v in mk7.items() if not v], "| f(1/2) =", (s.sqrt(3*s.E)-1).evalf(6))
