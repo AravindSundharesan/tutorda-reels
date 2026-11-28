@@ -7,3 +7,4 @@ engine/media/
 topics/*/vo_full.*
 promo_flipbook/pages/
 promo_flipbook/*.png
+promo_flipbook/*.pdf
