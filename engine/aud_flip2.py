@@ -45,7 +45,7 @@ def events():
 def sfx_schedule(s):
     smp = s["sample"]
     for name, t in events():
-        if name == "wipe": smp(t - 0.05, "rw_whoosh", 0.15)
+        if name == "wipe": smp(t - 0.02, "page-flip", 0.32)
         elif name == "tick": smp(t - 0.02, "rw_tick", 0.16)
         elif name == "chime": smp(t - 0.02, "rw_chime", 0.20)
         elif name == "stamp": smp(t - 0.02, "rw_marker", 0.26)

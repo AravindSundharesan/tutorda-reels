@@ -4074,17 +4074,45 @@ class PromoFlipbook3(ShortReel2):
                 shade = (1 - 0.35 * (1 - squash)) * np.linspace(1.0, 0.8, sw)[None, :, None]
                 a[:, :sw, :3] = np.clip(s_ * shade, 0, 255).astype(np.uint8); a[:, :sw, 3] = 255
             return a
+        FL = 0.6                                              # page-turn length (s)
+        MG = int(0.05 * VH)                                   # canvas margin so the lifting edge can grow (perspective)
+        def coeffs(dst, src):
+            A = []
+            for (x, y), (X_, Y_) in zip(dst, src):
+                A.append([x, y, 1, 0, 0, 0, -X_ * x, -X_ * y]); A.append([0, 0, 0, x, y, 1, -Y_ * x, -Y_ * y])
+            return np.linalg.solve(np.array(A, float), np.array([c for p_ in src for c in p_], float))
+        def canvas(rgba):
+            c = np.zeros((VH + 2 * MG, VW, 4), np.uint8); c[MG:MG + VH] = rgba; return c
+        def turn_frame(prev_rgba, next_rgba, u):
+            th = (np.pi / 2) * (u * u * (3 - 2 * u))         # 0 -> 90 degrees about the left (spine) edge
+            xr = VW * np.cos(th); d = 0.045 * VH * np.sin(th)
+            base = next_rgba[:, :, :3].astype(np.float32)
+            sw = max(1.0, 170 * np.sin(th) + 20)              # shadow the lifted page casts on the next page
+            xs = np.arange(VW, dtype=np.float32); sh = np.clip((xs - xr) / sw, 0, 1)
+            base *= (1 - 0.38 * np.sin(th) * (1 - sh))[None, :, None] if xr < VW - 1 else 1
+            out = np.zeros((VH + 2 * MG, VW, 4), np.uint8); out[MG:MG + VH, :, :3] = base.astype(np.uint8); out[MG:MG + VH, :, 3] = 255
+            if xr > 2:
+                src = PImage.fromarray(prev_rgba[:, :, :3])
+                dst = [(0, MG), (xr, MG - min(d, TOPY - 333)), (xr, MG + VH + d), (0, MG + VH)]   # top kept below the header rule
+                srcq = [(0, 0), (VW, 0), (VW, VH), (0, VH)]
+                warped = src.transform((VW, VH + 2 * MG), PImage.PERSPECTIVE, tuple(coeffs(dst, srcq)), PImage.BILINEAR)
+                mask = PImage.new("L", (VW, VH + 2 * MG), 0); ImageDraw.Draw(mask).polygon(dst, fill=255)
+                w_ = np.asarray(warped).astype(np.float32)
+                light = (1 - 0.42 * np.sin(th)) * (0.86 + 0.14 * np.clip(1 - xs / max(xr, 1), 0, 1))[None, :, None]   # darker as it turns, brighter near the spine
+                w_ = np.clip(w_ * light, 0, 255).astype(np.uint8)
+                m_ = np.asarray(mask) > 0
+                out[m_, :3] = w_[m_]; out[m_, 3] = 255
+            return out
         def frame_at(t):
-            k = max(i for i, b in enumerate(flips) if b[0] <= t)
+            k = max(i for i, b_ in enumerate(flips) if b_[0] <= t)
             tf, pi = flips[k]; tn = flips[k + 1][0] if k + 1 < len(flips) else K.DUR
-            if k > 0 and t < tf + 0.45:
-                u = (t - tf) / 0.45
-                if u < 0.45:
-                    ptf, ppi = flips[k - 1]; return render(ppi, tf, max(ptf, 0), tf, squash=1 - ease(u / 0.45) * 0.98)
-                return render(pi, tf, tf, tn, squash=0.02 + 0.98 * ease((u - 0.45) / 0.55))
-            return render(pi, t, max(tf, 0), tn)
-        view = ImageMobject(frame_at(0.0)); view.width = px(VW); view.move_to([X(470), Y(TOPY) - view.height / 2, 0])
-        edge = Rectangle(width=view.width, height=view.height, stroke_width=0).move_to(view)
+            if k > 0 and t < tf + FL:
+                ptf, ppi = flips[k - 1]
+                return turn_frame(render(ppi, tf, max(ptf, 0), tf), render(pi, tf, tf, tn), (t - tf) / FL)
+            return canvas(render(pi, t, max(tf, 0), tn))
+        view = ImageMobject(frame_at(0.0)); view.width = px(VW)
+        view.move_to([X(470), Y(TOPY - MG) - view.height / 2, 0])
+        edge = Rectangle(width=px(VW), height=px(VH), stroke_width=0).move_to([X(470), Y(TOPY) - px(VH) / 2, 0])
         view.add_updater(lambda m: setattr(m, "pixel_array", frame_at(self.renderer.time))); self.add(view)
         cur_page = lambda: flips[max(i for i, b in enumerate(flips) if b[0] <= self.renderer.time)][1] + 1
         pagechip = always_redraw(lambda: tag(f"Page {cur_page()} of 10", 24, WHITE_, GREY_P).align_to(edge, UR).shift(LEFT * px(12) + DOWN * px(12)))

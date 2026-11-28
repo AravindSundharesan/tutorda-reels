@@ -6,3 +6,5 @@ Generated for that library: whoosh-short, success-chime, check-mark
 Images (assets/img):
 - pizza.png: generated 2026-10-17 with Qwen-Image (Qwen/Qwen-Image, Apache-2.0) via the Hugging Face Space mcp-tools/Qwen-Image-Fast,
   prompt "top-down flat vector pepperoni pizza on white", seed 7; background removed locally. No third-party artwork.
+
+page-flip.wav: generated for TutorDA (filtered noise + 95 Hz flap), original, no licence restrictions.
