@@ -1,0 +1,11 @@
+Send this to the friend who reached for by parts on this JEE Main 2026 question.
+
+JEE Main 2026, 23 January, Shift 1: f(x) = ∫ (2 − x²)eˣ / (√(1 + x)(1 − x)^(3/2)) dx, f(0) = 0. Find f(1/2). By parts with u = the whole fraction makes u′ a monster.
+
+Here's the shortcut for this integration: eˣ(f + f′) = (eˣf)′, the product rule run backwards. Try f = √((1 + x)/(1 − x)). Its derivative is f′ = 1/(√(1 + x)(1 − x)^(3/2)). Put f + f′ over that denominator and the top becomes (1 − x²) + 1 = 2 − x², exactly the question. So f(x) = eˣ√((1 + x)/(1 − x)) + C, and f(0) = 0 gives C = −1. At x = 1/2: f(1/2) = √(3e) − 1.
+
+The rule: ∫ eˣ(f + f′) dx = eˣf + C. When you see eˣ times a messy bracket, guess f and check whether f + f′ rebuilds the bracket.
+
+Method Killer series, part 6, for JEE Main 2027. One method killer a day on @tutorda_.
+
+#JEE #JEEMain2027 #JEEMaths #Integration #JEEMainPYQ

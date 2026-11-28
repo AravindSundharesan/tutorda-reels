@@ -3569,6 +3569,7 @@ class MethodKiller7(ShortReel2):
     f(x) = int (2 - x^2) e^x / (sqrt(1+x)(1-x)^{3/2}) dx, f(0) = 0 -> f(1/2) = sqrt(3e) - 1 via e^x(f + f').
     The aha beat: f + f' over one denominator has top (1 - x^2) + 1 = 2 - x^2. PYQ tag after the hook, not on frame 0."""
     EVENTS = "mk7"; SERIES = "Method Killer #7"
+    RL_WHY = False   # True: show the reason in the rule line, e^x(f + f') = (e^x f)', for viewers who haven't seen MK6
     CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
     def construct(self):
         self.setup_common(); C, wt, S = K.C, K.wt, self.S
@@ -3607,7 +3608,10 @@ class MethodKiller7(ShortReel2):
         probt = VGroup(prob.copy(), given.copy()); probt[0].scale(0.82); probt[1].scale(0.82)
         probt.arrange(DOWN, buff=px(8)).move_to(P(490, 442))
         pyqt = pyq.copy().scale(0.85).next_to(probt, UP, buff=px(10)).set_x(X(490))
-        rl = MathTex(r"e^x\big(", r"f", r"+", r"f'", r"\big)", r"\;\longrightarrow\;", r"e^x", r"f", font_size=54, color=INK)
+        if self.RL_WHY:
+            rl = MathTex(r"e^x\big(", r"f", r"+", r"f'", r"\big)", r"\;=\;", r"\big(e^x", r"f", r"\big)'", font_size=54, color=INK)
+        else:
+            rl = MathTex(r"e^x\big(", r"f", r"+", r"f'", r"\big)", r"\;\longrightarrow\;", r"e^x", r"f", font_size=54, color=INK)
         rl[1].set_color(TEAL); rl[3].set_color(OR); rl[7].set_color(TEAL)
         rl.next_to(probt, DOWN, buff=px(28)).set_x(X(490))
         fl = MathTex(r"f=\sqrt{\frac{1+x}{1-x}}", font_size=52, color=TEAL)
@@ -3670,3 +3674,9 @@ class MethodKiller7(ShortReel2):
         follow_card(self, P, FY)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class MethodKiller6PYQ(MethodKiller7):
+    """The JEE Main 2026 PYQ reel posted as Method Killer #6 (Aro, 28 Nov): same audio and timing as MK7,
+    header says #6, and the rule line shows its reason, e^x(f + f') = (e^x f)', since viewers haven't seen the rule reel."""
+    SERIES = "Method Killer #6"; RL_WHY = True
