@@ -4008,7 +4008,7 @@ class PromoFlipbook3(ShortReel2):
     """Promo v3 (28 Nov): all 10 flipbook pages shown whole. Motion = page turn + slow push-in + a spotlight
     (rest of the page dims, orange box) that glides to the part being explained on the spoken word."""
     EVENTS = "flip2"; SERIES = "JEE Main Maths course"
-    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490); NO_CAPS = True   # no subtitles (Aro, 28 Nov)
     def construct(self):
         from PIL import Image as PImage, ImageDraw
         import numpy as np
@@ -4017,7 +4017,7 @@ class PromoFlipbook3(ShortReel2):
         PG = os.path.join(KIT, "promo_flipbook", "pages")
         pages = [PImage.open(os.path.join(PG, f"pg-{i:02d}.jpg")).convert("RGB") for i in range(1, 11)]
         PW, PH = pages[0].size; AR = PW / PH
-        VW = 640; VH = int(round(VW / AR)); TOPY = 345
+        VW = 680; VH = int(round(VW / AR)); TOPY = 345
         self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
         self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
         FULLR = (0, 0, PW, PH)

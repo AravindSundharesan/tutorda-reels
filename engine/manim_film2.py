@@ -104,6 +104,8 @@ class Film2(ReelScene):
         m.add_updater(upd); return m
 
     def captions(self):
+        if getattr(self, "NO_CAPS", False):              # subtitles off (Aro, 28 Nov: flipbook promo)
+            self._keep = []; return
         pill = getattr(self, "CAP_PILL", False)          # v2 (28 Oct): floating caption inside Instagram's safe zone, no band
         bt = getattr(self, "BAND_TOP", BAND_TOP)
         cap_y = getattr(self, "CAP_Y", bt + 150)
