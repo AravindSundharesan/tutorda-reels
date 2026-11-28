@@ -102,3 +102,15 @@ mk6["school_parts_line"] = s.simplify(s.diff(-s.exp(x)/x, x) + s.exp(x)/x - s.ex
 mk6["ex_over_x_nonelementary"] = s.integrate(s.exp(x)/x, x) == s.Ei(x)
 mk6["practice_tan"] = s.simplify(s.diff(s.exp(x)*s.tan(x), x) - s.exp(x)*(s.tan(x) + s.sec(x)**2)) == 0
 print("MK6 checks:", mk6, "ALL OK" if all(mk6.values()) else "FAIL")
+
+# ---------- PYQs solved by e^x(f + f') (28 Nov) ----------
+pyq = {}
+f = (x-1)/(x+1)
+pyq["2019_like_split"] = s.simplify((x**2+1)/(x+1)**2 - (f + s.diff(f, x))) == 0
+pyq["x2p1_answer"] = s.simplify(s.diff(s.exp(x)*f, x) - (x**2+1)*s.exp(x)/(x+1)**2) == 0
+pyq["x2p1_f3_at_1"] = s.diff(f, x, 3).subs(x, 1) == s.Rational(3, 4)
+g = s.sec(x) + s.tan(x) + s.Rational(1, 2)
+pyq["sec_2019_optB"] = s.simplify(s.diff(s.exp(s.sec(x))*g, x) - s.exp(s.sec(x))*(s.sec(x)*s.tan(x)*g + s.sec(x)*s.tan(x) + s.sec(x)**2)) == 0
+for lab, h in {"A": s.sec(x)-s.tan(x)-s.Rational(1,2), "C": x*s.sec(x)+s.tan(x)+s.Rational(1,2), "D": s.sec(x)+x*s.tan(x)-s.Rational(1,2)}.items():
+    pyq[f"sec_2019_opt{lab}_wrong"] = s.simplify(s.diff(s.exp(s.sec(x))*h, x) - s.exp(s.sec(x))*(s.sec(x)*s.tan(x)*h + s.sec(x)*s.tan(x) + s.sec(x)**2)) != 0
+print("PYQ checks:", pyq, "ALL OK" if all(pyq.values()) else "FAIL")
