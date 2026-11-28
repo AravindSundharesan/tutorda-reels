@@ -3472,3 +3472,93 @@ class MethodKiller5(ShortReel2):
         follow_card(self, P, FY)
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class MethodKiller6(ShortReel2):
+    """Method Killer #6 (28 Nov): int e^x (x-1)/x^2 dx = e^x/x + C via e^x(f + f') = (e^x f)'.
+    Playbook: pain hook, contrast frame, word-timed build, one-line why (product rule backwards), the condition,
+    predict (3-2-1), answer last, check tag, follow card after the answer."""
+    EVENTS = "mk6"; SERIES = "Method Killer #6"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        RD = "#E5484D"; P = lambda x, y: [X(x), Y(y), 0]
+        OFF = json.load(open(os.path.join(KIT, "topics/jee_mk6/vo/offsets.json")))
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        # ---------- frame 0 ----------
+        title = VGroup(H("STOP", 84, INK), H("BY PARTS HERE", 84, RD)).arrange(RIGHT, buff=px(22)); fitw(title, 700); title.move_to(P(490, 385))
+        I1 = M(r"\int e^x\,\frac{x-1}{x^2}\,dx", 76); I1.next_to(title, DOWN, buff=px(30)).set_x(X(490))
+        st = tag("School method", 28, WHITE_, GREY_P).next_to(I1, DOWN, buff=px(24)).set_x(X(490))
+        eqs = VGroup(M(r"\int\frac{e^x}{x}\,dx-\int\frac{e^x}{x^2}\,dx", 48),
+                     M(r"\int\frac{e^x}{x^2}dx=-\frac{e^x}{x}+\int\frac{e^x}{x}dx", 46)).arrange(DOWN, buff=px(12))
+        fitw(eqs, 660); eqs.next_to(st, DOWN, buff=px(14)).set_x(X(490))
+        note = VGroup(B("and", 30, GREY_P, SEMIBOLD), M(r"\int\frac{e^x}{x}dx", 40, GREY_P), B("has no formula", 30, GREY_P, SEMIBOLD)).arrange(RIGHT, buff=px(10))
+        note.next_to(eqs, DOWN, buff=px(10))
+        school = VGroup(st, eqs, note)
+        ans = MathTex(r"=e^x\cdot", r"\frac{1}{x}", r"+C", font_size=62, color=INK); ans[1].set_opacity(0)
+        card = RoundedRectangle(width=px(560), height=ans.height + px(88), corner_radius=0.28, fill_color=WHITE_, fill_opacity=1, stroke_color=TEAL, stroke_width=4)
+        ctag = tag("TutorDA way · one line", 30, WHITE_, TEAL)
+        card.next_to(note, DOWN, buff=px(40)).set_x(X(490)); ctag.move_to(card.get_top()); ans.move_to(card.get_center() + DOWN * px(8))
+        bl = RoundedRectangle(width=max(ans[1].width + px(20), px(90)), height=ans[1].height + px(16), corner_radius=0.08, fill_color="#FFF1E0", fill_opacity=1, stroke_width=0).move_to(ans[1])
+        blank = VGroup(bl, DashedVMobject(bl.copy().set_fill(opacity=0).set_stroke(OR, 4), num_dashes=20))
+        cardg = VGroup(card, ctag, ans, blank)
+        self.add(title, I1, school, cardg)
+        x1 = Line(school.get_corner(UL) + LEFT * px(20), school.get_corner(DR) + RIGHT * px(20), color=RD, stroke_width=10)
+        x2 = Line(school.get_corner(DL) + LEFT * px(20), school.get_corner(UR) + RIGHT * px(20), color=RD, stroke_width=10)
+        self.until(wt(0, 0, -0.12)); self.ev("stamp")
+        self.play(Create(x1), Create(x2), school.animate.set_opacity(0.35), run_time=0.4, rate_func=EXPO)
+        self.play(Indicate(blank, color=OR, scale_factor=1.1), run_time=0.6)
+        rf = tag("Every JEE student does this", 30, WHITE_, OR).move_to(st)
+        self.until(wt(0, 5, 0.08)); self.play(FadeIn(rf, scale=1.1), run_time=0.3)
+        # ---------- target layout after the wipe (measured) ----------
+        I1t = I1.copy().scale(0.8).move_to(P(490, 438))
+        sp = MathTex(r"\frac{x-1}{x^2}", r"=", r"\frac{1}{x}", r"-\frac{1}{x^2}", font_size=58, color=INK)
+        sp.next_to(I1t, DOWN, buff=px(66)).set_x(X(490))
+        lf = MathTex(r"f", font_size=56, color=TEAL).next_to(sp[2], DOWN, buff=px(14))
+        lfd = MathTex(r"f'", font_size=56, color=OR).next_to(sp[3], DOWN, buff=px(14)).set_y(lf.get_y())
+        arc = CurvedArrow(sp[2].get_top() + UP * px(10), sp[3].get_top() + UP * px(10) + RIGHT * px(14), angle=-PI / 2.2, color=GREY_P, stroke_width=5)
+        ddx = B("d/dx", 26, GREY_P, SEMIBOLD).next_to(arc, UP, buff=px(2))
+        rl = MathTex(r"e^x\big(", r"f", r"+", r"f'", r"\big)", r"\;\longrightarrow\;", r"e^x", r"f", font_size=60, color=INK)
+        rl[1].set_color(TEAL); rl[3].set_color(OR); rl[7].set_color(TEAL)
+        rl.next_to(lf, DOWN, buff=px(30)).set_x(X(490))
+        why = tag("product rule, backwards", 28, WHITE_, TEAL).next_to(rl, DOWN, buff=px(16))
+        cond = B("works only when the bracket is f + f'", 34, INK, SEMIBOLD).next_to(why, DOWN, buff=px(12))
+        cy = cond.get_bottom()[1] - px(40) - card.height / 2
+        open(os.path.join(KIT, "out", "mk6_layout.txt"), "w").write(f"I1t {(8-I1t.get_bottom()[1])*120:.0f} sp {(8-sp.get_top()[1])*120:.0f}-{(8-sp.get_bottom()[1])*120:.0f} cond {(8-cond.get_bottom()[1])*120:.0f} card_bottom {(8-(cy-card.height/2))*120:.0f} card_h {card.height*120:.0f}")
+        # ---------- clip 1: split, f and f' ----------
+        self.until(C[1] - 0.05); self.ev("wipe")
+        self.play(FadeOut(VGroup(school, x1, x2, rf), shift=DOWN * 0.2), FadeOut(title, shift=UP * 0.2),
+                  I1.animate.become(I1t), cardg.animate.move_to([X(490), cy, 0]), run_time=0.45, rate_func=EXPO)
+        self.until(wt(1, 0, 0.05)); self.play(TransformFromCopy(I1[0][3:9] if len(I1[0]) > 9 else I1, sp[0]), FadeIn(sp[1]), run_time=0.45, rate_func=EXPO)
+        self.until(wt(1, 3, 0.05)); self.ev("tick"); self.play(FadeIn(sp[2], shift=DOWN * 0.1, scale=1.15), run_time=0.3)
+        self.until(wt(1, 6, 0.05)); self.ev("tick"); self.play(FadeIn(sp[3], shift=DOWN * 0.1, scale=1.15), run_time=0.3)
+        self.until(wt(1, 11, 0.05)); self.play(FadeIn(lf, shift=UP * 0.06), run_time=0.3)
+        self.until(wt(1, 15, 0.05)); self.ev("stamp")
+        self.play(Create(arc), FadeIn(ddx), FadeIn(lfd, shift=UP * 0.06), run_time=0.5, rate_func=EXPO)
+        # ---------- clip 2: e^x(f + f') -> e^x f, why, condition ----------
+        self.until(wt(2, 2, 0.05)); self.ev("tick"); self.play(FadeIn(rl[0:5], shift=UP * 0.08), run_time=0.4)
+        self.until(wt(2, 7, 0.05)); self.play(Indicate(rl[1], color=TEAL), run_time=0.35)
+        self.until(wt(2, 9, 0.05)); self.play(Indicate(rl[3], color=OR), run_time=0.35)
+        self.until(wt(2, 11, 0.05)); self.ev("stamp"); self.play(FadeIn(rl[5:], shift=LEFT * 0.1), run_time=0.4, rate_func=EXPO)
+        self.until(wt(2, 13, 0.05)); self.play(FadeIn(why, scale=1.1), run_time=0.3)
+        self.until(wt(2, 15, 0.0)); self.play(FadeIn(cond, shift=UP * 0.05), run_time=0.3)
+        # ---------- clip 3: your turn ----------
+        self.until(C[3] - 0.05); self.ev("tick")
+        self.play(Indicate(blank, color=OR, scale_factor=1.12), run_time=0.4)
+        T0 = C[3] + OFF[3][0] + 1.0; T1 = C[4] - 0.1
+        ring_bg = Circle(radius=px(66), stroke_color="#ECE7DE", stroke_width=14).next_to(card, DOWN, buff=px(30))
+        ring = always_redraw(lambda: Arc(radius=px(66), start_angle=PI / 2, angle=-TAU * max(0.001, min(1, (self.renderer.time - T0) / (T1 - T0))), stroke_color=OR, stroke_width=14).move_arc_center_to(ring_bg.get_center()))
+        cnt = always_redraw(lambda: H(str(max(1, 3 - int((self.renderer.time - T0) / ((T1 - T0) / 3)))), 70, INK).move_to(ring_bg))
+        self.until(T0); self.add(ring_bg, ring, cnt)
+        # ---------- clip 4: reveal 1/x, check, follow ----------
+        self.until(T1); self.ev("stamp"); ring.clear_updaters(); cnt.clear_updaters()
+        a2 = ans[1].copy().set_opacity(1).set_color(TEAL)
+        box = SurroundingRectangle(ans, buff=px(18), corner_radius=0.14, color=TEAL, stroke_width=6)
+        chk_ = tag("differentiate it back: it checks", 28, WHITE_, TEAL).move_to(ctag)
+        self.play(FadeOut(VGroup(ring_bg, ring, cnt)), FadeOut(blank, scale=0.9), FadeIn(a2, scale=1.25), Create(box), Transform(ctag, chk_), run_time=0.45, rate_func=EXPO)
+        FY = next(y for y in range(900, 1560, 5) if Y(y) + px(85) < card.get_bottom()[1] - px(40))
+        self.until(C[4] + OFF[4][1] - 0.15); self.ev("tick")
+        follow_card(self, P, FY)
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))

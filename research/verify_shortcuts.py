@@ -93,3 +93,12 @@ chk("log_diff_xx", s.simplify(s.diff(x**x, x) - x**x*(s.log(x)+1)) == 0)
 
 bad = [k for k, v in ok.items() if not v]
 print(f"{len(ok)} checks, {len(ok)-len(bad)} passed"); print("FAILED:", bad)
+
+# ---------- MK6 (28 Nov): e^x (f + f') ----------
+mk6 = {}
+mk6["split"] = s.simplify((x-1)/x**2 - (1/x - 1/x**2)) == 0
+mk6["answer"] = s.simplify(s.diff(s.exp(x)/x, x) - s.exp(x)*(x-1)/x**2) == 0
+mk6["school_parts_line"] = s.simplify(s.diff(-s.exp(x)/x, x) + s.exp(x)/x - s.exp(x)/x**2) == 0   # int e^x/x^2 = -e^x/x + int e^x/x
+mk6["ex_over_x_nonelementary"] = s.integrate(s.exp(x)/x, x) == s.Ei(x)
+mk6["practice_tan"] = s.simplify(s.diff(s.exp(x)*s.tan(x), x) - s.exp(x)*(s.tan(x) + s.sec(x)**2)) == 0
+print("MK6 checks:", mk6, "ALL OK" if all(mk6.values()) else "FAIL")

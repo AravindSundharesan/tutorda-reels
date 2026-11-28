@@ -1,0 +1,11 @@
+Send this to the friend who still integrates by parts on ∫ eˣ (x − 1)/x² dx.
+
+The school way splits it into ∫ eˣ/x dx − ∫ eˣ/x² dx and does by parts on the second. But ∫ eˣ/x dx has no formula in terms of the usual functions, so attacking it head-on gets you stuck.
+
+Here's the shortcut for this integration. Split the fraction: (x − 1)/x² = 1/x − 1/x². The second part is the derivative of the first, so the integrand is eˣ(f + f′) with f = 1/x. That's just the product rule backwards: (eˣf)′ = eˣf + eˣf′. So the answer is eˣ/x + C. Differentiate it and you get the question back.
+
+The rule: ∫ eˣ (f + f′) dx = eˣ f + C. It only works when the bracket is exactly f + f′, so rewrite the bracket first.
+
+Method Killer series, part 6, for JEE Main 2027. One method killer a day on @tutorda_.
+
+#JEE #JEEMain2027 #JEEMaths #Integration #IntegrationByParts

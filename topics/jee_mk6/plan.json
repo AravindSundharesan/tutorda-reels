@@ -1,0 +1,7 @@
+[
+ [["Stop integrating by parts here.", 0.97, 0.22], ["Every JEE student splits it and gets stuck.", 1.05, 0]],
+ [["Split the fraction: one over x, minus one over x squared.", 1.04, 0.12], ["The second is the derivative of the first.", 1.04, 0]],
+ [["So it's e to the x, times f plus f dash.", 1.04, 0.12], ["That's the product rule, backwards.", 1.02, 0]],
+ [["So the answer is e to the x, times...?", 0.95, 1.7]],
+ [["One over x.", 0.95, 0.25], ["Follow TutorDA for tomorrow's method killer.", 1.04, 0]]
+]
