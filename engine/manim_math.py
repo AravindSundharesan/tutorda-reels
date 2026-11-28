@@ -4017,7 +4017,7 @@ class PromoFlipbook3(ShortReel2):
         PG = os.path.join(KIT, "promo_flipbook", "pages")
         pages = [PImage.open(os.path.join(PG, f"pg-{i:02d}.jpg")).convert("RGB") for i in range(1, 11)]
         PW, PH = pages[0].size; AR = PW / PH
-        VW = 740; VH = int(round(VW / AR)); TOPY = 340
+        VW = 800; VH = int(round(VW / AR)); TOPY = 335
         self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
         self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
         FULLR = (0, 0, PW, PH)
@@ -4089,6 +4089,18 @@ class PromoFlipbook3(ShortReel2):
         cur_page = lambda: flips[max(i for i, b in enumerate(flips) if b[0] <= self.renderer.time)][1] + 1
         pagechip = always_redraw(lambda: tag(f"Page {cur_page()} of 10", 24, WHITE_, GREY_P).align_to(edge, UR).shift(LEFT * px(12) + DOWN * px(12)))
         self.add(pagechip)
+        # persistent footer: 10-dot page progress + standing offer line (fills the space under the labels)
+        DOT_Y = 1668
+        def dots():
+            cp = cur_page(); g = VGroup()
+            for k_ in range(10):
+                on = (k_ + 1) == cp; done = (k_ + 1) < cp
+                g.add(RoundedRectangle(width=px(64 if on else 26), height=px(16), corner_radius=0.06, stroke_width=0,
+                                       fill_color=OR if on else (INK if done else "#D6D3CC"), fill_opacity=1))
+            g.arrange(RIGHT, buff=px(10)).move_to(P(470, DOT_Y)); return g
+        self.add(always_redraw(dots))
+        foot = VGroup(B("Chapter 1 free", 36, INK, SEMIBOLD), B("·", 36, GREY_P, SEMIBOLD), B("tutorda.org", 36, OR, SEMIBOLD)).arrange(RIGHT, buff=px(14)).move_to(P(470, DOT_Y + 64))
+        self.add(foot)
         live = []
         def chips(labels, size=36, colors=None, cols=None):
             g = VGroup()
@@ -4096,7 +4108,7 @@ class PromoFlipbook3(ShortReel2):
                 fg, bg = (colors[i] if colors else (WHITE_, INK)); g.add(tag(t_, size, fg, bg))
             if cols: g.arrange_in_grid(cols=cols, buff=(px(14), px(12)))
             else: g.arrange(RIGHT, buff=px(14))
-            fitw(g, 740); g.next_to(edge, DOWN, buff=px(22)).set_x(X(470)); return g
+            fitw(g, 800); g.next_to(edge, DOWN, buff=px(26)).set_x(X(470)); return g
         def show(m, rt=0.28):
             self.play(FadeIn(m, shift=UP * 0.08, scale=1.08), run_time=rt); live.append(m)
         def clear():
@@ -4104,26 +4116,26 @@ class PromoFlipbook3(ShortReel2):
         def turn(i):
             self.until(C[i] - 0.25); self.ev("wipe"); clear()
         OR_ = (WHITE_, OR); NV = (WHITE_, INK); TL = (WHITE_, TEAL)
-        c0 = chips(["All 14 units", "Chapter 1 free"], 46, [NV, OR_])
+        c0 = chips(["All 14 units", "Chapter 1 free"], 56, [NV, OR_])
         self.until(0.4); show(c0[0])
         self.until(wt(0, 8, 0.0)); self.ev("tick"); show(c0[1])
-        turn(1); c1 = chips(["1/3 of JEE Main", "25 questions", "100 marks"], 40, [TL, NV, OR_])
+        turn(1); c1 = chips(["1/3 of JEE Main", "25 questions", "100 marks"], 48, [TL, NV, OR_])
         for i_, w_ in enumerate([3, 7, 10]): self.until(wt(1, w_, 0.0)); self.ev("tick"); show(c1[i_], 0.22)
-        turn(2); c2 = chips(["Learn", "Play", "Practise", "Check", "Exam"], 40, [NV, NV, NV, NV, OR_])
+        turn(2); c2 = chips(["Learn", "Play", "Practise", "Check", "Exam"], 48, [NV, NV, NV, NV, OR_])
         for i_, w_ in enumerate([2, 3, 7, 8, 10]): self.until(wt(2, w_, 0.0)); self.ev("tick"); show(c2[i_], 0.2)
-        turn(3); c3 = chips(["Web", "Android app", "Ask Dayzi · AI mentor"], 38, [NV, NV, TL])
+        turn(3); c3 = chips(["Web", "Android app", "Ask Dayzi · AI mentor"], 44, [NV, NV, TL])
         for i_, w_ in enumerate([2, 4, 7]): self.until(wt(3, w_, 0.0)); self.ev("tick"); show(c3[i_], 0.22)
-        turn(4); c4 = chips(["Prerequisite", "Easy", "Medium", "Hard", "Challenge", "Mock test"], 36, [NV] * 5 + [OR_], cols=3)
+        turn(4); c4 = chips(["Prerequisite", "Easy", "Medium", "Hard", "Challenge", "Mock test"], 40, [NV] * 5 + [OR_], cols=3)
         self.until(wt(4, 0, 0.0)); self.ev("tick")
         self.play(LaggedStart(*[FadeIn(c_, shift=UP * 0.06) for c_ in c4[:5]], lag_ratio=0.15), run_time=0.7); live.extend(c4[:5])
         self.until(wt(4, 8, 0.0)); self.ev("stamp"); show(c4[5])
-        turn(5); self.until(wt(5, 1, 0.0)); self.ev("tick"); show(chips(["All 14 JEE Main units"], 46))
-        turn(6); c6 = chips(["Chapter 1: Free", "More from ₹99/month"], 44, [TL, OR_])
+        turn(5); self.until(wt(5, 1, 0.0)); self.ev("tick"); show(chips(["All 14 JEE Main units"], 58))
+        turn(6); c6 = chips(["Chapter 1: Free", "More from ₹99/month"], 50, [TL, OR_])
         self.until(wt(6, 3, 0.0)); self.ev("tick"); show(c6[0]); self.until(wt(6, 5, 0.0)); self.ev("stamp"); show(c6[1])
-        turn(7); c7 = chips(["1 · Open Chapter 1", "2 · Try the lab", "3 · Pick a plan"], 36, [NV, NV, OR_])
+        turn(7); c7 = chips(["1 · Open Chapter 1", "2 · Try the lab", "3 · Pick a plan"], 42, [NV, NV, OR_])
         for i_, w_ in enumerate([4, 7, 10]): self.until(wt(7, w_, 0.0)); self.ev("tick"); show(c7[i_], 0.22)
-        turn(8); site = chips(["tutorda.org"], 56, [OR_]); show(site)
-        FY = 1235                                   # follow card sits over the lower page (bigger page leaves no room below)
+        turn(8); site = chips(["tutorda.org"], 64, [OR_]); show(site)
+        FY = 1300                                   # follow card sits over the lower page (bigger page leaves no room below)
         self.until(C[8] + 1.15); self.ev("tick")
         follow_card(self, P, FY, sub="JEE Main maths, made clear")
         self.until(K.DUR)
