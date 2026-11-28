@@ -3892,3 +3892,239 @@ class PromoFlipbook(ShortReel2):
         follow_card(self, P, FY, sub="JEE Main maths, made clear")
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class PromoFlipbook2(ShortReel2):
+    """Promo v2 (28 Nov, Aro: 'full brochure, don't crop, add motion'). All 10 flipbook pages shown whole,
+    with a page-turn between pages and a camera that eases from the full page into the part being explained.
+    The viewport is one ImageMobject whose pixels are recomputed every frame (crop window + squash for the turn)."""
+    EVENTS = "flip2"; SERIES = "JEE Main Maths course"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        from PIL import Image as PImage
+        import numpy as np
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        P = lambda x, y: [X(x), Y(y), 0]
+        PG = os.path.join(KIT, "promo_flipbook", "pages")
+        pages = [PImage.open(os.path.join(PG, f"pg-{i:02d}.jpg")).convert("RGB") for i in range(1, 11)]
+        PW, PH = pages[0].size; AR = PW / PH
+        VW = 640; VH = int(round(VW / AR)); TOPY = 345
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        FULL = (PW / 2, PH / 2, PW)
+        def clamp(cx, cy, w):
+            w = min(w, PW); h = w / AR
+            if h > PH: h = PH; w = h * AR
+            cx = min(max(cx, w / 2), PW - w / 2); cy = min(max(cy, h / 2), PH - h / 2)
+            return cx, cy, w, h
+        # ---- timeline: (flip time, page index, [(t, (cx, cy, w)), ...]) ----
+        Z = {0: [(430, 560, 820), (420, 520, 760)], 1: [(430, 640, 860), (430, 640, 800)], 2: [(540, 560, 860), (540, 600, 660)],
+             3: [(540, 560, 860), (540, 520, 620)], 4: [(540, 600, 860), (540, 560, 640)], 5: [(540, 620, 860), (540, 520, 620)],
+             6: [(540, 780, 940), (540, 700, 780)], 7: [(540, 700, 940), (540, 650, 780)], 8: [(540, 650, 940), (500, 620, 780)],
+             9: [(540, 650, 940), (540, 600, 820)]}
+        flips = [(-1.0, 0), (wt(0, 6, -0.2), 1)] + [(C[i] - 0.25, i + 1) for i in range(1, 9)]
+        beats = []
+        for k, (tf, pi) in enumerate(flips):
+            tn = flips[k + 1][0] if k + 1 < len(flips) else K.DUR + 1
+            t0 = max(tf + 0.45, 0.0)
+            kf = [(t0, FULL), (t0 + 0.8, Z[pi][0]), (tn, Z[pi][1])]
+            beats.append((tf, pi, kf))
+        ease = lambda u: u * u * (3 - 2 * u)
+        def win_at(kf, t):
+            if t <= kf[0][0]: return kf[0][1]
+            for (ta, a), (tb, b) in zip(kf, kf[1:]):
+                if t <= tb:
+                    u = ease((t - ta) / max(tb - ta, 1e-6)); return tuple(a[j] + (b[j] - a[j]) * u for j in range(3))
+            return kf[-1][1]
+        def render(pi, win, squash=1.0):
+            cx, cy, w, h = clamp(*win)
+            im = pages[pi].crop((int(cx - w / 2), int(cy - h / 2), int(cx + w / 2), int(cy + h / 2))).resize((VW, VH), PImage.BILINEAR)
+            a = np.zeros((VH, VW, 4), dtype=np.uint8)
+            if squash >= 0.999:
+                a[:, :, :3] = np.asarray(im); a[:, :, 3] = 255
+            else:
+                sw = max(2, int(VW * squash)); s_ = np.asarray(im.resize((sw, VH), PImage.BILINEAR)).astype(np.float32)
+                shade = (1 - 0.35 * (1 - squash)) * np.linspace(1.0, 0.8, sw)[None, :, None]   # page darkens as it turns
+                a[:, :sw, :3] = np.clip(s_ * shade, 0, 255).astype(np.uint8); a[:, :sw, 3] = 255
+            return a
+        def frame_at(t):
+            k = max(i for i, b in enumerate(beats) if b[0] <= t)
+            tf, pi, kf = beats[k]
+            if k > 0 and t < tf + 0.45:
+                u = (t - tf) / 0.45
+                if u < 0.45:                                   # previous page turns away
+                    _, ppi, pkf = beats[k - 1]; return render(ppi, win_at(pkf, tf), squash=1 - ease(u / 0.45) * 0.98)
+                return render(pi, FULL, squash=0.02 + 0.98 * ease((u - 0.45) / 0.55))
+            return render(pi, win_at(kf, t))
+        view = ImageMobject(frame_at(0.0)); view.width = px(VW); view.move_to([X(470), Y(TOPY) - view.height / 2, 0])
+        edge = Rectangle(width=view.width, height=view.height, stroke_color="#CBD5E1", stroke_width=2).move_to(view)
+        def upd(m):
+            m.pixel_array = frame_at(self.renderer.time)
+        view.add_updater(upd); self.add(view)
+        pagechip = always_redraw(lambda: tag(f"Page {beats[max(i for i, b in enumerate(beats) if b[0] <= self.renderer.time)][1] + 1} of 10", 24, WHITE_, GREY_P).next_to(edge, UP, buff=px(-18)).align_to(edge, RIGHT).shift(LEFT * px(14)))
+        self.add(pagechip)
+        live = []
+        def chips(labels, size=36, colors=None, cols=None):
+            g = VGroup()
+            for i, t_ in enumerate(labels):
+                fg, bg = (colors[i] if colors else (WHITE_, INK)); g.add(tag(t_, size, fg, bg))
+            if cols: g.arrange_in_grid(cols=cols, buff=(px(14), px(12)))
+            else: g.arrange(RIGHT, buff=px(14))
+            fitw(g, 740); g.next_to(edge, DOWN, buff=px(22)).set_x(X(470)); return g
+        def show(m, rt=0.28):
+            self.play(FadeIn(m, shift=UP * 0.08, scale=1.08), run_time=rt); live.append(m)
+        def clear():
+            if live: self.play(*[FadeOut(m) for m in live], run_time=0.15); live.clear()
+        def turn(i):
+            self.until(C[i] - 0.25); self.ev("wipe"); clear()
+        OR_ = (WHITE_, OR); NV = (WHITE_, INK); TL = (WHITE_, TEAL)
+        c0 = chips(["All 14 units", "Chapter 1 free"], 46, [NV, OR_])
+        self.until(0.4); show(c0[0])
+        self.until(wt(0, 8, 0.0)); self.ev("tick"); show(c0[1])
+        turn(1); c1 = chips(["1/3 of JEE Main", "25 questions", "100 marks"], 40, [TL, NV, OR_])
+        for i_, w_ in enumerate([3, 7, 10]): self.until(wt(1, w_, 0.0)); self.ev("tick"); show(c1[i_], 0.22)
+        turn(2); c2 = chips(["Learn", "Play", "Practise", "Check", "Exam"], 40, [NV, NV, NV, NV, OR_])
+        for i_, w_ in enumerate([2, 3, 7, 8, 10]): self.until(wt(2, w_, 0.0)); self.ev("tick"); show(c2[i_], 0.2)
+        turn(3); c3 = chips(["Web", "Android app", "Ask Dayzi · AI mentor"], 38, [NV, NV, TL])
+        for i_, w_ in enumerate([2, 4, 7]): self.until(wt(3, w_, 0.0)); self.ev("tick"); show(c3[i_], 0.22)
+        turn(4); c4 = chips(["Prerequisite", "Easy", "Medium", "Hard", "Challenge", "Mock test"], 36, [NV] * 5 + [OR_], cols=3)
+        self.until(wt(4, 0, 0.0)); self.ev("tick")
+        self.play(LaggedStart(*[FadeIn(c_, shift=UP * 0.06) for c_ in c4[:5]], lag_ratio=0.15), run_time=0.7); live.extend(c4[:5])
+        self.until(wt(4, 8, 0.0)); self.ev("stamp"); show(c4[5])
+        turn(5); self.until(wt(5, 1, 0.0)); self.ev("tick"); show(chips(["All 14 JEE Main units"], 46))
+        turn(6); c6 = chips(["Chapter 1: Free", "More from ₹99/month"], 44, [TL, OR_])
+        self.until(wt(6, 3, 0.0)); self.ev("tick"); show(c6[0]); self.until(wt(6, 5, 0.0)); self.ev("stamp"); show(c6[1])
+        turn(7); c7 = chips(["1 · Open Chapter 1", "2 · Try the lab", "3 · Pick a plan"], 36, [NV, NV, OR_])
+        for i_, w_ in enumerate([4, 7, 10]): self.until(wt(7, w_, 0.0)); self.ev("tick"); show(c7[i_], 0.22)
+        turn(8); site = chips(["tutorda.org"], 56, [OR_]); show(site)
+        FY = next((y for y in range(900, 1560, 5) if Y(y) + px(85) < site.get_bottom()[1] - px(24)), 1500)
+        self.until(C[8] + 1.15); self.ev("tick")
+        follow_card(self, P, FY, sub="JEE Main maths, made clear")
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
+
+
+class PromoFlipbook3(ShortReel2):
+    """Promo v3 (28 Nov): all 10 flipbook pages shown whole. Motion = page turn + slow push-in + a spotlight
+    (rest of the page dims, orange box) that glides to the part being explained on the spoken word."""
+    EVENTS = "flip2"; SERIES = "JEE Main Maths course"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        from PIL import Image as PImage, ImageDraw
+        import numpy as np
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        P = lambda x, y: [X(x), Y(y), 0]
+        PG = os.path.join(KIT, "promo_flipbook", "pages")
+        pages = [PImage.open(os.path.join(PG, f"pg-{i:02d}.jpg")).convert("RGB") for i in range(1, 11)]
+        PW, PH = pages[0].size; AR = PW / PH
+        VW = 640; VH = int(round(VW / AR)); TOPY = 345
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        FULLR = (0, 0, PW, PH)
+        # spotlight rectangles in page pixels (x0, y0, x1, y1), each fired on a spoken word
+        SP = {
+            0: [(wt(0, 0, 0.5), (40, 230, 740, 700))],
+            1: [(wt(0, 7, 0.0), (60, 380, 880, 1010))],
+            2: [(wt(1, 3, -0.1), (60, 360, 1040, 520)), (wt(1, 7, -0.1), (60, 580, 1040, 870))],
+            3: [(wt(2, 2, -0.1), (60, 360, 1040, 660))],
+            4: [(wt(3, 2, -0.1), (60, 345, 545, 525)), (wt(3, 4, -0.1), (550, 540, 1040, 740)), (wt(3, 7, -0.1), (60, 540, 545, 740))],
+            5: [(wt(4, 0, -0.1), (60, 360, 1040, 700)), (wt(4, 8, -0.1), (680, 545, 975, 670))],
+            6: [(wt(5, 1, -0.1), (60, 370, 1040, 1180))],
+            7: [(wt(6, 0, -0.1), (60, 385, 372, 930)), (wt(6, 4, -0.1), (372, 385, 690, 930))],
+            8: [(wt(7, 4, -0.1), (60, 380, 1040, 545)), (wt(7, 7, -0.1), (60, 605, 1040, 765)), (wt(7, 10, -0.1), (60, 835, 1040, 1015))],
+            9: [(C[8] + 0.6, (60, 560, 800, 905))],
+        }
+        flips = [(-1.0, 0), (wt(0, 6, -0.2), 1)] + [(C[i] - 0.25, i + 1) for i in range(1, 9)]
+        ease = lambda u: u * u * (3 - 2 * max(0.0, min(1.0, u)))
+        def spot_at(pi, tf, t):
+            seq = SP[pi]
+            if t < seq[0][0]: return FULLR, 0.0
+            prev = seq[0][1]; k = 0
+            for i_, (ts, r) in enumerate(seq):
+                if t >= ts: k = i_
+            ts, r = seq[k]
+            a = FULLR if k == 0 else seq[k - 1][1]
+            u = ease((t - ts) / 0.35)
+            rr = tuple(a[j] + (r[j] - a[j]) * u for j in range(4))
+            dim = 0.5 * (u if k == 0 else 1.0)
+            return rr, dim
+        def render(pi, t, tf, tn, squash=1.0):
+            pz = 1.0 + 0.045 * ease((t - tf) / max(tn - tf, 0.5))              # slow push-in
+            rr, dim = spot_at(pi, tf, t)
+            cx = (rr[0] + rr[2]) / 2 if dim > 0 else PW / 2; cy = (rr[1] + rr[3]) / 2 if dim > 0 else PH / 2
+            w = PW / pz; h = w / AR
+            cx = (PW / 2) + (cx - PW / 2) * (1 - 1 / pz) * 4; cy = (PH / 2) + (cy - PH / 2) * (1 - 1 / pz) * 4
+            cx = min(max(cx, w / 2), PW - w / 2); cy = min(max(cy, h / 2), PH - h / 2)
+            box = (cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2)
+            arr = np.asarray(pages[pi]).astype(np.float32)
+            if dim > 0:
+                m = np.full(arr.shape[:2], 1 - dim, np.float32)
+                x0, y0, x1, y1 = [int(v) for v in rr]; m[max(y0, 0):y1, max(x0, 0):x1] = 1.0
+                arr = arr * m[:, :, None]
+            im = PImage.fromarray(arr.clip(0, 255).astype(np.uint8))
+            if dim > 0:
+                d = ImageDraw.Draw(im); x0, y0, x1, y1 = [int(v) for v in rr]
+                d.rounded_rectangle((x0 - 6, y0 - 6, x1 + 6, y1 + 6), radius=14, outline=(255, 140, 0), width=int(7 * dim / 0.5) or 1)
+            im = im.crop(tuple(int(v) for v in box)).resize((VW, VH), PImage.BILINEAR)
+            a = np.zeros((VH, VW, 4), dtype=np.uint8)
+            if squash >= 0.999:
+                a[:, :, :3] = np.asarray(im); a[:, :, 3] = 255
+            else:
+                sw = max(2, int(VW * squash)); s_ = np.asarray(im.resize((sw, VH), PImage.BILINEAR)).astype(np.float32)
+                shade = (1 - 0.35 * (1 - squash)) * np.linspace(1.0, 0.8, sw)[None, :, None]
+                a[:, :sw, :3] = np.clip(s_ * shade, 0, 255).astype(np.uint8); a[:, :sw, 3] = 255
+            return a
+        def frame_at(t):
+            k = max(i for i, b in enumerate(flips) if b[0] <= t)
+            tf, pi = flips[k]; tn = flips[k + 1][0] if k + 1 < len(flips) else K.DUR
+            if k > 0 and t < tf + 0.45:
+                u = (t - tf) / 0.45
+                if u < 0.45:
+                    ptf, ppi = flips[k - 1]; return render(ppi, tf, max(ptf, 0), tf, squash=1 - ease(u / 0.45) * 0.98)
+                return render(pi, tf, tf, tn, squash=0.02 + 0.98 * ease((u - 0.45) / 0.55))
+            return render(pi, t, max(tf, 0), tn)
+        view = ImageMobject(frame_at(0.0)); view.width = px(VW); view.move_to([X(470), Y(TOPY) - view.height / 2, 0])
+        edge = Rectangle(width=view.width, height=view.height, stroke_width=0).move_to(view)
+        view.add_updater(lambda m: setattr(m, "pixel_array", frame_at(self.renderer.time))); self.add(view)
+        cur_page = lambda: flips[max(i for i, b in enumerate(flips) if b[0] <= self.renderer.time)][1] + 1
+        pagechip = always_redraw(lambda: tag(f"Page {cur_page()} of 10", 24, WHITE_, GREY_P).next_to(edge, UP, buff=px(-18)).align_to(edge, RIGHT).shift(LEFT * px(14)))
+        self.add(pagechip)
+        live = []
+        def chips(labels, size=36, colors=None, cols=None):
+            g = VGroup()
+            for i, t_ in enumerate(labels):
+                fg, bg = (colors[i] if colors else (WHITE_, INK)); g.add(tag(t_, size, fg, bg))
+            if cols: g.arrange_in_grid(cols=cols, buff=(px(14), px(12)))
+            else: g.arrange(RIGHT, buff=px(14))
+            fitw(g, 740); g.next_to(edge, DOWN, buff=px(22)).set_x(X(470)); return g
+        def show(m, rt=0.28):
+            self.play(FadeIn(m, shift=UP * 0.08, scale=1.08), run_time=rt); live.append(m)
+        def clear():
+            if live: self.play(*[FadeOut(m) for m in live], run_time=0.15); live.clear()
+        def turn(i):
+            self.until(C[i] - 0.25); self.ev("wipe"); clear()
+        OR_ = (WHITE_, OR); NV = (WHITE_, INK); TL = (WHITE_, TEAL)
+        c0 = chips(["All 14 units", "Chapter 1 free"], 46, [NV, OR_])
+        self.until(0.4); show(c0[0])
+        self.until(wt(0, 8, 0.0)); self.ev("tick"); show(c0[1])
+        turn(1); c1 = chips(["1/3 of JEE Main", "25 questions", "100 marks"], 40, [TL, NV, OR_])
+        for i_, w_ in enumerate([3, 7, 10]): self.until(wt(1, w_, 0.0)); self.ev("tick"); show(c1[i_], 0.22)
+        turn(2); c2 = chips(["Learn", "Play", "Practise", "Check", "Exam"], 40, [NV, NV, NV, NV, OR_])
+        for i_, w_ in enumerate([2, 3, 7, 8, 10]): self.until(wt(2, w_, 0.0)); self.ev("tick"); show(c2[i_], 0.2)
+        turn(3); c3 = chips(["Web", "Android app", "Ask Dayzi · AI mentor"], 38, [NV, NV, TL])
+        for i_, w_ in enumerate([2, 4, 7]): self.until(wt(3, w_, 0.0)); self.ev("tick"); show(c3[i_], 0.22)
+        turn(4); c4 = chips(["Prerequisite", "Easy", "Medium", "Hard", "Challenge", "Mock test"], 36, [NV] * 5 + [OR_], cols=3)
+        self.until(wt(4, 0, 0.0)); self.ev("tick")
+        self.play(LaggedStart(*[FadeIn(c_, shift=UP * 0.06) for c_ in c4[:5]], lag_ratio=0.15), run_time=0.7); live.extend(c4[:5])
+        self.until(wt(4, 8, 0.0)); self.ev("stamp"); show(c4[5])
+        turn(5); self.until(wt(5, 1, 0.0)); self.ev("tick"); show(chips(["All 14 JEE Main units"], 46))
+        turn(6); c6 = chips(["Chapter 1: Free", "More from ₹99/month"], 44, [TL, OR_])
+        self.until(wt(6, 3, 0.0)); self.ev("tick"); show(c6[0]); self.until(wt(6, 5, 0.0)); self.ev("stamp"); show(c6[1])
+        turn(7); c7 = chips(["1 · Open Chapter 1", "2 · Try the lab", "3 · Pick a plan"], 36, [NV, NV, OR_])
+        for i_, w_ in enumerate([4, 7, 10]): self.until(wt(7, w_, 0.0)); self.ev("tick"); show(c7[i_], 0.22)
+        turn(8); site = chips(["tutorda.org"], 56, [OR_]); show(site)
+        FY = next((y for y in range(900, 1560, 5) if Y(y) + px(85) < site.get_bottom()[1] - px(24)), 1500)
+        self.until(C[8] + 1.15); self.ev("tick")
+        follow_card(self, P, FY, sub="JEE Main maths, made clear")
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
