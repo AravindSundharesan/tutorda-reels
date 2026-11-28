@@ -1,0 +1,204 @@
+[
+ {
+  "words": [
+   "Everything",
+   "inside",
+   "TutorDA's",
+   "JEE",
+   "Main",
+   "Maths",
+   "course,",
+   "in",
+   "thirty",
+   "seconds."
+  ],
+  "starts": [
+   0.1,
+   0.5,
+   1.038,
+   1.808,
+   2.115,
+   2.5,
+   2.94,
+   3.3,
+   3.54,
+   3.94
+  ],
+  "match": 0.7,
+  "clip_start": 0.1
+ },
+ {
+  "words": [
+   "Maths",
+   "is",
+   "a",
+   "third",
+   "of",
+   "JEE",
+   "Main:",
+   "twenty-five",
+   "questions,",
+   "a",
+   "hundred",
+   "marks."
+  ],
+  "starts": [
+   4.686,
+   4.966,
+   5.086,
+   5.206,
+   5.486,
+   5.812,
+   6.246,
+   6.686,
+   7.566,
+   8.206,
+   8.366,
+   8.726
+  ],
+  "match": 0.83,
+  "clip_start": 4.646
+ },
+ {
+  "words": [
+   "Every",
+   "section:",
+   "learn,",
+   "play",
+   "with",
+   "live",
+   "graphs,",
+   "practise,",
+   "check,",
+   "then",
+   "exam",
+   "questions."
+  ],
+  "starts": [
+   9.378,
+   9.698,
+   10.338,
+   10.778,
+   11.058,
+   11.218,
+   11.498,
+   11.978,
+   12.498,
+   12.858,
+   13.198,
+   13.538
+  ],
+  "match": 0.92,
+  "clip_start": 9.378
+ },
+ {
+  "words": [
+   "Study",
+   "on",
+   "web",
+   "or",
+   "app,",
+   "and",
+   "ask",
+   "Dayzi,",
+   "the",
+   "AI",
+   "mentor,",
+   "when",
+   "you're",
+   "stuck."
+  ],
+  "starts": [
+   14.275,
+   14.555,
+   14.715,
+   14.995,
+   15.175,
+   15.475,
+   15.675,
+   15.951,
+   16.435,
+   16.755,
+   16.995,
+   17.475,
+   17.595,
+   17.795
+  ],
+  "match": 0.79,
+  "clip_start": 14.275
+ },
+ {
+  "words": [
+   "Six",
+   "levels",
+   "per",
+   "unit,",
+   "up",
+   "to",
+   "a",
+   "full",
+   "mock",
+   "test."
+  ],
+  "starts": [
+   18.205,
+   18.405,
+   18.805,
+   19.005,
+   19.405,
+   19.605,
+   19.725,
+   19.845,
+   20.085,
+   20.445
+  ],
+  "match": 1.0,
+  "clip_start": 18.165
+ },
+ {
+  "words": [
+   "All",
+   "fourteen",
+   "JEE",
+   "Main",
+   "units."
+  ],
+  "starts": [
+   21.024,
+   21.184,
+   21.864,
+   22.166,
+   22.544
+  ],
+  "match": 0.6,
+  "clip_start": 21.024
+ },
+ {
+  "words": [
+   "Chapter",
+   "one",
+   "is",
+   "free.",
+   "More",
+   "from",
+   "ninety-nine",
+   "rupees",
+   "a",
+   "month."
+  ],
+  "starts": [
+   23.172,
+   23.572,
+   23.852,
+   24.092,
+   24.612,
+   24.852,
+   25.099,
+   25.692,
+   26.132,
+   26.292
+  ],
+  "match": 0.9,
+  "clip_start": 23.172
+ }
+]

@@ -3803,3 +3803,92 @@ class MethodKiller6P(ShortReel2):
         self.until(K.DUR)
         json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
 
+
+
+class PromoFlipbook(ShortReel2):
+    """Promo (28 Nov): 30-s tour of the TutorDA | JEE Main Mathematics flipbook (artifact 6Cp6cWfpe7ypJqDompdfZC).
+    Each beat flips to a real brochure page (cropped: no robot mascot, no Rs 999, no draft GST note) and adds big fact chips on the spoken word."""
+    EVENTS = "flip"; SERIES = "JEE Main Maths course"
+    CAP_PILL = True; CAP_Y = 1560; CAP_FS = 38; CAP_X = X(490)
+    def construct(self):
+        self.setup_common(); C, wt, S = K.C, K.wt, self.S
+        P = lambda x, y: [X(x), Y(y), 0]
+        CR = os.path.join(KIT, "promo_flipbook", "crops")
+        self.add(self.hdr); lb = self.label(self.SERIES, False); self.add(lb)
+        self.add(Line(P(96, 318), P(870, 318), color=RULE, stroke_width=3))
+        def page(name, maxh=700, width=736, extra=110):
+            im = ImageMobject(os.path.join(CR, name + ".png")); im.set_resampling_algorithm(RESAMPLING_ALGORITHMS["lanczos"])
+            im.width = px(width)
+            if im.height > px(maxh): im.height = px(maxh)
+            top = max(350, 880 - (im.height / px(1) + extra) / 2)
+            im.move_to([X(470), Y(top) - im.height / 2, 0])
+            frame = Rectangle(width=im.width, height=im.height, stroke_color="#CBD5E1", stroke_width=2).move_to(im)
+            shadow = Rectangle(width=im.width, height=im.height, fill_color="#0F172A", fill_opacity=0.10, stroke_width=0).move_to(im).shift(RIGHT * px(10) + DOWN * px(10))
+            return Group(shadow, im, frame)
+        def chips(labels, size=36, colors=None, below=None, buff=20, cols=None):
+            g = VGroup()
+            for i, t in enumerate(labels):
+                fg, bg = (colors[i] if colors else (WHITE_, INK))
+                g.add(tag(t, size, fg, bg))
+            if cols: g.arrange_in_grid(cols=cols, buff=(px(14), px(14)))
+            else: g.arrange(RIGHT, buff=px(14))
+            fitw(g, 760); g.next_to(below, DOWN, buff=px(buff)).set_x(X(470))
+            return g
+        cur = {"pg": None, "chips": []}
+        def flip_to(name, maxh=700, extra=110):
+            new = page(name, maxh, extra=extra)
+            anims = []
+            if cur["pg"] is not None:
+                old = cur["pg"]
+                self.play(old.animate.stretch(0.02, 0, about_edge=LEFT), *[FadeOut(c_) for c_ in cur["chips"]], run_time=0.18, rate_func=rate_functions.ease_in_quad)
+                self.remove(old)
+            new.stretch(0.02, 0, about_edge=LEFT); self.add(new)
+            self.play(new.animate.stretch(50, 0, about_edge=LEFT), run_time=0.28, rate_func=EXPO)
+            cur["pg"] = new; cur["chips"] = []
+            return new
+        def show(m, rt=0.3):
+            self.play(FadeIn(m, shift=UP * 0.08, scale=1.08), run_time=rt); cur["chips"].append(m)
+        OR_ = (WHITE_, OR); NV = (WHITE_, INK); TL = (WHITE_, TEAL)
+        # ---------- 0: cover ----------
+        pg = page("c0_cover", extra=120); self.add(pg); cur["pg"] = pg
+        c0 = chips(["All 14 units", "Chapter 1 free"], 50, [NV, OR_], below=pg, buff=34)
+        self.add(c0[0]); cur["chips"].append(c0[0])
+        self.until(wt(0, 8, 0.0)); self.ev("tick"); show(c0[1])
+        # ---------- 1: the paper ----------
+        self.until(C[1] - 0.25); self.ev("wipe"); pg = flip_to("c1_paper", 600)
+        c1 = chips(["25 questions", "100 marks"], 50, [NV, OR_], below=pg, buff=30)
+        self.until(wt(1, 3, 0.0)); show(tag("1/3 of JEE Main", 50, WHITE_, TEAL).next_to(pg, DOWN, buff=px(30)).set_x(X(470)))
+        self.until(wt(1, 7, 0.0)); self.ev("tick"); self.play(FadeOut(cur["chips"].pop()), run_time=0.15); show(c1[0])
+        self.until(wt(1, 10, 0.0)); self.ev("tick"); show(c1[1])
+        # ---------- 2: how every section works ----------
+        self.until(C[2] - 0.25); self.ev("wipe"); pg = flip_to("c2_steps")
+        c2 = chips(["Learn", "Play", "Practise", "Check", "Exam"], 40, [NV, NV, NV, NV, OR_], below=pg, buff=30)
+        for i_, w_ in enumerate([2, 3, 7, 8, 10]):
+            self.until(wt(2, w_, 0.0)); self.ev("tick"); show(c2[i_], 0.22)
+        # ---------- 3: platform ----------
+        self.until(C[3] - 0.25); self.ev("wipe"); pg = flip_to("c3_platform", extra=180)
+        c3 = chips(["Web", "Android app", "Ask Dayzi · AI mentor"], 40, [NV, NV, TL], below=pg, buff=30, cols=2)
+        for i_, w_ in enumerate([2, 4, 7]):
+            self.until(wt(3, w_, 0.0)); self.ev("tick"); show(c3[i_], 0.25)
+        # ---------- 4: six levels ----------
+        self.until(C[4] - 0.25); self.ev("wipe"); pg = flip_to("c4_levels", extra=180)
+        c4 = chips(["Prerequisite", "Easy", "Medium", "Hard", "Challenge", "Mock test"], 40, [NV] * 5 + [OR_], below=pg, buff=30, cols=3)
+        self.until(wt(4, 0, 0.0)); self.ev("tick")
+        self.play(LaggedStart(*[FadeIn(c_, shift=UP * 0.06) for c_ in c4[:5]], lag_ratio=0.15), run_time=0.7); cur["chips"] += list(c4[:5])
+        self.until(wt(4, 8, 0.0)); self.ev("stamp"); show(c4[5])
+        # ---------- 5: chapters ----------
+        self.until(C[5] - 0.25); self.ev("wipe"); pg = flip_to("c5_chapters", 760)
+        self.until(wt(5, 1, 0.0)); self.ev("tick"); show(tag("All 14 JEE Main units", 50, WHITE_, INK).next_to(pg, DOWN, buff=px(28)).set_x(X(470)))
+        # ---------- 6: plans ----------
+        self.until(C[6] - 0.25); self.ev("wipe"); pg = flip_to("c6_plans", 640, extra=120)
+        c6 = chips(["Chapter 1: Free", "More from ₹99/month"], 46, [TL, OR_], below=pg, buff=30)
+        self.until(wt(6, 3, 0.0)); self.ev("tick"); show(c6[0])
+        self.until(wt(6, 6, 0.0)); self.ev("stamp"); show(c6[1])
+        # ---------- 7: try it + follow ----------
+        self.until(C[7] - 0.25); self.ev("wipe"); pg = flip_to("c7_try", 520, extra=330)
+        site = tag("tutorda.org", 60, WHITE_, OR).next_to(pg, DOWN, buff=px(28)).set_x(X(470)); show(site)
+        FY = next((y for y in range(900, 1560, 5) if Y(y) + px(85) < site.get_bottom()[1] - px(30)), 1500)
+        self.until(C[7] + 1.15); self.ev("tick")
+        follow_card(self, P, FY, sub="JEE Main maths, made clear")
+        self.until(K.DUR)
+        json.dump(getattr(self, "_events", []), open(os.path.join(KIT, "out", f"{self.EVENTS}_events.json"), "w"))
