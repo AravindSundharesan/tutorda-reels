@@ -4025,17 +4025,17 @@ class PromoFlipbook3(ShortReel2):
         SP = {
             0: [(wt(0, 0, 0.5), (40, 230, 740, 700))],
             1: [(wt(0, 7, 0.0), (60, 380, 880, 1010))],
-            2: [(wt(1, 3, -0.1), (60, 360, 1040, 520)), (wt(1, 7, -0.1), (60, 580, 1040, 870))],
+            2: [(wt(1, 3, -0.1), (70, 360, 1004, 490)), (wt(1, 7, -0.1), (70, 590, 1004, 905))],
             3: [(wt(2, 2, -0.1), (60, 360, 1040, 660))],
-            4: [(wt(3, 2, -0.1), (60, 345, 545, 525)), (wt(3, 4, -0.1), (550, 540, 1040, 740)), (wt(3, 7, -0.1), (60, 540, 545, 740))],
-            5: [(wt(4, 0, -0.1), (60, 360, 1040, 700)), (wt(4, 8, -0.1), (680, 545, 975, 670))],
+            4: [(wt(3, 2, -0.1), (80, 352, 528, 524)), (wt(3, 4, -0.1), (544, 540, 996, 740)), (wt(3, 7, -0.1), (80, 540, 528, 740))],
+            5: [(wt(4, 0, -0.1), (78, 356, 998, 680)), (wt(4, 8, -0.1), (682, 546, 974, 664))],
             6: [(wt(5, 1, -0.1), (60, 370, 1040, 1180))],
-            7: [(wt(6, 0, -0.1), (60, 385, 372, 930)), (wt(6, 4, -0.1), (372, 385, 690, 930))],
+            7: [(wt(6, 0, -0.1), (80, 392, 372, 918)), (wt(6, 4, -0.1), (390, 392, 682, 918))],
             8: [(wt(7, 4, -0.1), (60, 380, 1040, 545)), (wt(7, 7, -0.1), (60, 605, 1040, 765)), (wt(7, 10, -0.1), (60, 835, 1040, 1015))],
             9: [(C[8] + 0.6, (60, 560, 800, 905))],
         }
         flips = [(-1.0, 0), (wt(0, 6, -0.2), 1)] + [(C[i] - 0.25, i + 1) for i in range(1, 9)]
-        ease = lambda u: u * u * (3 - 2 * max(0.0, min(1.0, u)))
+        ease = lambda u: (lambda v: v * v * (3 - 2 * v))(max(0.0, min(1.0, u)))
         def spot_at(pi, tf, t):
             seq = SP[pi]
             if t < seq[0][0]: return FULLR, 0.0
@@ -4087,7 +4087,7 @@ class PromoFlipbook3(ShortReel2):
         edge = Rectangle(width=view.width, height=view.height, stroke_width=0).move_to(view)
         view.add_updater(lambda m: setattr(m, "pixel_array", frame_at(self.renderer.time))); self.add(view)
         cur_page = lambda: flips[max(i for i, b in enumerate(flips) if b[0] <= self.renderer.time)][1] + 1
-        pagechip = always_redraw(lambda: tag(f"Page {cur_page()} of 10", 24, WHITE_, GREY_P).next_to(edge, UP, buff=px(-18)).align_to(edge, RIGHT).shift(LEFT * px(14)))
+        pagechip = always_redraw(lambda: tag(f"Page {cur_page()} of 10", 24, WHITE_, GREY_P).align_to(edge, UR).shift(LEFT * px(12) + DOWN * px(12)))
         self.add(pagechip)
         live = []
         def chips(labels, size=36, colors=None, cols=None):
